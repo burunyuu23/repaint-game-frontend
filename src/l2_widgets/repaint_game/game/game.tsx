@@ -28,10 +28,11 @@ const Game = () => {
         const startResponseDTO = await NonRatingNoAuthService.startGame(
             {
                 paletteId: 0,
-                fieldSize: 2,
+                fieldSize: 12,
                 maxRounds: 22,
-            }) as GameStartResponseDTO & { currentRound: 0; isEnd: false };
-
+            }) as GameStartResponseDTO & { currentRound: number; isEnd: boolean };
+        startResponseDTO.currentRound = 0;
+        startResponseDTO.isEnd = false;
         setData(startResponseDTO);
     })
 
@@ -57,8 +58,6 @@ const Game = () => {
 
     const Game = styled.div`
       grid-template-columns: repeat(${data?.fieldSize}, 1fr);
-      width: ${mapSizeDefaultStyle};
-      height: ${mapSizeDefaultStyle};
     `
 
     const ButtonPanel = styled.div`
@@ -74,15 +73,16 @@ const Game = () => {
 
 
             {data !== null && <div>
-                    <Map map={data!.map}
+                <h1>{data.currentRound}/{data.maxRounds}</h1>
+                    <Map map={data.map}
                                         colors={data!.colors}
                                         onclick={() => {}}
-                                        fieldSize={data!.fieldSize}
+                                        fieldSize={data.fieldSize}
                                         mapSize={mapSizeDefaultStyle}
             />
 
                 <ButtonPanel className={styles.buttonPanel}>
-                    {data!.colors.map(color =>
+                    {data.colors.map(color =>
                         <ColorButton
                             key={color.id}
                             colorHexCode={color.hexCode}
