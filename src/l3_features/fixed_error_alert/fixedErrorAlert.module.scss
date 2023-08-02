@@ -1,0 +1,8 @@
+$padding: 20px;
+
+.alert {
+  position: absolute;
+  top: $padding;
+  left: $padding;
+  width: calc(100dvw - $padding * 2);
+}
