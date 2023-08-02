@@ -1,0 +1,22 @@
+$nonCapturedColor: white;
+$nonCapturedBorderSize: 5px;
+
+.map {
+  display: grid;
+  border: 2px solid black;
+  //gap: 1px;
+  padding: 1px;
+}
+
+.nonCapturedCellRight {
+  border-right: $nonCapturedBorderSize solid $nonCapturedColor;
+}
+.nonCapturedCellLeft {
+  border-left: $nonCapturedBorderSize solid $nonCapturedColor;
+}
+.nonCapturedCellBottom {
+  border-bottom: $nonCapturedBorderSize solid $nonCapturedColor;
+}
+.nonCapturedCellTop {
+  border-top: $nonCapturedBorderSize solid $nonCapturedColor;
+}
