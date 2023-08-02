@@ -1,10 +1,9 @@
 $nonCapturedColor: white;
-$nonCapturedBorderSize: 5px;
+$nonCapturedBorderSize: 1px;
 
 .map {
   display: grid;
   border: 2px solid black;
-  //gap: 1px;
   padding: 1px;
 }
 
