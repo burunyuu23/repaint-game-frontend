@@ -17,9 +17,8 @@ const Game = () => {
         useState<GameStepResponseDTO | null>(null);
 
     useEffect(() => {
-        fetchStartGame();
+        fetchStartGame().then(r => r);
     }, [])
-
 
     const {
         fetching: fetchStartGame,
