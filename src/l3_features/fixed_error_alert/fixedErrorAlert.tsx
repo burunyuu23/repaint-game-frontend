@@ -9,25 +9,13 @@ type Props = {
 
 const FixedErrorAlert = ({errorMessage, closable}: Props) => {
 
-    let alert;
-
-    if (closable === true) {
-        alert = <Alert
+    return (
+        <Alert
             className={styles.alert}
             severity="error"
-            onClose={() => {}}>
+            onClose={closable ? () => {} : undefined}>
             {errorMessage}
         </Alert>
-    } else {
-        alert = <Alert
-            className={styles.alert}
-            severity="error">
-            {errorMessage}
-        </Alert>
-    }
-
-    return (
-        <>{alert}</>
     )
         ;
 };
