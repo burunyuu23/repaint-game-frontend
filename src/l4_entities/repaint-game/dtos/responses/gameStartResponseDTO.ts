@@ -7,4 +7,5 @@ export type GameStartResponseDTO = {
     colors: Color[],
     maxRounds: number,
     fieldSize: number,
+    startTime: Date
 }

@@ -11,6 +11,7 @@ import {GameStepResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gam
 import {useFetch} from "@/l5_shared/hooks/useFetch";
 import { Alert } from '@mui/material';
 import FixedErrorAlert from "@/l3_features/fixed_error_alert/fixedErrorAlert";
+import EndGamePanel from "@/l3_features/end_game_panel/endGamePanel";
 
 const Game = () => {
     let [data, setData] =
@@ -30,9 +31,10 @@ const Game = () => {
                 paletteId: 0,
                 fieldSize: 12,
                 maxRounds: 22,
-            }) as GameStartResponseDTO & { currentRound: number; end: boolean };
+            }) as GameStartResponseDTO & { currentRound: number; end: boolean; stepTime: Date };
         startResponseDTO.currentRound = 0;
         startResponseDTO.end = false;
+        startResponseDTO.stepTime = startResponseDTO.startTime;
         setData(startResponseDTO);
     })
 
@@ -46,6 +48,7 @@ const Game = () => {
                 gameId: data!.gameId,
                 colorId: id
             })
+        stepResponseDTO.startTime = data!.startTime
 
         setData(stepResponseDTO);
     })
@@ -68,11 +71,26 @@ const Game = () => {
 
     return (
         <Game>
+
+            <q>{data?.stepTime.valueOf()}</q>
+
+            {data !== null && <EndGamePanel
+                currentRound={0}
+                maxRounds={22}
+                win={false}
+                duration={data!.startTime}
+            />}
+
             {stepGameError !== '' &&
                 (<FixedErrorAlert errorMessage={stepGameError} closable />)}
 
             {data?.end === true &&
-                (<FixedErrorAlert errorMessage={"Game is over"} />)}
+                (<EndGamePanel
+                    currentRound={0}
+                    maxRounds={22}
+                    win={false}
+                    duration={data.startTime}
+                />)}
 
 
             {data !== null && <div>
