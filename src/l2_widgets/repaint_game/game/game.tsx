@@ -69,7 +69,7 @@ const Game = () => {
     return (
         <Game>
             {stepGameError !== '' &&
-                (<FixedErrorAlert errorMessage={stepGameError} exitable />)}
+                (<FixedErrorAlert errorMessage={stepGameError} closable />)}
 
             {data?.end === true &&
                 (<FixedErrorAlert errorMessage={"Game is over"} />)}
