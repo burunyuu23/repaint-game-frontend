@@ -11,7 +11,8 @@ import {GameStepResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gam
 import {useFetch} from "@/l5_shared/hooks/useFetch";
 import { Alert } from '@mui/material';
 import FixedErrorAlert from "@/l3_features/fixed_error_alert/fixedErrorAlert";
-import EndGamePanel from "@/l3_features/end_game_panel/endGamePanel";
+import EndGamePanel from "@/l3_features/repaint_game/end_game_panel/endGamePanel";
+import Timer from "@/l3_features/timer/timer";
 
 const Game = () => {
     let [data, setData] =
@@ -71,14 +72,13 @@ const Game = () => {
 
     return (
         <Game>
+            {data !== null && <Timer startTime={data.startTime}/>}
 
-            <q>{data?.stepTime.valueOf()}</q>
-
-            {data !== null && <EndGamePanel
+            {data !== null    && <EndGamePanel
                 currentRound={0}
                 maxRounds={22}
                 win={false}
-                duration={data!.startTime}
+                startTime={data!.startTime}
             />}
 
             {stepGameError !== '' &&
@@ -89,7 +89,7 @@ const Game = () => {
                     currentRound={0}
                     maxRounds={22}
                     win={false}
-                    duration={data.startTime}
+                    startTime={data.startTime}
                 />)}
 
 
