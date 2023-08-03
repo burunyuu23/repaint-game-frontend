@@ -3,5 +3,5 @@ import {GameStartResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/ga
 
 export type GameStepResponseDTO = GameStartResponseDTO & {
     currentRound: number,
-    isEnd: boolean
+    end: boolean
 }

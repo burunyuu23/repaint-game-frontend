@@ -30,9 +30,9 @@ const Game = () => {
                 paletteId: 0,
                 fieldSize: 12,
                 maxRounds: 22,
-            }) as GameStartResponseDTO & { currentRound: number; isEnd: boolean };
+            }) as GameStartResponseDTO & { currentRound: number; end: boolean };
         startResponseDTO.currentRound = 0;
-        startResponseDTO.isEnd = false;
+        startResponseDTO.end = false;
         setData(startResponseDTO);
     })
 
@@ -69,7 +69,10 @@ const Game = () => {
     return (
         <Game>
             {stepGameError !== '' &&
-                (<FixedErrorAlert errorMessage={stepGameError} />)}
+                (<FixedErrorAlert errorMessage={stepGameError} exitable />)}
+
+            {data?.end === true &&
+                (<FixedErrorAlert errorMessage={"Game is over"} />)}
 
 
             {data !== null && <div>
