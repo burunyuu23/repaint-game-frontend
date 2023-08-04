@@ -5,15 +5,16 @@ import styles from './fixedErrorAlert.module.scss';
 type Props = {
     errorMessage: string,
     closable?: boolean
+    onclose?: () => void
 }
 
-const FixedErrorAlert = ({errorMessage, closable}: Props) => {
+const FixedErrorAlert = ({errorMessage, closable, onclose}: Props) => {
 
     return (
         <Alert
             className={styles.alert}
             severity="error"
-            onClose={closable ? () => {} : undefined}>
+            onClose={closable ? onclose : undefined}>
             {errorMessage}
         </Alert>
     )
