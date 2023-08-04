@@ -5,7 +5,7 @@ import styles from './page.module.scss'
 const Page = () => {
         return (
         <main className={styles.main}>
-                <Game/>
+            <Game/>
         </main>
     );
 };

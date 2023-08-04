@@ -3,6 +3,8 @@ import ColorButton from "@/l3_features/repaint_game/color_button/colorButton";
 import {Color} from "@/l4_entities/repaint-game/models/color";
 import styles from "./capturedCountPanel.module.scss"
 import AnimatedTimedAlert from "@/l5_shared/lib/animated_timed_alert_text/animatedTimedAlert";
+import styled from "@emotion/styled";
+import {devices} from "@/l5_shared/css/consts";
 
 type Props = {
     size: string,
@@ -15,9 +17,26 @@ type Props = {
 }
 
 const CapturedCountPanel = ({size, colorId, colors, colorCount, capturedCount, prevCapturedCount, selected}: Props) => {
+
+    const CapturedColorButton = styled.div`
+
+      width: calc(${size});
+      height: calc(${size});
+
+      @media ${devices.mobileS} {
+        width: calc(${size}/1.5);
+        height: calc(${size}/1.5);
+      }
+
+      @media ${devices.tablet} {
+        width: calc(${size}/1.15);
+        height: calc(${size}/1.15);
+      }
+    `
+
     return (
         <div className={styles.capturedCountPanel}>
-            <div style={{width: `${size}`, height: `${size}`}}>
+            <CapturedColorButton>
                 <ColorButton
                     colorHexCode={colors[colorId].hexCode}
                     onclick={() => {
@@ -27,7 +46,7 @@ const CapturedCountPanel = ({size, colorId, colors, colorCount, capturedCount, p
                 >
                     {colorCount}
                 </ColorButton>
-            </div>
+            </CapturedColorButton>
             {prevCapturedCount !== -1 && capturedCount - prevCapturedCount > 0 &&
                 <AnimatedTimedAlert
                     style={{

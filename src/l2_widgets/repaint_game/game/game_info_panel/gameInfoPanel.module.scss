@@ -1,7 +1,6 @@
 .infoPanel {
   background: #ffffee;
   padding: 20px;
-
 }
 
 .capturedCountPanel {
@@ -9,8 +8,7 @@
 
   width: 100%;
 
-  justify-content: space-around;
-  grid-template-columns: repeat(3, 1fr);
+  justify-content: left;
   row-gap: 20px;
   padding-top: 10px;
 }

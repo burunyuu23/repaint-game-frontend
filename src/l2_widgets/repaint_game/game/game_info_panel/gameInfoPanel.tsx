@@ -5,6 +5,8 @@ import RoundCounter from "@/l3_features/repaint_game/round_counter/roundCounter"
 import styles from './gameInfoPanel.module.scss';
 import CapturedCountPanel from "@/l3_features/repaint_game/captured_count_panel/capturedCountPanel";
 import TimerIcon from '@mui/icons-material/Timer';
+import styled from "@emotion/styled";
+import {devices} from "@/l5_shared/css/consts";
 
 type Props = {
     data: GameStepResponseDTO,
@@ -14,8 +16,25 @@ type Props = {
 
 const GameInfoPanel = React.memo(({data, size, prevCapturedCount}: Props) => {
 
+    const CapturedCountPanelWrapper = styled.div`
+      grid-template-columns: repeat(6, 1fr);
+
+      @media ${devices.tablet} {
+        display: flex;
+        flex-direction: column;
+      }
+    `
+
+    const InfoPanel = styled.div`
+      height: auto;
+
+      @media ${devices.tablet} {
+        height: 100%;
+      }
+    `
+
     return (
-        <div className={styles.infoPanel}>
+        <InfoPanel className={styles.infoPanel}>
             <RoundCounter
                 currentRound={data.currentRound}
                 maxRounds={data.maxRounds}/>
@@ -31,7 +50,7 @@ const GameInfoPanel = React.memo(({data, size, prevCapturedCount}: Props) => {
                 </div>
             </div>
 
-            <div className={styles.capturedCountPanel}>
+            <CapturedCountPanelWrapper className={styles.capturedCountPanel}>
                 {data.colorsCount.map((colorCount, index) => (
                     <CapturedCountPanel
                         size={size}
@@ -43,8 +62,8 @@ const GameInfoPanel = React.memo(({data, size, prevCapturedCount}: Props) => {
                         selected={index === data.map[0][0].value}
                     />
                 ))}
-            </div>
-        </div>
+            </CapturedCountPanelWrapper>
+        </InfoPanel>
     );
 });
 

@@ -14,6 +14,7 @@ import EndGamePanel from "@/l2_widgets/repaint_game/game/end_game_panel/endGameP
 import GameInfoPanel from "@/l2_widgets/repaint_game/game/game_info_panel/gameInfoPanel";
 import {Cell} from "@/l4_entities/repaint-game/models/cell";
 import SettingsPanel from "@/l3_features/repaint_game/settings_panel/settingsPanel";
+import {devices} from "@/l5_shared/css/consts";
 
 const Game = React.memo(() => {
     const [data, setData] =
@@ -35,7 +36,7 @@ const Game = React.memo(() => {
             {
                 paletteId: 0,
                 fieldSize: 2,
-                maxRounds: 1,
+                maxRounds: 100,
             }) as GameStartResponseDTO & { currentRound: number; end: boolean; stepTime: Date };
         startResponseDTO.currentRound = 0;
         startResponseDTO.end = false;
@@ -78,8 +79,15 @@ const Game = React.memo(() => {
     const size = `calc(${mapSizeStyle(6 * mapSizeDivider)} - ${buttonPanelGap}px)`;
 
     const GamePanel = styled.div`
-      grid-template-columns: repeat(${data?.fieldSize}, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       height: 90dvh;
+      
+      @media ${devices.tablet} {
+        display: grid;
+        align-items: center;
+        align-self: center;
+        height: auto;
+      }
     `
 
     const ButtonPanel = styled.div`
