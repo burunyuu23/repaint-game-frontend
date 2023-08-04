@@ -1,9 +1,10 @@
 import React from 'react';
-import Timer from "@/l3_features/timer/timer";
+import Timer from "@/l5_shared/lib/timer/timer";
 import {GameStepResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStepResponseDTO";
 import RoundCounter from "@/l3_features/repaint_game/round_counter/roundCounter";
 import styles from './gameInfoPanel.module.scss';
 import CapturedCountPanel from "@/l3_features/repaint_game/captured_count_panel/capturedCountPanel";
+import TimerIcon from '@mui/icons-material/Timer';
 
 type Props = {
     data: GameStepResponseDTO,
@@ -19,9 +20,16 @@ const GameInfoPanel = React.memo(({data, size, prevCapturedCount}: Props) => {
                 currentRound={data.currentRound}
                 maxRounds={data.maxRounds}/>
 
-            <Timer
-                stop={data.end}
-                startTime={data.startTime}/>
+            <div
+                className={styles.timerPanel}>
+                <div
+                    className={styles.timer}>
+                    <TimerIcon  />
+                    <Timer
+                        stop={data.end}
+                        startTime={data.startTime}/>
+                </div>
+            </div>
 
             <div className={styles.capturedCountPanel}>
                 {data.colorsCount.map((colorCount, index) => (
