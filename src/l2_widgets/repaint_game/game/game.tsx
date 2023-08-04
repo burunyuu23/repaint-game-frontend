@@ -9,19 +9,22 @@ import styled from "@emotion/styled";
 import {NonRatingNoAuthService} from "@/l4_entities/repaint-game/nonrating-noauth-service/service";
 import {GameStepResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStepResponseDTO";
 import {useFetch} from "@/l5_shared/hooks/useFetch";
-import FixedErrorAlert from "@/l3_features/fixed_error_alert/fixedErrorAlert";
-import EndGamePanel from "@/l3_features/repaint_game/end_game_panel/endGamePanel";
+import FixedErrorAlert from "@/l5_shared/lib/fixed_error_alert/fixedErrorAlert";
+import EndGamePanel from "@/l2_widgets/repaint_game/game/end_game_panel/endGamePanel";
 import GameInfoPanel from "@/l2_widgets/repaint_game/game/game_info_panel/gameInfoPanel";
 import {Cell} from "@/l4_entities/repaint-game/models/cell";
+import SettingsPanel from "@/l3_features/repaint_game/settings_panel/settingsPanel";
 
 const Game = React.memo(() => {
-    let [data, setData] =
+    const [data, setData] =
         useState<GameStepResponseDTO | null>(null);
 
     const [prevCapturedCount, setPrevCapturedCount]
         = useState<number>(0);
 
     const [prevMap, setPrevMap] = useState<Cell[][] | null>(null);
+
+    const [settingsOpen, setSettingsOpen] = useState(false);
 
     const {
         fetching: fetchStartGame,
@@ -31,8 +34,8 @@ const Game = React.memo(() => {
         const startResponseDTO = await NonRatingNoAuthService.startGame(
             {
                 paletteId: 0,
-                fieldSize: 22,
-                maxRounds: 22,
+                fieldSize: 2,
+                maxRounds: 1,
             }) as GameStartResponseDTO & { currentRound: number; end: boolean; stepTime: Date };
         startResponseDTO.currentRound = 0;
         startResponseDTO.end = false;
@@ -85,6 +88,9 @@ const Game = React.memo(() => {
       column-gap: ${buttonPanelGap}px;
     `
 
+    const isWin = () =>
+        data !== null && data.capturedCount === data.fieldSize * data.fieldSize
+
     return (
         <GamePanel>
             {data !== null && <GameInfoPanel
@@ -98,16 +104,33 @@ const Game = React.memo(() => {
                                   onclose={() => clearError !== undefined ? clearError() : {}}
                                   closable/>)}
 
-            {data?.end === true &&
+            {data !== null && data.end &&
                 (<EndGamePanel
+                    restart={() => fetchStartGame()}
+                    settingsOpen={() => setSettingsOpen(true)}
                     currentRound={0}
                     maxRounds={22}
-                    win={false}
+                    win={isWin()}
                     startTime={data.startTime}
-                />)}
+                    allCount={data.colorsCount.reduce((sum, value) => sum += value)}
+                    capturedCount={data.capturedCount}/>)}
 
+            {settingsOpen &&
+                <SettingsPanel handleClose={() => setSettingsOpen(false)}/>}
 
-            {data !== null && <div>
+            {data !== null && <div
+                style={{position: "relative"}}>
+                {isWin() && <div
+                    style={{
+                        background: `linear-gradient(135deg, white, ${data.colors[0].hexCode}, black)`,
+                        width: mapSizeDefaultStyle,
+                        left: 3,
+                        top: 3,
+                        height: mapSizeDefaultStyle,
+                        zIndex: 1,
+                        position: "absolute",
+                        mixBlendMode: "hard-light"
+                    }}/>}
                 <Map map={data.map}
                      prevMap={prevMap!}
                      colors={data!.colors}
