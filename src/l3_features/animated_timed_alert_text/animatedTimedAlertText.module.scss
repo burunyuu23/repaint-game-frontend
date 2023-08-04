@@ -1,0 +1,20 @@
+.animatedTimedAlert {
+  opacity: 0;
+
+  animation: animation 1s ease-in;
+}
+
+@keyframes animation {
+  0% {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+}
