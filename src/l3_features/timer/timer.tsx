@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 
 type Props = {
-    startTime: Date
+    startTime: Date,
+    stop: boolean
 }
 
-const Timer = ({startTime}: Props) => {
+const Timer = ({startTime, stop}: Props) => {
     const date = new Date(startTime)
 
     const [animationFrameId, setAnimationFrameId] =
@@ -15,8 +16,14 @@ const Timer = ({startTime}: Props) => {
     const updateDuration = () => {
         setDuration(duration => new Date().getTime() - date.getTime())
 
-        setAnimationFrameId(requestAnimationFrame(updateDuration));
+
+        if (stop) {
+            cancelAnimationFrame(animationFrameId as number);
+        } else {
+            setAnimationFrameId(requestAnimationFrame(updateDuration));
+        }
     };
+
 
     useEffect(() => {
         updateDuration();
@@ -24,11 +31,8 @@ const Timer = ({startTime}: Props) => {
         return (cancelAnimationFrame(animationFrameId as number));
     }, [])
 
-
     return (
-        <div>
-            <div>{duration}</div>
-        </div>
+        <div>{Math.floor(duration / 1000)}:{duration % 1000}s</div>
     );
 };
 
