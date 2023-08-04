@@ -1,4 +1,29 @@
-.colorButton {
+@mixin betterButton($size, $color, $blurSize, $shadowSize) {
+  content: "";
+  width: $size;
+  height: $size;
+  position: absolute;
+
+  filter: blur($blurSize);
+  box-shadow: 0 0 $shadowSize calc($shadowSize/5) $color;
+  background: $color;
+
+  mix-blend-mode: overlay;
+}
+
+@mixin glaredBetterButton {
+  @include betterButton(20%, white, 15px, 50px);
+  left: 10%;
+  top: 10%;
+}
+
+@mixin shadyBetterButton {
+  @include betterButton(20%, black, 20px, 50px);
+  right: 10%;
+  bottom: 10%;
+}
+
+@mixin colorButtonBase {
   width: 100%;
   height: 100%;
 
@@ -9,4 +34,34 @@
   padding: 0 !important;
 
   background: #FFF;
+
+  &:before {
+    @include glaredBetterButton;
+  }
+
+  &:after {
+    @include shadyBetterButton;
+  }
+}
+
+.colorButton {
+  @include colorButtonBase;
+}
+
+.clickableColorButton {
+  @include colorButtonBase;
+
+  &:hover {
+    transform: scale(1.1);
+    z-index: 1;
+  }
+
+  &:active {
+    filter: grayscale(50%);
+  }
+}
+
+.children {
+  color: white;
+  mix-blend-mode: overlay;
 }
