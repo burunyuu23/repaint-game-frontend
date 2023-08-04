@@ -2,7 +2,7 @@ import React from 'react';
 import ColorButton from "@/l3_features/repaint_game/color_button/colorButton";
 import {Color} from "@/l4_entities/repaint-game/models/color";
 import styles from "./capturedCountPanel.module.scss"
-import AnimatedTimedAlert from "@/l3_features/animated_timed_alert_text/animatedTimedAlert";
+import AnimatedTimedAlert from "@/l5_shared/lib/animated_timed_alert_text/animatedTimedAlert";
 
 type Props = {
     size: string,
