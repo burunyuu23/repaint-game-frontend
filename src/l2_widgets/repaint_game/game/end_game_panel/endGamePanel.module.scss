@@ -1,0 +1,33 @@
+.header {
+  display: grid;
+  justify-items: center;
+}
+
+.timerPanel {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.iconButtonPanel {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+
+}
+
+.iconButton {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+
+  transition: filter 200ms linear;
+
+  &:hover {
+    filter: drop-shadow(0 0 20px white);
+  }
+}
