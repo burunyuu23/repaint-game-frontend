@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 
 type Props = {
     startTime: Date,
-    stop: boolean
+    stop: boolean,
 }
 
 const Timer = ({startTime, stop}: Props) => {
