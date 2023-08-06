@@ -34,7 +34,7 @@ const Game = React.memo(() => {
         const startResponseDTO = await NonRatingNoAuthService.startGame(
             {
                 paletteId: 0,
-                fieldSize: 12,
+                fieldSize: 2,
                 maxRounds: 100,
             }) as GameStartResponseDTO & { currentRound: number; end: boolean; stepTime: Date };
         startResponseDTO.currentRound = 0;
@@ -94,8 +94,8 @@ const Game = React.memo(() => {
             {data !== null &&
                 <div>
                     <GameInfoPanel
-                        prevCapturedCount={prevCapturedCount}
-                        size={size}
+                        restart={() => fetchStartGame()}
+                        settingsOpen={() => setSettingsOpen(true)}
                         data={data}
                     />
                 </div>}
@@ -109,15 +109,17 @@ const Game = React.memo(() => {
                 (<EndGamePanel
                     restart={() => fetchStartGame()}
                     settingsOpen={() => setSettingsOpen(true)}
-                    currentRound={0}
-                    maxRounds={22}
+                    currentRound={data.currentRound}
+                    maxRounds={data.maxRounds}
                     win={isWin()}
                     startTime={data.startTime}
                     allCount={data.colorsCount.reduce((sum, value) => sum += value)}
                     capturedCount={data.capturedCount}/>)}
 
             {settingsOpen &&
-                <SettingsPanel handleClose={() => setSettingsOpen(false)}/>}
+                <SettingsPanel
+                    colors={data!.colors}
+                    handleClose={() => setSettingsOpen(false)}/>}
 
             {data !== null && <div
                 style={{position: "relative"}}>
@@ -154,7 +156,6 @@ const Game = React.memo(() => {
                                         colorId={index}
                                         onclick={() => fetchStepGame(color.id)}
                                         selected={index === data.map[0][0].value}
-                                        reversed={index % 2 === 0}
                                     />)}
                 </ButtonPanel></div>
             }

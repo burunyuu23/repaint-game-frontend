@@ -1,9 +1,29 @@
 .infoPanel {
   background: #ffffee;
   padding: 20px;
+  position: relative;
 
   grid-template-columns: repeat(2, 1fr);
   height: auto;
+
+  .settingsPanel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    padding: 6px 10px;
+
+    .settingsButton {
+      color: black;
+      padding: 0;
+      min-width: min-content;
+
+      .settingsIconButton {
+        color: black;
+        padding: 0;
+      }
+    }
+  }
 }
 
 .timerPanel {
