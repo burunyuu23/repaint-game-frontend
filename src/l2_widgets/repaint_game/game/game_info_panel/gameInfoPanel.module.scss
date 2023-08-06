@@ -1,16 +1,9 @@
 .infoPanel {
   background: #ffffee;
   padding: 20px;
-}
 
-.capturedCountPanel {
-  display: grid;
-
-  width: 100%;
-
-  justify-content: left;
-  row-gap: 20px;
-  padding-top: 10px;
+  grid-template-columns: repeat(2, 1fr);
+  height: auto;
 }
 
 .timerPanel {

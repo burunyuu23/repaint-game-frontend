@@ -16,25 +16,8 @@ type Props = {
 
 const GameInfoPanel = React.memo(({data, size, prevCapturedCount}: Props) => {
 
-    const CapturedCountPanelWrapper = styled.div`
-      grid-template-columns: repeat(6, 1fr);
-
-      @media ${devices.tablet} {
-        display: flex;
-        flex-direction: column;
-      }
-    `
-
-    const InfoPanel = styled.div`
-      height: auto;
-
-      @media ${devices.tablet} {
-        height: 100%;
-      }
-    `
-
     return (
-        <InfoPanel className={styles.infoPanel}>
+        <div className={styles.infoPanel}>
             <RoundCounter
                 currentRound={data.currentRound}
                 maxRounds={data.maxRounds}/>
@@ -49,21 +32,7 @@ const GameInfoPanel = React.memo(({data, size, prevCapturedCount}: Props) => {
                         startTime={data.startTime}/>
                 </div>
             </div>
-
-            <CapturedCountPanelWrapper className={styles.capturedCountPanel}>
-                {data.colorsCount.map((colorCount, index) => (
-                    <CapturedCountPanel
-                        size={size}
-                        capturedCount={data.capturedCount}
-                        prevCapturedCount={data.map[0][0].value === index ? prevCapturedCount : -1}
-                        colorCount={colorCount}
-                        colors={data.colors}
-                        colorId={index}
-                        selected={index === data.map[0][0].value}
-                    />
-                ))}
-            </CapturedCountPanelWrapper>
-        </InfoPanel>
+        </div>
     );
 });
 

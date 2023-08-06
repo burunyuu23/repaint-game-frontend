@@ -8,7 +8,7 @@ type Props = {
     onclick: () => void,
     notclickable?: boolean,
     children?: React.ReactNode,
-    glowable?: boolean
+    glowable?: boolean,
 }
 
 const ColorButton = ({colorHexCode, onclick, notclickable, children, glowable}: Props) => {

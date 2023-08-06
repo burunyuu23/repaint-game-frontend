@@ -13,50 +13,41 @@ type Props = {
     capturedCount: number,
     colorCount: number,
     prevCapturedCount: number,
-    selected?: boolean
+    selected?: boolean,
+    onclick?: () => void
 }
 
-const CapturedCountPanel = ({size, colorId, colors, colorCount, capturedCount, prevCapturedCount, selected}: Props) => {
+const CapturedCountPanel = ({size, colorId, colors, colorCount, capturedCount, prevCapturedCount, selected, onclick}: Props) => {
 
     const CapturedColorButton = styled.div`
-
       width: calc(${size});
       height: calc(${size});
+    `
 
-      @media ${devices.mobileS} {
-        width: calc(${size}/1.5);
-        height: calc(${size}/1.5);
-      }
-
-      @media ${devices.tablet} {
-        width: calc(${size}/1.15);
-        height: calc(${size}/1.15);
-      }
+    const CapturedCountPanel = styled.div`
+        display: flex;
+        align-items: start;
+        justify-content: center;
     `
 
     return (
-        <div className={styles.capturedCountPanel}>
+        <CapturedCountPanel>
             <CapturedColorButton>
                 <ColorButton
                     colorHexCode={colors[colorId].hexCode}
-                    onclick={() => {
+                    onclick={onclick ? onclick : () => {
                     }}
-                    notclickable
                     glowable={selected}
                 >
                     {colorCount}
                 </ColorButton>
             </CapturedColorButton>
             {prevCapturedCount !== -1 && capturedCount - prevCapturedCount > 0 &&
-                <AnimatedTimedAlert
-                    style={{
-                        color: colors[colorId].hexCode,
-                        textShadow: `0 0 10px ${colors[colorId].hexCode}`
-                    }}>
+                <AnimatedTimedAlert>
                     {capturedCount - prevCapturedCount > 0 ? '+' : ''}{capturedCount - prevCapturedCount}
                 </AnimatedTimedAlert>
             }
-        </div>
+        </CapturedCountPanel>
     );
 };
 

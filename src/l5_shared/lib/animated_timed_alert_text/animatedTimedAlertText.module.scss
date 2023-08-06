@@ -1,6 +1,12 @@
 .animatedTimedAlert {
   opacity: 0;
 
+  position: absolute;
+  color: white;
+  text-shadow: 0 0 5px white;
+
+  mix-blend-mode: overlay;
+
   animation: animation 1s ease-in;
 }
 

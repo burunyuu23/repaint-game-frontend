@@ -3,7 +3,6 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {GameStartResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStartResponseDTO";
 import Map from "@/l3_features/repaint_game/map/map";
-import ColorButton from "@/l3_features/repaint_game/color_button/colorButton";
 import styles from './game.module.scss';
 import styled from "@emotion/styled";
 import {NonRatingNoAuthService} from "@/l4_entities/repaint-game/nonrating-noauth-service/service";
@@ -14,7 +13,7 @@ import EndGamePanel from "@/l2_widgets/repaint_game/game/end_game_panel/endGameP
 import GameInfoPanel from "@/l2_widgets/repaint_game/game/game_info_panel/gameInfoPanel";
 import {Cell} from "@/l4_entities/repaint-game/models/cell";
 import SettingsPanel from "@/l3_features/repaint_game/settings_panel/settingsPanel";
-import {devices} from "@/l5_shared/css/consts";
+import CapturedCountPanel from "@/l3_features/repaint_game/captured_count_panel/capturedCountPanel";
 
 const Game = React.memo(() => {
     const [data, setData] =
@@ -35,7 +34,7 @@ const Game = React.memo(() => {
         const startResponseDTO = await NonRatingNoAuthService.startGame(
             {
                 paletteId: 0,
-                fieldSize: 2,
+                fieldSize: 12,
                 maxRounds: 100,
             }) as GameStartResponseDTO & { currentRound: number; end: boolean; stepTime: Date };
         startResponseDTO.currentRound = 0;
@@ -81,18 +80,9 @@ const Game = React.memo(() => {
     const GamePanel = styled.div`
       grid-template-columns: repeat(2, 1fr);
       height: 90dvh;
-      
-      @media ${devices.tablet} {
-        display: grid;
-        align-items: center;
-        align-self: center;
-        height: auto;
-      }
     `
 
     const ButtonPanel = styled.div`
-      width: ${mapSizeDefaultStyle};
-      height: ${size};
       column-gap: ${buttonPanelGap}px;
     `
 
@@ -101,11 +91,14 @@ const Game = React.memo(() => {
 
     return (
         <GamePanel>
-            {data !== null && <GameInfoPanel
-                prevCapturedCount={prevCapturedCount}
-                size={size}
-                data={data}
-            />}
+            {data !== null &&
+                <div>
+                    <GameInfoPanel
+                        prevCapturedCount={prevCapturedCount}
+                        size={size}
+                        data={data}
+                    />
+                </div>}
 
             {stepGameError !== '' &&
                 (<FixedErrorAlert errorMessage={stepGameError}
@@ -149,12 +142,20 @@ const Game = React.memo(() => {
                 />
 
                 <ButtonPanel className={styles.buttonPanel}>
-                    {data.colors.map(color =>
-                        <ColorButton
-                            key={color.id}
-                            colorHexCode={color.hexCode}
-                            onclick={() => fetchStepGame(color.id)}
-                        />)}
+                    {data.colors.map((color, index) =>
+
+                                    <CapturedCountPanel
+                                        key={color.id}
+                                        size={size}
+                                        capturedCount={data.capturedCount}
+                                        prevCapturedCount={data.map[0][0].value === index ? prevCapturedCount : -1}
+                                        colorCount={data.colorsCount[index]}
+                                        colors={data.colors}
+                                        colorId={index}
+                                        onclick={() => fetchStepGame(color.id)}
+                                        selected={index === data.map[0][0].value}
+                                        reversed={index % 2 === 0}
+                                    />)}
                 </ButtonPanel></div>
             }
         </GamePanel>
