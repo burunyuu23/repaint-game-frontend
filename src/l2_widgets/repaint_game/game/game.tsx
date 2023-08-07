@@ -78,7 +78,14 @@ const Game = React.memo(() => {
     const size = `calc(${mapSizeStyle(6 * mapSizeDivider)} - ${buttonPanelGap}px)`;
 
     const GamePanel = styled.div`
-      grid-template-columns: repeat(2, 1fr);
+      display: flex;
+      flex-direction: column;
+      
+      align-items: center;
+      
+      position: relative;
+      grid-template-columns: repeat(1, 1fr);
+      width: max-content;
       height: 90dvh;
     `
 
@@ -92,13 +99,11 @@ const Game = React.memo(() => {
     return (
         <GamePanel>
             {data !== null &&
-                <div>
-                    <GameInfoPanel
-                        restart={() => fetchStartGame()}
-                        settingsOpen={() => setSettingsOpen(true)}
-                        data={data}
-                    />
-                </div>}
+                <GameInfoPanel
+                    restart={() => fetchStartGame()}
+                    settingsOpen={() => setSettingsOpen(true)}
+                    data={data}
+                />}
 
             {stepGameError !== '' &&
                 (<FixedErrorAlert errorMessage={stepGameError}
