@@ -89,8 +89,8 @@ const NavBar = () => {
                                     </div>
                                 </div>
                             </div>
-                            {Array(20).fill(0).map(obj => (
-                                <div className={styles.logo}>
+                            {Array(20).fill(0).map((obj, index) => (
+                                <div key={index} className={styles.logo}>
                                     <div className={styles.logoText}>
                                         <Link href={"/chess"} className={styles.logoTextA}>
                                             chess
