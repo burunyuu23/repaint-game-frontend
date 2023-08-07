@@ -1,7 +1,7 @@
 "use client";
 
 import {createTheme, CssBaseline, ThemeOptions, ThemeProvider} from "@mui/material";
-import {NextAppDirEmotionCacheProvider} from "@/theme/EmotionCache";
+import {NextAppDirEmotionCacheProvider} from "@/l5_shared/theme/EmotionCache";
 import {Roboto} from "next/font/google";
 
 const roboto = Roboto({
