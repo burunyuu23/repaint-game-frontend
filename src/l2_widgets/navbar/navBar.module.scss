@@ -1,0 +1,98 @@
+$headerHeight: 80px;
+
+.header {
+  width: 100dvw;
+  height: $headerHeight;
+
+  margin-bottom: 10px;
+
+  position: sticky;
+  top: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(90deg, black -10%, white, black 110%);
+  color: white;
+  filter: drop-shadow(0 0 20px black);
+
+  z-index: 1;
+}
+
+.asideNavBarTopping {
+  top: $headerHeight;
+}
+
+.asideNavBar {
+  display: grid;
+
+  align-items: center;
+  justify-items: center;
+
+  background: black;
+  position: absolute;
+  width: max-content;
+  right: 0;
+  padding: 20px 0;
+  border-radius: 0 0 0 50%;
+}
+
+.nav {
+  width: 1200px;
+  border: 3px dashed white;
+  box-shadow: 0 0 20px white;
+  background: black;
+
+  padding: 0 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  vertical-align: center;
+}
+
+.logo  {
+  border-radius: 50%;
+  width: max-content;
+  height: max-content;
+  transform: scaleX(-1);
+  background-repeat: repeat-x;
+  background-position: 0 0;
+  background-size: 700% auto;
+  animation: gradient 10s ease-in-out infinite;
+  padding: 0 25px;
+
+  @keyframes gradient {
+    100% {
+      background-position: 116.666667% 0;
+    }
+  }
+}
+.logoBack {
+  position: absolute;
+  filter: blur(15px);
+  transform: scaleY(0.7) scaleX(-1);
+}
+
+.logoText {
+  transform: scaleX(-1);
+}
+
+.logoTextA {
+  filter: drop-shadow(0 0 2px white) blur(0);
+
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+
+  transition: filter 100ms linear;
+
+  &:hover {
+    filter: drop-shadow(0 0 10px white) blur(0);
+  }
+
+  &:active {
+    filter: drop-shadow(0 0 10px purple) blur(0);
+  }
+}
