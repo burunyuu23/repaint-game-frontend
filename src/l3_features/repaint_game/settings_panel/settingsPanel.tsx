@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ModalPanel from "@/l5_shared/lib/modal_panel/modalPanel";
 import CancelIcon from '@mui/icons-material/Cancel';
 import styles from './settingPanel.module.scss'
 import {Button, Slider} from "@mui/material";
 import Palette from "@/l5_shared/lib/palette/palette";
 import {Color} from "@/l4_entities/repaint-game/models/color";
-import styled from "@emotion/styled";
+import styled, {StyledComponent} from "@emotion/styled";
 import {RainbowColorStyled} from "@/l5_shared/lib/rainbow_color_styled/rainbowColorStyled";
 
 type Props = {
@@ -20,8 +20,12 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
       grid-template-columns: repeat(2, 1fr);
     `
 
-    const SliderStyled = RainbowColorStyled(colors.map(color => color.hexCode), "slider")
-    const ButtonStyled = RainbowColorStyled(colors.map(color => color.hexCode), "button")
+    const colorsHexCodes = colors.map(color => color.hexCode)
+
+    const [SliderStyled, setSliderStyled]
+        = useState<StyledComponent<any>>(RainbowColorStyled(colorsHexCodes, "slider", "color"))
+    
+    const ButtonStyled = RainbowColorStyled(colorsHexCodes, "button", "color")
 
     const [fieldSize, setFieldSize] = useState(12)
     const [maxRounds, setMaxRounds] = useState(22)
@@ -34,17 +38,17 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
     }
 
     const handleSave = () => {
-
         setTimeout(() =>
-            handleClose()
-        , 500)
+                handleClose()
+            , 500)
     }
 
     return (
         <ModalPanel zIndex={10} bg={"#eeeeff"} className={styles.settingPanel}>
             <header className={styles.header}>Settings</header>
-            <SliderStyled>
-                <header>Field size: {fieldSize}x{fieldSize}</header>
+
+            <header>Field size: {fieldSize}x{fieldSize}</header>
+            <SliderStyled className={styles.slider}>
                 <Slider
                     className="slider"
                     size="small"
@@ -52,12 +56,14 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
                     onChange={handleFieldSizeChange}
                     min={2}
                     max={30}
+                    step={1}
                     aria-label="Small"
                     valueLabelDisplay="auto"
                 />
             </SliderStyled>
-            <SliderStyled>
-                <header>Max rounds: {maxRounds}</header>
+
+            <header>Max rounds: {maxRounds}</header>
+            <SliderStyled className={styles.slider}>
                 <Slider
                     className="slider"
                     size="small"
@@ -65,6 +71,7 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
                     onChange={handleMaxRoundsChange}
                     min={1}
                     max={100}
+                    step={1}
                     aria-label="Small"
                     valueLabelDisplay="auto"
                 />
@@ -78,7 +85,9 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
                 )}
             </PalettesPanel>
 
-            <CancelIcon onClick={handleClose} className={styles.cancelIcon}/>
+            <CancelIcon
+                onClick={handleClose}
+                className={styles.cancelIcon}/>
 
             <ButtonStyled>
                 <Button className="button" onClick={handleSave}>Save</Button>
