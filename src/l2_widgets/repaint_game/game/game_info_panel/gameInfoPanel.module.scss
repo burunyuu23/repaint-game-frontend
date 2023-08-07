@@ -3,8 +3,11 @@
   padding: 20px;
   position: relative;
 
-  grid-template-columns: repeat(2, 1fr);
-  height: auto;
+  height: max-content;
+  width: 100%;
+
+  display: grid;
+  justify-items: center;
 
   .settingsPanel {
     position: absolute;
