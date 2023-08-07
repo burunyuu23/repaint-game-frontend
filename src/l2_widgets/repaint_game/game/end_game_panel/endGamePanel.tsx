@@ -20,7 +20,7 @@ type Props = {
 const EndGamePanel = ({win, maxRounds, currentRound, capturedCount, allCount, startTime, restart, settingsOpen}: Props) => {
 
     return (
-        <ModalPanel zIndex={8}>
+        <ModalPanel zIndex={8} bg={"#000000bb"}>
             <header className={styles.header}>
                 <h3>You {win ? 'win' : 'lose'}!</h3>
                 {win
