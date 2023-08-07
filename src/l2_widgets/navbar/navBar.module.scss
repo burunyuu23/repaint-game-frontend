@@ -39,7 +39,7 @@ $headerHeight: 80px;
 }
 
 .nav {
-  width: 1200px;
+  width: min(90dvw, 1200px);
   border: 3px dashed white;
   box-shadow: 0 0 20px white;
   background: black;
