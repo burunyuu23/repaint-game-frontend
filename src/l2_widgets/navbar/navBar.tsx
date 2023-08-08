@@ -29,7 +29,7 @@ const NavBar = () => {
 
     const defaultStyle = {
         transition: `width 200ms ease-in`,
-        width: "0",
+        width: "300px",
         overflow: "hidden"
     }
 
@@ -53,6 +53,7 @@ const NavBar = () => {
 
     return (
         <header className={styles.header}>
+            <div className={styles.headerBackground}/>
             <nav className={styles.nav}>
 
                 <Link href={"/"} className={styles.logoTextA}>
@@ -76,6 +77,7 @@ const NavBar = () => {
                              ref={nodeRef}
                              style={{...defaultStyle, ...transitionStyles(state)}}>
                             <div>
+                                <div className={styles.asideNavBarBack} />
                                 <Logo className={[styles.logoBack, styles.logo].join(" ")}>
                                     <div>
                                         {logo}
