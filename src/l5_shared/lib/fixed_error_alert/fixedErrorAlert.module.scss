@@ -3,6 +3,16 @@
   left: 0;
   bottom: 0;
   margin: 20px;
-
+  background: black;
   z-index: 999;
+
+  text-shadow: 0 0 10px darkred;
+}
+
+.alert div {
+  color: darkred;
+}
+
+.alert path {
+  color: darkred;
 }
