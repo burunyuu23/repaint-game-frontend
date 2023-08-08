@@ -19,6 +19,14 @@
   cursor: pointer;
 }
 
+#cancelIconPath path {
+  color: black;
+}
+
 .slider {
   width: 10%;
+}
+
+.text {
+  color: black !important;
 }

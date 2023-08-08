@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import ModalPanel from "@/l5_shared/lib/modal_panel/modalPanel";
 import CancelIcon from '@mui/icons-material/Cancel';
 import styles from './settingPanel.module.scss'
@@ -23,8 +23,8 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
     const colorsHexCodes = colors.map(color => color.hexCode)
 
     const [SliderStyled, setSliderStyled]
-        = useState<StyledComponent<any>>(RainbowColorStyled(colorsHexCodes, "slider", "color"))
-    
+        = useState<StyledComponent<any>>(RainbowColorStyled(colorsHexCodes, "slider span", "color"))
+
     const ButtonStyled = RainbowColorStyled(colorsHexCodes, "button", "color")
 
     const [fieldSize, setFieldSize] = useState(12)
@@ -45,9 +45,9 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
 
     return (
         <ModalPanel zIndex={10} bg={"#eeeeff"} className={styles.settingPanel}>
-            <header className={styles.header}>Settings</header>
+            <header className={[styles.header, styles.text].join(' ')}>Settings</header>
 
-            <header>Field size: {fieldSize}x{fieldSize}</header>
+            <header className={styles.text}>Field size: {fieldSize}x{fieldSize}</header>
             <SliderStyled className={styles.slider}>
                 <Slider
                     className="slider"
@@ -62,7 +62,7 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
                 />
             </SliderStyled>
 
-            <header>Max rounds: {maxRounds}</header>
+            <header className={styles.text}>Max rounds: {maxRounds}</header>
             <SliderStyled className={styles.slider}>
                 <Slider
                     className="slider"
@@ -77,7 +77,7 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
                 />
             </SliderStyled>
 
-            <header>Palette</header>
+            <header className={styles.text}>Palette</header>
             <PalettesPanel>
                 {colors.map(color =>
                     <Palette key={color.id}
@@ -86,6 +86,7 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
             </PalettesPanel>
 
             <CancelIcon
+                id={styles.cancelIconPath}
                 onClick={handleClose}
                 className={styles.cancelIcon}/>
 

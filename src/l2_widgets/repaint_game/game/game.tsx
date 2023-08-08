@@ -14,6 +14,7 @@ import GameInfoPanel from "@/l2_widgets/repaint_game/game/game_info_panel/gameIn
 import {Cell} from "@/l4_entities/repaint-game/models/cell";
 import SettingsPanel from "@/l3_features/repaint_game/settings_panel/settingsPanel";
 import CapturedCountPanel from "@/l3_features/repaint_game/captured_count_panel/capturedCountPanel";
+import NoopLoader from "next/dist/build/webpack/loaders/noop-loader";
 
 const Game = React.memo(() => {
     const [data, setData] =
@@ -98,6 +99,10 @@ const Game = React.memo(() => {
 
     return (
         <GamePanel>
+            {data === null &&
+                <div>Loading...</div>
+            }
+
             {data !== null &&
                 <GameInfoPanel
                     restart={() => fetchStartGame()}
@@ -124,7 +129,8 @@ const Game = React.memo(() => {
             {settingsOpen &&
                 <SettingsPanel
                     colors={data!.colors}
-                    handleClose={() => setSettingsOpen(false)}/>}
+                    handleClose={() =>
+                        setSettingsOpen(false)}/>}
 
             {data !== null && <div
                 style={{position: "relative"}}>

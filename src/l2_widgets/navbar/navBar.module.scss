@@ -15,9 +15,13 @@ $headerHeight: 80px;
 
   background: linear-gradient(90deg, black -10%, white, black 110%);
   color: white;
-  filter: drop-shadow(0 0 20px black);
+  filter: drop-shadow(0 0 20px #aaaaaaaa);
 
   z-index: 1;
+}
+
+#asideNavBarIcon path {
+  color: white;
 }
 
 .asideNavBarTopping {
@@ -30,7 +34,7 @@ $headerHeight: 80px;
   align-items: center;
   justify-items: center;
 
-  background: black;
+  background: linear-gradient(-90deg, black -10%, white 100dvw);
   position: absolute;
   width: max-content;
   right: 0;

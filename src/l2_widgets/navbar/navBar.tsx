@@ -61,6 +61,7 @@ const NavBar = () => {
                 <Button onClick={() =>
                     setEntered((prevState) => !prevState)}>
                     <WidgetsIcon
+                        id={styles.asideNavBarIcon}
                         className={styles.logoTextA}/>
                 </Button>
 
