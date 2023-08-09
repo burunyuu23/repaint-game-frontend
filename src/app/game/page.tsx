@@ -9,6 +9,7 @@ export const metadata: Metadata = {
 }
 
 const Page = () => {
+
         return (
         <div className={styles.main}>
             <Game/>

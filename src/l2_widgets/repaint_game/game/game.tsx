@@ -1,50 +1,62 @@
 "use client";
 
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {FC, useCallback, useEffect, useState} from 'react';
 import {GameStartResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStartResponseDTO";
 import Map from "@/l3_features/repaint_game/map/map";
 import styles from './game.module.scss';
 import styled from "@emotion/styled";
 import {NonRatingNoAuthService} from "@/l4_entities/repaint-game/nonrating-noauth-service/service";
-import {GameStepResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStepResponseDTO";
 import {useFetch} from "@/l5_shared/hooks/useFetch";
 import FixedErrorAlert from "@/l5_shared/lib/fixed_error_alert/fixedErrorAlert";
 import EndGamePanel from "@/l2_widgets/repaint_game/game/end_game_panel/endGamePanel";
 import GameInfoPanel from "@/l2_widgets/repaint_game/game/game_info_panel/gameInfoPanel";
-import {Cell} from "@/l4_entities/repaint-game/models/cell";
 import SettingsPanel from "@/l3_features/repaint_game/settings_panel/settingsPanel";
 import CapturedCountPanel from "@/l3_features/repaint_game/captured_count_panel/capturedCountPanel";
-import NoopLoader from "next/dist/build/webpack/loaders/noop-loader";
+import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
+import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
+import RepaintGameSettingsSlice from "@/l5_shared/redux/repaint_game_settings/reducer";
 
-const Game = React.memo(() => {
-    const [data, setData] =
-        useState<GameStepResponseDTO | null>(null);
+type RatingGameProps = {
 
-    const [prevCapturedCount, setPrevCapturedCount]
-        = useState<number>(0);
+}
 
-    const [prevMap, setPrevMap] = useState<Cell[][] | null>(null);
+const Game: FC<RatingGameProps> = React.memo(() => {
+
+    const data = useAppSelector(state => state.repaint_game_settings.gameSettings)
+    const dispatch = useAppDispatch();
+
+    const prevCapturedCount = useAppSelector(state => state.repaint_game_settings.prevCapturedCount);
+
+    const prevMap =  useAppSelector(state => state.repaint_game_settings.prevMap);
 
     const [settingsOpen, setSettingsOpen] = useState(false);
+
+    const paletteId = useAppSelector(state => state.repaint_game_settings.paletteId);
+    const fieldSize = useAppSelector(state => state.repaint_game_settings.fieldSize);
+    const maxRound = useAppSelector(state => state.repaint_game_settings.maxRound);
 
     const {
         fetching: fetchStartGame,
         isLoading: isStartGameLoading,
         error: startGameError
     } = useFetch(useCallback(async () => {
+        console.log(fieldSize)
+        console.log(maxRound)
+
         const startResponseDTO = await NonRatingNoAuthService.startGame(
             {
-                paletteId: 0,
-                fieldSize: 2,
-                maxRounds: 100,
+                paletteId: paletteId,
+                fieldSize: fieldSize,
+                maxRounds: maxRound,
             }) as GameStartResponseDTO & { currentRound: number; end: boolean; stepTime: Date };
         startResponseDTO.currentRound = 0;
         startResponseDTO.end = false;
         startResponseDTO.stepTime = startResponseDTO.startTime;
-        setData(startResponseDTO);
-        setPrevMap(startResponseDTO.map);
-        setPrevCapturedCount(startResponseDTO.capturedCount)
-    }, []));
+
+        dispatch(RepaintGameSettingsSlice.actions.UpdateGameSettings(startResponseDTO));
+        dispatch(RepaintGameSettingsSlice.actions.UpdatePrevMap(startResponseDTO.map));
+        dispatch(RepaintGameSettingsSlice.actions.UpdatePrevCapturedCount(startResponseDTO.capturedCount));
+    }, [fieldSize, maxRound]));
 
     useEffect(() => {
         fetchStartGame();
@@ -55,9 +67,9 @@ const Game = React.memo(() => {
         isLoading: isStepGameLoading,
         error: stepGameError,
         clearError: clearError
-    } = useFetch(async (id: number) => {
-        setPrevCapturedCount(data!.capturedCount)
-        setPrevMap(data!.map);
+    } = useFetch(useCallback(async (id: number) => {
+        dispatch(RepaintGameSettingsSlice.actions.UpdatePrevMap(data!.map));
+        dispatch(RepaintGameSettingsSlice.actions.UpdatePrevCapturedCount(data!.capturedCount));
 
         const stepResponseDTO = await NonRatingNoAuthService.stepGame(
             {
@@ -66,8 +78,8 @@ const Game = React.memo(() => {
             })
         stepResponseDTO.startTime = data!.startTime
 
-        setData(stepResponseDTO);
-    })
+        dispatch(RepaintGameSettingsSlice.actions.UpdateGameSettings(stepResponseDTO));
+    }, [data]))
 
 
     const mapSize = 60;
@@ -161,7 +173,7 @@ const Game = React.memo(() => {
                                         key={color.id}
                                         size={size}
                                         capturedCount={data.capturedCount}
-                                        prevCapturedCount={data.map[0][0].value === index ? prevCapturedCount : -1}
+                                        prevCapturedCount={data.map[0][0].value === index ? prevCapturedCount! : -1}
                                         colorCount={data.colorsCount[index]}
                                         colors={data.colors}
                                         colorId={index}

@@ -7,11 +7,13 @@ import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from "@mui/icons-material/Settings";
 import {Button} from "@mui/material";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import MoreTimeIcon from '@mui/icons-material/MoreTime';
+import SecondsPanel from "@/l5_shared/lib/timer/secondsPanel";
 
 type Props = {
     data: GameStepResponseDTO,
     settingsOpen: () => void,
-    restart: () => void
+    restart: () => void,
 }
 
 const GameInfoPanel = React.memo(({restart, settingsOpen, data}: Props) => {
@@ -26,23 +28,29 @@ const GameInfoPanel = React.memo(({restart, settingsOpen, data}: Props) => {
                 className={styles.timerPanel}>
                 <div
                     className={styles.timer}>
-                    <TimerIcon  />
+                    <TimerIcon/>
                     <Timer
                         stop={data.end}
                         startTime={data.startTime}/>
+                </div>
+
+                <div
+                    className={styles.timer}>
+                    <MoreTimeIcon/>
+                    <SecondsPanel time={new Date(data.stepTime).getTime() - new Date(data.startTime).getTime()}/>
                 </div>
             </div>
 
             <div className={styles.settingsPanel}>
                 <Button
                     className={styles.settingsButton}
-                    onClick={restart}  >
+                    onClick={restart}>
                     <RestartAltIcon className={styles.iconButton}/>
                 </Button>
 
                 <Button
                     className={styles.settingsButton}
-                    onClick={settingsOpen}  >
+                    onClick={settingsOpen}>
                     <SettingsIcon className={styles.iconButton}/>
                 </Button>
             </div>

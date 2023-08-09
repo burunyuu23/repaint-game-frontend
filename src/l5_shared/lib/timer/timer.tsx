@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import SecondsPanel from "@/l5_shared/lib/timer/secondsPanel";
 
 type Props = {
     startTime: Date,
@@ -32,7 +33,7 @@ const Timer = ({startTime, stop}: Props) => {
     }, [])
 
     return (
-        <div>{Math.floor(duration / 1000)}:{duration % 1000}s</div>
+        <SecondsPanel time={duration}/>
     );
 };
 

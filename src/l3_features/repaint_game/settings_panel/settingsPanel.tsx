@@ -7,6 +7,9 @@ import Palette from "@/l5_shared/lib/palette/palette";
 import {Color} from "@/l4_entities/repaint-game/models/color";
 import styled, {StyledComponent} from "@emotion/styled";
 import {RainbowColorStyled} from "@/l5_shared/lib/rainbow_color_styled/rainbowColorStyled";
+import RepaintGameSettingsSlice from "@/l5_shared/redux/repaint_game_settings/reducer";
+import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
+import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 
 type Props = {
     handleClose: () => void,
@@ -19,6 +22,7 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
     `
+    const dispatch = useAppDispatch();
 
     const colorsHexCodes = colors.map(color => color.hexCode)
 
@@ -27,8 +31,8 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
 
     const ButtonStyled = RainbowColorStyled(colorsHexCodes, "button", "color")
 
-    const [fieldSize, setFieldSize] = useState(12)
-    const [maxRounds, setMaxRounds] = useState(22)
+    const [fieldSize, setFieldSize] = useState(useAppSelector(state => state.repaint_game_settings.fieldSize))
+    const [maxRounds, setMaxRounds] = useState(useAppSelector(state => state.repaint_game_settings.maxRound))
 
     const handleFieldSizeChange = (event: Event, newFieldSize: number | number[]) => {
         setFieldSize(newFieldSize as number)
@@ -38,8 +42,11 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
     }
 
     const handleSave = () => {
-        setTimeout(() =>
+        setTimeout(() => {
+                dispatch(RepaintGameSettingsSlice.actions.UpdateFieldSize(fieldSize));
+                dispatch(RepaintGameSettingsSlice.actions.UpdateMaxRound(maxRounds));
                 handleClose()
+            }
             , 500)
     }
 
