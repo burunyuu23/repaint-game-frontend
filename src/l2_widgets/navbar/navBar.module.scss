@@ -6,8 +6,11 @@ $headerHeight: 80px;
   height: $headerHeight;
   opacity: 0.5;
   background: linear-gradient(90deg, black -10%, white, black 110%);
-  filter: blur(20px);
+  filter: blur(20px) grayscale(100%);
   z-index: 0;
+
+  background-blend-mode: screen;
+  background-size: cover;
 }
 
 .header {
@@ -118,3 +121,4 @@ $headerHeight: 80px;
     filter: drop-shadow(0 0 10px purple) blur(0);
   }
 }
+
