@@ -31,10 +31,11 @@ body {
 /* Config */
 $color-bg: #1e1e1e;
 $color-particle: #303030;
-$spacing: 1920px;
+$spacing: 2560px;
 $time-1: 60s;
 $time-2: 120s;
-$time-4: 180s;
+$time-3: 180s;
+$time-4: 240s;
 
 /* mixins */
 @function particles($max) {
@@ -86,10 +87,18 @@ $time-4: 180s;
   width: 3px;
 }
 
-.particle-3:after {
+.particle-3 {
+  animation: animParticle $time-3 linear infinite;
   @include particles(1100);
   height: 3px;
   width: 3px;
+  border-radius: 50%;
+}
+
+.particle-3:after {
+  @include particles(600);
+  height: 4px;
+  width: 4px;
   border-radius: 50%;
 }
 
