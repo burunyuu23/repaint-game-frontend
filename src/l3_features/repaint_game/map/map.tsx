@@ -9,11 +9,10 @@ type Props = {
     map: Cell[][],
     prevMap: Cell[][]
     fieldSize: number,
-    onclick: () => void,
     colors: Color[],
     mapSize: string,
 }
-const Map = ({map, prevMap, fieldSize, colors, mapSize}: Props) => {
+const Map = React.memo(({map, prevMap, fieldSize, colors, mapSize}: Props) => {
 
     const Cells = styled.div`
       grid-template-columns: repeat(${fieldSize}, 1fr);
@@ -114,6 +113,6 @@ const Map = ({map, prevMap, fieldSize, colors, mapSize}: Props) => {
 
         </Transition>
     );
-};
+});
 
 export default Map;

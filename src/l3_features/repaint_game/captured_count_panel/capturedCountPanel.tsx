@@ -1,10 +1,8 @@
 import React from 'react';
-import ColorButton from "@/l3_features/repaint_game/color_button/colorButton";
+import ColorButton from "@/l5_shared/lib/color_button/colorButton";
 import {Color} from "@/l4_entities/repaint-game/models/color";
-import styles from "./capturedCountPanel.module.scss"
 import AnimatedTimedAlert from "@/l5_shared/lib/animated_timed_alert_text/animatedTimedAlert";
 import styled from "@emotion/styled";
-import {devices} from "@/l5_shared/css/consts";
 
 type Props = {
     size: string,
@@ -17,7 +15,7 @@ type Props = {
     onclick?: () => void
 }
 
-const CapturedCountPanel = ({size, colorId, colors, colorCount, capturedCount, prevCapturedCount, selected, onclick}: Props) => {
+const CapturedCountPanel = React.memo(({size, colorId, colors, colorCount, capturedCount, prevCapturedCount, selected, onclick}: Props) => {
 
     const CapturedColorButton = styled.div`
       width: calc(${size});
@@ -49,8 +47,6 @@ const CapturedCountPanel = ({size, colorId, colors, colorCount, capturedCount, p
             }
         </CapturedCountPanel>
     );
-};
-
-CapturedCountPanel.propTypes = {};
+});
 
 export default CapturedCountPanel;
