@@ -26,6 +26,7 @@
 @mixin colorButtonBase {
   width: 100%;
   height: 100%;
+  overflow: hidden;
 
   // Перекрываю стили кнопки из mui, чтобы все кнопки были ровно в контейнере
   // Да и что вообще за бред ставить min-width: 64px; кнопке!?
