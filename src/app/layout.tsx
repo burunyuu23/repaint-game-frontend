@@ -4,7 +4,7 @@ import {Inter} from 'next/font/google'
 import ThemeRegistry from "@/l5_shared/theme/ThemeRegistry";
 import NavBar from "@/l2_widgets/navbar/navBar";
 import React from "react";
-import ReduxProvider from "@/l5_shared/redux/reduxProvider";
+import ReduxProvider from '@/l3_features/redux/reduxProvider';
 
 const inter = Inter({subsets: ['latin']})
 
@@ -19,7 +19,6 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
 
-
     return (
         <html lang="en">
         <ThemeRegistry>
@@ -30,11 +29,11 @@ export default function RootLayout({
             <div className="particle particle-3"/>
             <div className="particle particle-4"/>
             <NavBar/>
-            <main>
-                <ReduxProvider>
+            <ReduxProvider>
+                <main>
                     {children}
-                </ReduxProvider>
-            </main>
+                </main>
+            </ReduxProvider>
             </body>
         </ThemeRegistry>
         </html>
