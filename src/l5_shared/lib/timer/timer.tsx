@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+"use client";
+import React, {useEffect, useRef, useState} from 'react';
 import SecondsPanel from "@/l5_shared/lib/timer/secondsPanel";
 
 type Props = {
@@ -6,31 +7,35 @@ type Props = {
     stop: boolean,
 }
 
-const Timer = ({startTime, stop}: Props) => {
-    const date = new Date(startTime)
+const Timer = ({stop, startTime}: Props) => {
+    const date = new Date(startTime!)
 
-    const [animationFrameId, setAnimationFrameId] =
-        useState<number | null>(null);
+    const animationFrameIdRef = useRef<number | null>(null);
+
     const [duration, setDuration] =
         useState<number>(new Date().getTime() - date.getTime());
 
-    const updateDuration = () => {
+    function updateDuration()  {
         setDuration(duration => new Date().getTime() - date.getTime())
 
-
         if (stop) {
-            cancelAnimationFrame(animationFrameId as number);
+            if (animationFrameIdRef.current !== null) {
+                cancelAnimationFrame(animationFrameIdRef.current);
+            }
         } else {
-            setAnimationFrameId(requestAnimationFrame(updateDuration));
+            animationFrameIdRef.current = requestAnimationFrame(updateDuration);
         }
-    };
-
+    }
 
     useEffect(() => {
         updateDuration();
 
-        return (cancelAnimationFrame(animationFrameId as number));
-    }, [])
+        return () => {
+            if (animationFrameIdRef.current) {
+                cancelAnimationFrame(animationFrameIdRef.current);
+            }
+        };
+    }, [stop]);
 
     return (
         <SecondsPanel time={duration}/>
