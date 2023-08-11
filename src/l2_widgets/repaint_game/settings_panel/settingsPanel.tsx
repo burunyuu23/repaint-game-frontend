@@ -12,23 +12,21 @@ import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import RepaintGameSettingsSlice from "@/l3_features/redux/repaint_game/settings_reducer";
 import {fieldSizeMax, fieldSizeMin, maxRoundsMax, maxRoundsMin} from "@/l5_shared/lib/consts/consts";
+import SliderStyled from "@/l3_features/repaint_game/slider_styled/sliderStyled";
 
 type Props = {
     handleClose: () => void,
-    colors: Color[],
 }
 
-const SettingsPanel = React.memo(({colors, handleClose}: Props) => {
+const SettingsPanel = React.memo(({handleClose}: Props) => {
     const PalettesPanel = styled.div`
       display: grid;
       grid-template-columns: repeat(2, 1fr);
     `
     const dispatch = useAppDispatch();
 
+    const colors: Color[] = useAppSelector(state => state.repaint_game__state.gameSettings.colors);
     const colorsHexCodes = colors.map(color => color.hexCode)
-
-    const [SliderStyled, setSliderStyled]
-        = useState<StyledComponent<any>>(RainbowColorStyled(colorsHexCodes, "slider span", "color"))
 
     const ButtonStyled = RainbowColorStyled(colorsHexCodes, "button", "color")
 
@@ -58,35 +56,19 @@ const SettingsPanel = React.memo(({colors, handleClose}: Props) => {
         <ModalPanel zIndex={10} bg={"#eeeeff"} className={styles.settingPanel}>
             <header className={[styles.header, styles.text].join(' ')}>Settings</header>
 
-            <header className={styles.text}>Field size: {fieldSize}x{fieldSize}</header>
-            <SliderStyled className={styles.slider}>
-                <Slider
-                    className="slider"
-                    size="small"
-                    value={fieldSize}
-                    onChange={handleFieldSizeChange}
-                    min={fieldSizeMin}
-                    max={fieldSizeMax}
-                    step={1}
-                    aria-label="Small"
-                    valueLabelDisplay="auto"
-                />
-            </SliderStyled>
+            <SliderStyled
+            title={`Field size: ${fieldSize}x${fieldSize}`}
+            value={fieldSize}
+            onChange={handleFieldSizeChange}
+            min={fieldSizeMin}
+            max={fieldSizeMax}/>
 
-            <header className={styles.text}>Max rounds: {maxRounds}</header>
-            <SliderStyled className={styles.slider}>
-                <Slider
-                    className="slider"
-                    size="small"
-                    value={maxRounds}
-                    onChange={handleMaxRoundsChange}
-                    min={maxRoundsMin}
-                    max={maxRoundsMax}
-                    step={1}
-                    aria-label="Small"
-                    valueLabelDisplay="auto"
-                />
-            </SliderStyled>
+            <SliderStyled
+                title={`Max rounds: ${maxRounds}`}
+                value={maxRounds}
+                onChange={handleMaxRoundsChange}
+                min={maxRoundsMin}
+                max={maxRoundsMax}/>
 
             <header className={styles.text}>Palette</header>
             <PalettesPanel>

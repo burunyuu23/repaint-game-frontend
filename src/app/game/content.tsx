@@ -102,7 +102,6 @@ const Content = React.memo(() => {
                     settingsOpen={() => settingsAction(true)}/>)}
             {settingsOpen &&
                 <SettingsPanel
-                    colors={data!.colors}
                     handleClose={() => settingsAction(false)}/>}
             {data !== null &&
                 <GameInfoPanel
