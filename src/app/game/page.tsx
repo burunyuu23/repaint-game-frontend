@@ -1,7 +1,6 @@
 import React from 'react';
-import Game from "@/l2_widgets/repaint_game/game/game";
-import styles from './page.module.scss'
 import {Metadata} from "next";
+import Content from './content';
 
 export const metadata: Metadata = {
     title: 'TheRepaintingGame',
@@ -9,14 +8,9 @@ export const metadata: Metadata = {
 }
 
 const Page = () => {
-
-        return (
-        <div className={styles.main}>
-            <Game/>
-        </div>
+    return (
+        <Content />
     );
 };
-
-Page.propTypes = {};
 
 export default Page;
