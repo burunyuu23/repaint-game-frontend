@@ -31,11 +31,24 @@
 
 .timerPanel {
   display: flex;
-  flex-direction: column;
+  width: 100%;
+  justify-content: space-around;
   align-items: center;
 }
 
 .timer {
   display: flex;
+  align-items: center;
   column-gap: 20px;
+  gap: 0;
+}
+
+@media (max-width: 375px) {
+
+  .timer {
+    font-size: 1rem;
+  }
+  .timer svg {
+    font-size: 1rem;
+  }
 }

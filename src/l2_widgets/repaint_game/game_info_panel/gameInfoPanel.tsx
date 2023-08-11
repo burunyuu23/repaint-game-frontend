@@ -1,7 +1,7 @@
 import React from 'react';
 import Timer from "@/l5_shared/lib/timer/timer";
 import {GameStepResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStepResponseDTO";
-import RoundCounter from "@/l3_features/repaint_game/round_counter/roundCounter";
+import RoundCounter from "@/l5_shared/lib/round_counter/roundCounter";
 import styles from './gameInfoPanel.module.scss';
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -9,14 +9,19 @@ import {Button} from "@mui/material";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import SecondsPanel from "@/l5_shared/lib/timer/secondsPanel";
+import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
+import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
+import UserSettingsSlice from "@/l3_features/redux/user_settings/reducer";
+import RepaintGameStateSlice from "@/l3_features/redux/repaint_game/state_reducer";
 
 type Props = {
-    data: GameStepResponseDTO,
     settingsOpen: () => void,
     restart: () => void,
 }
 
-const GameInfoPanel = React.memo(({restart, settingsOpen, data}: Props) => {
+const GameInfoPanel = React.memo(({restart, settingsOpen}: Props) => {
+    const data = useAppSelector(state => state.repaint_game__state.gameSettings);
+    const dispatch = useAppDispatch();
 
     return (
         <div className={styles.infoPanel}>
@@ -29,16 +34,22 @@ const GameInfoPanel = React.memo(({restart, settingsOpen, data}: Props) => {
                 <div
                     className={styles.timer}>
                     <TimerIcon/>
-                    <Timer
-                        stop={data.end}
-                        startTime={data.startTime}/>
+                    {data.end &&
+                        <SecondsPanel time={new Date(data.stepTime).getTime() - new Date(data.startTime).getTime()}/>
+                    }
+                    {!data.end &&
+                        <Timer
+                            stop={data.end}
+                            startTime={data.startTime}/>
+                    }
                 </div>
 
-                <div
-                    className={styles.timer}>
-                    <MoreTimeIcon/>
-                    <SecondsPanel time={new Date(data.stepTime).getTime() - new Date(data.startTime).getTime()}/>
-                </div>
+                {data.stepTime !== null && data.stepTime !== data.startTime &&
+                    <div
+                        className={styles.timer}>
+                        <MoreTimeIcon/>
+                        <SecondsPanel time={new Date(data.stepTime).getTime() - new Date(data.startTime).getTime()}/>
+                    </div>}
             </div>
 
             <div className={styles.settingsPanel}>

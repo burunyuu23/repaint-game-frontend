@@ -1,3 +1,4 @@
+"use client";
 import React, {useState} from 'react';
 import ModalPanel from "@/l5_shared/lib/modal_panel/modalPanel";
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -7,17 +8,17 @@ import Palette from "@/l5_shared/lib/palette/palette";
 import {Color} from "@/l4_entities/repaint-game/models/color";
 import styled, {StyledComponent} from "@emotion/styled";
 import {RainbowColorStyled} from "@/l5_shared/lib/rainbow_color_styled/rainbowColorStyled";
-import RepaintGameSettingsSlice from "@/l5_shared/redux/repaint_game_settings/reducer";
 import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
+import RepaintGameSettingsSlice from "@/l3_features/redux/repaint_game/settings_reducer";
+import {fieldSizeMax, fieldSizeMin, maxRoundsMax, maxRoundsMin} from "@/l5_shared/lib/consts/consts";
 
 type Props = {
     handleClose: () => void,
-    colors: Color[]
+    colors: Color[],
 }
 
-const SettingsPanel = ({colors, handleClose}: Props) => {
-
+const SettingsPanel = React.memo(({colors, handleClose}: Props) => {
     const PalettesPanel = styled.div`
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -31,8 +32,9 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
 
     const ButtonStyled = RainbowColorStyled(colorsHexCodes, "button", "color")
 
-    const [fieldSize, setFieldSize] = useState(useAppSelector(state => state.repaint_game_settings.fieldSize))
-    const [maxRounds, setMaxRounds] = useState(useAppSelector(state => state.repaint_game_settings.maxRound))
+    const [paletteId, setPaletteId] = useState(useAppSelector(state => state.repaint_game__settings.paletteId))
+    const [fieldSize, setFieldSize] = useState(useAppSelector(state => state.repaint_game__settings.fieldSize))
+    const [maxRounds, setMaxRounds] = useState(useAppSelector(state => state.repaint_game__settings.maxRound))
 
     const handleFieldSizeChange = (event: Event, newFieldSize: number | number[]) => {
         setFieldSize(newFieldSize as number)
@@ -41,13 +43,15 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
         setMaxRounds(newMaxRounds as number)
     }
 
-    const handleSave = () => {
-        setTimeout(() => {
-                dispatch(RepaintGameSettingsSlice.actions.UpdateFieldSize(fieldSize));
-                dispatch(RepaintGameSettingsSlice.actions.UpdateMaxRound(maxRounds));
-                handleClose()
-            }
-            , 500)
+    const save = () => {
+        localStorage.setItem('paletteId', JSON.stringify(paletteId));
+        localStorage.setItem('fieldSize', JSON.stringify(fieldSize));
+        localStorage.setItem('maxRounds', JSON.stringify(maxRounds));
+
+        dispatch(RepaintGameSettingsSlice.actions.UpdateFieldSize(fieldSize));
+        dispatch(RepaintGameSettingsSlice.actions.UpdateMaxRound(maxRounds));
+
+        handleClose();
     }
 
     return (
@@ -61,8 +65,8 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
                     size="small"
                     value={fieldSize}
                     onChange={handleFieldSizeChange}
-                    min={2}
-                    max={30}
+                    min={fieldSizeMin}
+                    max={fieldSizeMax}
                     step={1}
                     aria-label="Small"
                     valueLabelDisplay="auto"
@@ -76,8 +80,8 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
                     size="small"
                     value={maxRounds}
                     onChange={handleMaxRoundsChange}
-                    min={1}
-                    max={100}
+                    min={maxRoundsMin}
+                    max={maxRoundsMax}
                     step={1}
                     aria-label="Small"
                     valueLabelDisplay="auto"
@@ -98,10 +102,10 @@ const SettingsPanel = ({colors, handleClose}: Props) => {
                 className={styles.cancelIcon}/>
 
             <ButtonStyled>
-                <Button className="button" onClick={handleSave}>Save</Button>
+                <Button className="button" onClick={save}>Save</Button>
             </ButtonStyled>
         </ModalPanel>
     );
-}
+});
 
 export default SettingsPanel;
