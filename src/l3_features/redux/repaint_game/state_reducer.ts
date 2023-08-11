@@ -2,38 +2,28 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Cell} from "@/l4_entities/repaint-game/models/cell";
 import {GameStepResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStepResponseDTO";
 
-export type RepaintGameSettings = {
-    paletteId: number,
-    fieldSize: number,
-    maxRound: number,
+export type RepaintGameState = {
     startTime: number | null,
     endTime: number | null,
     prevMap: Cell[][] | null,
     prevCapturedCount: number | null,
-    gameSettings: GameStepResponseDTO | null
+    gameSettings: GameStepResponseDTO | null,
+    isWin: boolean | null
 }
 
-export const initialState: RepaintGameSettings = {
-    paletteId: 0,
-    fieldSize: 12,
-    maxRound: 22,
+export const initialState: RepaintGameState = {
     startTime: null,
     endTime: null,
     prevMap: null,
     prevCapturedCount: null,
-    gameSettings: null
+    gameSettings: null,
+    isWin: null
 }
 
-export const RepaintGameSettingsSlice = createSlice({
+export const RepaintGameStateSlice = createSlice({
     name: 'repaint_game_settings',
     initialState,
     reducers: {
-        UpdateFieldSize(state, action: PayloadAction<number>) {
-            state.fieldSize = action.payload;
-        },
-        UpdateMaxRound(state, action: PayloadAction<number>) {
-            state.maxRound = action.payload;
-        },
         UpdateStartTime(state, action: PayloadAction<number>) {
             state.startTime = action.payload;
         },
@@ -49,14 +39,18 @@ export const RepaintGameSettingsSlice = createSlice({
         UpdateGameSettings(state, action: PayloadAction<GameStepResponseDTO>) {
             state.gameSettings = action.payload;
         },
+        UpdateWin(state, action: PayloadAction<boolean>) {
+            state.isWin = action.payload;
+        },
         StartNewGame(state) {
             state.startTime = null;
             state.endTime = null;
             state.prevMap = null;
             state.prevCapturedCount = null;
             state.gameSettings = null;
+            state.isWin = null;
         },
     }
 })
 
-export default RepaintGameSettingsSlice;
+export default RepaintGameStateSlice;
