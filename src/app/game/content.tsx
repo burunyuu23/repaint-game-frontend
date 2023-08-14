@@ -14,7 +14,8 @@ import Game from "@/l2_widgets/repaint_game/game/game";
 import {GameStepResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStepResponseDTO";
 import RepaintGameStateSlice from '@/l3_features/redux/repaint_game/state_reducer';
 import {AppDispatch} from "@/l3_features/redux/store";
-import RepaintGameSettingsSlice from "@/l3_features/redux/repaint_game/settings_reducer";
+import RepaintGameSettingsSlice, {RepaintGameSettings} from "@/l3_features/redux/repaint_game/settings_reducer";
+import {fieldSizeDefault, fieldSizeMax, fieldSizeMin, maxRoundsDefault, maxRoundsMax, maxRoundsMin} from "@/l5_shared/lib/consts/consts";
 
 const doStart = async (dispatch: AppDispatch, paletteId: number, fieldSize: number, maxRounds: number) => {
     dispatch(RepaintGameStateSlice.actions.StartNewGame());
@@ -69,6 +70,31 @@ const Content = React.memo(() => {
         error: startGameError
     } = useFetch(useCallback(async (dispatch: AppDispatch) =>
         await doStart(dispatch, paletteId, fieldSize, maxRound), [paletteId, fieldSize, maxRound]));
+
+    useEffect(() => {
+        const getInitialItemFromLocalStorage = <T extends number>(itemName: string, type: string, minValue: T, maxValue: T, defaultValue: T): T => {
+            const item = localStorage.getItem(itemName);
+
+            if (item !== null) {
+                let parsedItem = JSON.parse(item)
+                if (typeof parsedItem === type && parsedItem >= minValue && parsedItem <= maxValue) {
+                    return parsedItem as T;
+                }
+            }
+            return defaultValue as T;
+        }
+
+        const repaintGameSettingsSliceInitialState: RepaintGameSettings = {
+            paletteId: getInitialItemFromLocalStorage("paletteId", "number", -1, Number.MAX_VALUE, 0),
+            fieldSize: getInitialItemFromLocalStorage("fieldSize", "number", fieldSizeMin, fieldSizeMax, fieldSizeDefault),
+            maxRound: getInitialItemFromLocalStorage("maxRounds", "number", maxRoundsMin, maxRoundsMax, maxRoundsDefault),
+            settingsOpen: false,
+        }
+
+        console.log(repaintGameSettingsSliceInitialState)
+
+        dispatch(RepaintGameSettingsSlice.actions.SetState(repaintGameSettingsSliceInitialState));
+    }, []);
 
     useEffect(() => {
         fetchStartGame(dispatch);

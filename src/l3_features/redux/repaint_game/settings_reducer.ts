@@ -8,22 +8,10 @@ export type RepaintGameSettings = {
     settingsOpen: boolean,
 }
 
-const getInitialItemFromLocalStorage = <T extends number>(itemName: string, type: string, minValue: T, maxValue: T, defaultValue: T): T => {
-    const fieldSize = localStorage.getItem(itemName);
-
-    if (fieldSize) {
-        let parsedFieldSize = JSON.parse(fieldSize)
-        if (typeof parsedFieldSize === type && parsedFieldSize > minValue && parsedFieldSize < maxValue) {
-            return parsedFieldSize as T;
-        }
-    }
-    return defaultValue as T;
-}
-
 export const initialState: RepaintGameSettings = {
-    paletteId: getInitialItemFromLocalStorage("paletteId", "number", -1, Number.MAX_VALUE, 0),
-    fieldSize: getInitialItemFromLocalStorage("fieldSize", "number", fieldSizeMin, fieldSizeMax, fieldSizeDefault),
-    maxRound: getInitialItemFromLocalStorage("maxRound", "number", maxRoundsMin, maxRoundsMax, maxRoundsDefault),
+    paletteId: 0,
+    fieldSize: fieldSizeDefault,
+    maxRound: maxRoundsDefault,
     settingsOpen: false,
 }
 
@@ -31,6 +19,11 @@ export const RepaintGameSettingsSlice = createSlice({
     name: 'repaint_game__settings',
     initialState,
     reducers: {
+        SetState(state, action: PayloadAction<RepaintGameSettings>) {
+          state.paletteId = action.payload.paletteId
+            state.fieldSize = action.payload.fieldSize
+            state.maxRound = action.payload.maxRound
+        },
         UpdatePaletteId(state, action: PayloadAction<number>) {
             state.paletteId = action.payload;
         },
@@ -40,7 +33,7 @@ export const RepaintGameSettingsSlice = createSlice({
         UpdateMaxRound(state, action: PayloadAction<number>) {
             state.maxRound = action.payload;
         },
-        UpdateSettingsOpen(state, action: PayloadAction<boolean>){
+        UpdateSettingsOpen(state, action: PayloadAction<boolean>) {
             state.settingsOpen = action.payload
         }
     }
