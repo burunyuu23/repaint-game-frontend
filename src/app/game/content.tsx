@@ -85,7 +85,8 @@ const Content = React.memo(() => {
         }
 
         const repaintGameSettingsSliceInitialState: RepaintGameSettings = {
-            paletteId: getInitialItemFromLocalStorage("paletteId", "number", -1, Number.MAX_VALUE, 0),
+            // TODO: paletteId Max value from api
+            paletteId: getInitialItemFromLocalStorage("paletteId", "number", 0, Number.MAX_VALUE, 0),
             fieldSize: getInitialItemFromLocalStorage("fieldSize", "number", fieldSizeMin, fieldSizeMax, fieldSizeDefault),
             maxRound: getInitialItemFromLocalStorage("maxRounds", "number", maxRoundsMin, maxRoundsMax, maxRoundsDefault),
             settingsOpen: false,
