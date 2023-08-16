@@ -30,7 +30,6 @@ const NavBar = () => {
     const defaultStyle = {
         transition: `width 200ms ease-in`,
         width: "300px",
-        overflow: "hidden"
     }
 
     const transitionStyles = (state: string) => {
