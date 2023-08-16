@@ -48,7 +48,7 @@ const RepaintGameBanner = React.memo(() => {
 
         if (rect.left <= 0)
             setHorSpeed(getRandomArbitrary(1,3))
-        if (rect.right >= banner_sizes.width)
+        if (rect.right >= banner_sizes.width + 50)
             setHorSpeed(-getRandomArbitrary(1,3))
 
         const top = rect.top + vertSpeed
