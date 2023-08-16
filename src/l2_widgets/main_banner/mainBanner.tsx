@@ -6,6 +6,7 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import styles from "./mainBanner.module.scss"
 import RepaintGameBanner from "@/l3_features/repaint_game/repaint_game_banner/repaintGameBanner";
 import styled from "@emotion/styled";
+import CarouselPaper from "@/l5_shared/lib/carousel_paper/carouselPaper";
 
 const MainBanner = () => {
     const MainBannerWrapper = styled.div`
@@ -34,8 +35,6 @@ const MainBanner = () => {
                     }
                 }}
             >
-                <RepaintGameBanner/>
-                <RepaintGameBanner/>
                 <RepaintGameBanner/>
             </Carousel>
         </MainBannerWrapper>

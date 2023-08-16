@@ -1,9 +1,10 @@
 .paper {
   min-height: 25dvh;
-  padding: 0 70px;
+
+  position: relative;
 
   display: flex;
-  align-items: center;
+  overflow: hidden;
 
   background: transparent !important;
   color: yellow !important;
