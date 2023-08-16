@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {fieldSizeDefault, fieldSizeMax, fieldSizeMin, maxRoundsDefault, maxRoundsMax, maxRoundsMin} from "@/l5_shared/lib/consts/consts";
+import {fieldSizeDefault, maxRoundsDefault} from "@/l5_shared/consts/repaint_game_settings";
 
 export type RepaintGameSettings = {
     paletteId: number,

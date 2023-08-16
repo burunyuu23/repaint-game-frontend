@@ -4,7 +4,7 @@ import Link from 'next/link';
 import styled from "@emotion/styled";
 import {emptyRect, Rect, startFromXYRect} from '@/l5_shared/types/rect';
 import {banner_sizes} from "@/l5_shared/consts/css/banner_size";
-import {getRandomInt} from "@/l5_shared/util/random";
+import {getRandomArbitrary, getRandomInt} from "@/l5_shared/util/random";
 
 const RepaintGameBanner = React.memo(() => {
     const [colorfulRect, setColorfulRect] = useState<Rect>(emptyRect)
@@ -42,14 +42,14 @@ const RepaintGameBanner = React.memo(() => {
 
     const generateRect = (rect: Rect, horSpeed: number, vertSpeed: number, setHorSpeed: Function, setVertSpeed: Function) => {
         if (rect.top <= 0)
-            setVertSpeed(getRandomInt(1,3))
+            setVertSpeed(getRandomArbitrary(0.5,2))
         if (rect.bottom >= banner_sizes.height)
-            setVertSpeed(-getRandomInt(1,3))
+            setVertSpeed(-getRandomArbitrary(0.5,2))
 
         if (rect.left <= 0)
-            setHorSpeed(getRandomInt(1,3))
+            setHorSpeed(getRandomArbitrary(1,3))
         if (rect.right >= banner_sizes.width)
-            setHorSpeed(-getRandomInt(1,3))
+            setHorSpeed(-getRandomArbitrary(1,3))
 
         const top = rect.top + vertSpeed
 
@@ -86,7 +86,7 @@ const RepaintGameBanner = React.memo(() => {
     }
 
     useEffect(() => {
-        setBlackRect(startFromXYRect(banner_sizes.width, banner_sizes.height))
+        setBlackRect(startFromXYRect(banner_sizes.width, 0))
     }, [])
 
     useLayoutEffect(() => {

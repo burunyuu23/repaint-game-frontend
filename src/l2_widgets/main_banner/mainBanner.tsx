@@ -36,6 +36,8 @@ const MainBanner = () => {
                 }}
             >
                 <RepaintGameBanner/>
+                <RepaintGameBanner/>
+                <RepaintGameBanner/>
             </Carousel>
         </MainBannerWrapper>
     );
