@@ -26,6 +26,7 @@ const CapturedCountPanel = React.memo(({size, colorId, colors, colorCount, captu
         display: flex;
         align-items: start;
         justify-content: center;
+      ${colorCount === 0 ? `filter: grayscale(.85) ` : ``}
     `
 
     return (
