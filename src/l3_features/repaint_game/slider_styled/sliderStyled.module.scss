@@ -1,7 +1,13 @@
 .slider {
-  width: 10%;
+  justify-content: center;
+  width: 10vw;
 }
 
 .text {
   color: black;
+}
+
+.wrapper {
+  display: grid;
+  justify-items: center;
 }

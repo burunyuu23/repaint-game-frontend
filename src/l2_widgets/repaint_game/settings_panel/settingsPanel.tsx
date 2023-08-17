@@ -11,7 +11,7 @@ import {RainbowColorStyled} from "@/l5_shared/lib/rainbow_color_styled/rainbowCo
 import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import RepaintGameSettingsSlice from "@/l3_features/redux/repaint_game/settings_reducer";
-import {fieldSizeMax, fieldSizeMin, maxRoundsMax, maxRoundsMin} from "@/l5_shared/consts/repaint_game_settings";
+import {fieldSizeDefault, fieldSizeMax, fieldSizeMin, maxRoundsDefault, maxRoundsMax, maxRoundsMin} from "@/l5_shared/consts/repaint_game_settings";
 import SliderStyled from "@/l3_features/repaint_game/slider_styled/sliderStyled";
 
 type Props = {
@@ -64,7 +64,7 @@ const SettingsPanel = React.memo(({handleClose}: Props) => {
             max={fieldSizeMax}/>
 
             <SliderStyled
-                title={`Max rounds: ${maxRounds}`}
+                title={`Max rounds: ${maxRounds}${maxRounds !== Math.round(fieldSize*maxRoundsDefault/fieldSizeDefault) ? " (Recommended: " + Math.round(fieldSize*maxRoundsDefault/fieldSizeDefault) + ")" : ""}`}
                 value={maxRounds}
                 onChange={handleMaxRoundsChange}
                 min={maxRoundsMin}
@@ -83,8 +83,13 @@ const SettingsPanel = React.memo(({handleClose}: Props) => {
                 onClick={handleClose}
                 className={styles.cancelIcon}/>
 
-            <ButtonStyled>
+            <ButtonStyled className={styles.buttonsPanel}>
+                <Button className="button" onClick={() => setMaxRounds(Math.round(fieldSize*maxRoundsDefault/fieldSizeDefault))}>Recommended</Button>
                 <Button className="button" onClick={save}>Save</Button>
+                <Button className="button" onClick={() => {
+                    setFieldSize(fieldSizeDefault)
+                    setMaxRounds(maxRoundsDefault)
+                }}>Default</Button>
             </ButtonStyled>
         </ModalPanel>
     );

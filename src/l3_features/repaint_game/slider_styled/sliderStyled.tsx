@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import styles from "@/l2_widgets/repaint_game/settings_panel/settingPanel.module.scss";
+import styles from "./sliderStyled.module.scss";
 import {Slider} from "@mui/material";
 import {RainbowColorStyled} from "@/l5_shared/lib/rainbow_color_styled/rainbowColorStyled";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
@@ -23,7 +23,7 @@ const SliderStyled = ({title, value, onChange, min, max}: Props) => {
         = useState<StyledComponent<any>>(RainbowColorStyled(colorsHexCodes, "slider span", "color"))
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             <header className={styles.text}>{title}</header>
             <SliderStyled className={styles.slider}>
                 <Slider
