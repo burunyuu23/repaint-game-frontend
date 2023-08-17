@@ -1,8 +1,13 @@
 .paper {
   position: relative;
 
+  z-index: 0;
+
   display: flex;
   overflow: hidden;
+
+  width: 100%;
+  pointer-events: none;
 
   background: transparent !important;
   color: yellow !important;

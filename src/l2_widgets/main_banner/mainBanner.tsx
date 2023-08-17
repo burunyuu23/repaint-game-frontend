@@ -34,6 +34,8 @@ const MainBanner = () => {
                         position: "fixed",
                     }
                 }}
+
+                interval={20000}
             >
                 <RepaintGameBanner/>
                 <RepaintGameBanner/>

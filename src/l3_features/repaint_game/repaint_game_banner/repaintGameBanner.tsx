@@ -1,10 +1,14 @@
+"use client";
+
 import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
 import CarouselPaper from "@/l5_shared/lib/carousel_paper/carouselPaper";
-import Link from 'next/link';
 import styled from "@emotion/styled";
 import {emptyRect, Rect, startFromXYRect} from '@/l5_shared/types/rect';
 import {banner_sizes} from "@/l5_shared/consts/css/banner_size";
 import {getRandomArbitrary, getRandomInt} from "@/l5_shared/util/random";
+import {Button} from "@mui/material";
+import {useRouter} from 'next/navigation';
+import {log} from "util";
 
 const RepaintGameBanner = React.memo(() => {
     const [colorfulRect, setColorfulRect] = useState<Rect>(emptyRect)
@@ -16,7 +20,7 @@ const RepaintGameBanner = React.memo(() => {
     const RepaintGameBannerElement = styled.div`
       position: absolute;
       z-index: 0;
-      
+
       display: flex;
       justify-content: center;
     `
@@ -30,7 +34,7 @@ const RepaintGameBanner = React.memo(() => {
       transform: translateX(50%);
 
       @media (max-width: ${banner_sizes.width}px) {
-        transform: scale(${bannerModifier}) translateX(${(bannerModifier-1)*10 + 50}%);
+        transform: scale(${bannerModifier}) translateX(${(bannerModifier - 1) * 10 + 50}%);
       }
     `
 
@@ -42,24 +46,24 @@ const RepaintGameBanner = React.memo(() => {
 
     const generateRect = (rect: Rect, horSpeed: number, vertSpeed: number, setHorSpeed: Function, setVertSpeed: Function) => {
         if (rect.top <= 0)
-            setVertSpeed(getRandomArbitrary(0.5,2))
+            setVertSpeed(getRandomArbitrary(0.5, 2))
         if (rect.bottom >= banner_sizes.height)
-            setVertSpeed(-getRandomArbitrary(0.5,2))
+            setVertSpeed(-getRandomArbitrary(0.5, 2))
 
         if (rect.left <= 0)
-            setHorSpeed(getRandomArbitrary(1,3))
+            setHorSpeed(getRandomArbitrary(1, 3))
         if (rect.right >= banner_sizes.width + 50)
-            setHorSpeed(-getRandomArbitrary(1,3))
+            setHorSpeed(-getRandomArbitrary(1, 3))
 
         const top = rect.top + vertSpeed
 
         const right = rect.right + horSpeed +
-            (rect.right - rect.left > getRandomInt(450, 900) ? getRandomInt(-1,0) :
-                rect.right - rect.left < getRandomInt(0, 600) ? getRandomInt(0,1) : getRandomInt(-1,1));
+            (rect.right - rect.left > getRandomInt(450, 900) ? getRandomInt(-1, 0) :
+                rect.right - rect.left < getRandomInt(0, 600) ? getRandomInt(0, 1) : getRandomInt(-1, 1));
 
         const bottom = rect.bottom + vertSpeed +
-            (rect.bottom - rect.top > getRandomInt(150, 200) ? getRandomInt(-1,0) :
-                rect.bottom - rect.top < getRandomInt(0, 150) ? getRandomInt(0,1) : getRandomInt(-1,1));
+            (rect.bottom - rect.top > getRandomInt(150, 200) ? getRandomInt(-1, 0) :
+                rect.bottom - rect.top < getRandomInt(0, 150) ? getRandomInt(0, 1) : getRandomInt(-1, 1));
 
         const left = rect.left + horSpeed
 
@@ -99,14 +103,26 @@ const RepaintGameBanner = React.memo(() => {
         };
     }, [horSpeedColorfulRect, vertSpeedColorfulRect, horSpeedBlackRect, vertSpeedBlackRect]);
 
+    const router = useRouter();
+
+    const handleClick = () => {
+        router.push("/game")
+
+        if (animationFrameIdRef.current) {
+            cancelAnimationFrame(animationFrameIdRef.current);
+        }
+    }
+
     return (
-        <Link href={"/game"}>
+        <Button onClick={handleClick}
+                style={{width: "100%"}}>
             <CarouselPaper>
                 <RepaintGameBannerElement>
                     <RepaintGameBannerFront src="/repaint_game_banner/base.png" alt="base front"/>
                 </RepaintGameBannerElement>
 
-                <RepaintGameBannerElement style={{
+                <RepaintGameBannerElement
+                    style={{
                     clip: `rect(${colorfulRect.top}px, ${colorfulRect.right}px, ${colorfulRect.bottom}px, ${colorfulRect.left}px)`,
                 }}>
                     <RepaintGameBannerBack src="/repaint_game_banner/colorful_back.png"
@@ -116,7 +132,8 @@ const RepaintGameBanner = React.memo(() => {
                                             style={{mixBlendMode: "darken"}}/>
                 </RepaintGameBannerElement>
 
-                <RepaintGameBannerElement style={{
+                <RepaintGameBannerElement
+                    style={{
                     clip: `rect(${blackRect.top}px, ${blackRect.right}px, ${blackRect.bottom}px, ${blackRect.left}px)`,
                 }}>
                     <RepaintGameBannerBack src="/repaint_game_banner/black_back.png"
@@ -125,7 +142,7 @@ const RepaintGameBanner = React.memo(() => {
                                             alt="black front"/>
                 </RepaintGameBannerElement>
             </CarouselPaper>
-        </Link>
+        </Button>
     );
 });
 
