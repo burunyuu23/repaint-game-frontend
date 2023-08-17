@@ -8,7 +8,6 @@ import {banner_sizes} from "@/l5_shared/consts/css/banner_size";
 import {getRandomArbitrary, getRandomInt} from "@/l5_shared/util/random";
 import {Button} from "@mui/material";
 import {useRouter} from 'next/navigation';
-import {log} from "util";
 
 const RepaintGameBanner = React.memo(() => {
     const [colorfulRect, setColorfulRect] = useState<Rect>(emptyRect)
@@ -38,6 +37,8 @@ const RepaintGameBanner = React.memo(() => {
       }
     `
 
+    const [prevAnimationFrame, setPrevAnimationFrame] = useState<number>(0);
+
     const [horSpeedColorfulRect, setHorSpeedColorfulRect] = useState<number>(1)
     const [vertSpeedColorfulRect, setVertSpeedColorfulRect] = useState<number>(1)
 
@@ -55,17 +56,30 @@ const RepaintGameBanner = React.memo(() => {
         if (rect.right >= banner_sizes.width + 50)
             setHorSpeed(-getRandomArbitrary(1, 3))
 
-        const top = rect.top + vertSpeed
+        let top = rect.top
+        let right = rect.right
+        let bottom = rect.bottom
+        let left = rect.left
 
-        const right = rect.right + horSpeed +
-            (rect.right - rect.left > getRandomInt(450, 900) ? getRandomInt(-1, 0) :
-                rect.right - rect.left < getRandomInt(0, 600) ? getRandomInt(0, 1) : getRandomInt(-1, 1));
+        if (animationFrameIdRef.current !== null &&
+            animationFrameIdRef.current - prevAnimationFrame >= 500 && animationFrameIdRef.current - prevAnimationFrame <= 510) {
+            top += getRandomInt(0, 5)
+            left += getRandomInt(0, 20)
+            right += getRandomInt(-20, 0)
+            bottom += getRandomInt(-5, 0)
+        }
 
-        const bottom = rect.bottom + vertSpeed +
-            (rect.bottom - rect.top > getRandomInt(150, 200) ? getRandomInt(-1, 0) :
-                rect.bottom - rect.top < getRandomInt(0, 150) ? getRandomInt(0, 1) : getRandomInt(-1, 1));
+        top += vertSpeed
 
-        const left = rect.left + horSpeed
+        right += horSpeed +
+            (rect.right - rect.left > getRandomInt(450, 900) ? -1 :
+                rect.right - rect.left < getRandomInt(0, 600) ? 1 : getRandomInt(-1, 1));
+
+        bottom += vertSpeed +
+            (rect.bottom - rect.top > getRandomInt(150, 200) ? -1 :
+                rect.bottom - rect.top < getRandomInt(0, 150) ? 1 : getRandomInt(-1, 1));
+
+        left += horSpeed
 
         return {
             top: top,
@@ -86,6 +100,15 @@ const RepaintGameBanner = React.memo(() => {
         setBlackRect(blackRect =>
             generateRect(blackRect, horSpeedBlackRect, vertSpeedBlackRect, setHorSpeedBlackRect, setVertSpeedBlackRect));
 
+        if (animationFrameIdRef.current !== null) {
+            if (prevAnimationFrame === 0) {
+                setPrevAnimationFrame(animationFrameIdRef.current)
+            }
+            if (animationFrameIdRef.current - prevAnimationFrame >= 500) {
+                setPrevAnimationFrame(animationFrameIdRef.current)
+            }
+
+        }
         animationFrameIdRef.current = requestAnimationFrame(updateState);
     }
 
@@ -123,8 +146,8 @@ const RepaintGameBanner = React.memo(() => {
 
                 <RepaintGameBannerElement
                     style={{
-                    clip: `rect(${colorfulRect.top}px, ${colorfulRect.right}px, ${colorfulRect.bottom}px, ${colorfulRect.left}px)`,
-                }}>
+                        clip: `rect(${colorfulRect.top}px, ${colorfulRect.right}px, ${colorfulRect.bottom}px, ${colorfulRect.left}px)`,
+                    }}>
                     <RepaintGameBannerBack src="/repaint_game_banner/colorful_back.png"
                                            alt="colorful back"/>
                     <RepaintGameBannerFront src="/repaint_game_banner/colorful_front.png"
@@ -134,8 +157,8 @@ const RepaintGameBanner = React.memo(() => {
 
                 <RepaintGameBannerElement
                     style={{
-                    clip: `rect(${blackRect.top}px, ${blackRect.right}px, ${blackRect.bottom}px, ${blackRect.left}px)`,
-                }}>
+                        clip: `rect(${blackRect.top}px, ${blackRect.right}px, ${blackRect.bottom}px, ${blackRect.left}px)`,
+                    }}>
                     <RepaintGameBannerBack src="/repaint_game_banner/black_back.png"
                                            alt="black back"/>
                     <RepaintGameBannerFront src="/repaint_game_banner/black_front.png"
