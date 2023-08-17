@@ -3,15 +3,15 @@ import React, {useState} from 'react';
 import ModalPanel from "@/l5_shared/lib/modal_panel/modalPanel";
 import CancelIcon from '@mui/icons-material/Cancel';
 import styles from './settingPanel.module.scss'
-import {Button, Slider} from "@mui/material";
+import {Button} from "@mui/material";
 import Palette from "@/l5_shared/lib/palette/palette";
 import {Color} from "@/l4_entities/repaint-game/models/color";
-import styled, {StyledComponent} from "@emotion/styled";
+import styled from "@emotion/styled";
 import {RainbowColorStyled} from "@/l5_shared/lib/rainbow_color_styled/rainbowColorStyled";
 import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import RepaintGameSettingsSlice from "@/l3_features/redux/repaint_game/settings_reducer";
-import {fieldSizeMax, fieldSizeMin, maxRoundsMax, maxRoundsMin} from "@/l5_shared/lib/consts/consts";
+import {fieldSizeMax, fieldSizeMin, maxRoundsMax, maxRoundsMin} from "@/l5_shared/consts/repaint_game_settings";
 import SliderStyled from "@/l3_features/repaint_game/slider_styled/sliderStyled";
 
 type Props = {

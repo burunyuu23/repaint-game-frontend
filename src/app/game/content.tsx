@@ -15,7 +15,7 @@ import {GameStepResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gam
 import RepaintGameStateSlice from '@/l3_features/redux/repaint_game/state_reducer';
 import {AppDispatch} from "@/l3_features/redux/store";
 import RepaintGameSettingsSlice, {RepaintGameSettings} from "@/l3_features/redux/repaint_game/settings_reducer";
-import {fieldSizeDefault, fieldSizeMax, fieldSizeMin, maxRoundsDefault, maxRoundsMax, maxRoundsMin} from "@/l5_shared/lib/consts/consts";
+import {fieldSizeDefault, fieldSizeMax, fieldSizeMin, maxRoundsDefault, maxRoundsMax, maxRoundsMin} from "@/l5_shared/consts/repaint_game_settings";
 
 const doStart = async (dispatch: AppDispatch, paletteId: number, fieldSize: number, maxRounds: number) => {
     dispatch(RepaintGameStateSlice.actions.StartNewGame());
