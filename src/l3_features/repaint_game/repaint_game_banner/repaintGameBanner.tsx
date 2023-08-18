@@ -26,7 +26,7 @@ const RepaintGameBanner = React.memo(() => {
     const RepaintGameBannerBack = styled.img`
       position: absolute;
       filter: blur(20px);
-      transform: translateX(50%);
+      transform: scaleX(${bannerModifier}) translateX(50%);
     `
     const RepaintGameBannerFront = styled.img`
       position: absolute;
@@ -53,7 +53,7 @@ const RepaintGameBanner = React.memo(() => {
 
         if (rect.left <= 0)
             setHorSpeed(getRandomArbitrary(1, 3))
-        if (rect.right >= banner_sizes.width + 50)
+        if (rect.right >= (banner_sizes.width + 50) * (bannerModifier < 1 ? bannerModifier : 1))
             setHorSpeed(-getRandomArbitrary(1, 3))
 
         let top = rect.top
@@ -72,8 +72,8 @@ const RepaintGameBanner = React.memo(() => {
         top += vertSpeed
 
         right += horSpeed +
-            (rect.right - rect.left > getRandomInt(450, 900) ? -1 :
-                rect.right - rect.left < getRandomInt(0, 600) ? 1 : getRandomInt(-1, 1));
+            (rect.right - rect.left > getRandomInt(450, 900)* (bannerModifier < 1 ? bannerModifier : 1) ? -1 :
+                rect.right - rect.left < getRandomInt(0, 600)* (bannerModifier < 1 ? bannerModifier : 1) ? 1 : getRandomInt(-1, 1));
 
         bottom += vertSpeed +
             (rect.bottom - rect.top > getRandomInt(150, 200) ? -1 :
@@ -91,8 +91,9 @@ const RepaintGameBanner = React.memo(() => {
 
 
     function updateState() {
-        if (window.innerWidth / banner_sizes.width < 1)
-            setBannerModifier(window.innerWidth / banner_sizes.width);
+        const modifier = window.innerWidth / banner_sizes.width;
+        if (modifier < 1)
+            setBannerModifier(modifier);
 
         setColorfulRect(colorfulRect =>
             generateRect(colorfulRect, horSpeedColorfulRect, vertSpeedColorfulRect, setHorSpeedColorfulRect, setVertSpeedColorfulRect));
@@ -107,16 +108,16 @@ const RepaintGameBanner = React.memo(() => {
             if (animationFrameIdRef.current - prevAnimationFrame >= 500) {
                 setPrevAnimationFrame(animationFrameIdRef.current)
             }
-
         }
+
         animationFrameIdRef.current = requestAnimationFrame(updateState);
     }
 
     useEffect(() => {
-        setBlackRect(startFromXYRect(banner_sizes.width, 0))
+        setBlackRect(startFromXYRect(banner_sizes.width * (bannerModifier < 1 ? bannerModifier : 1), 0))
     }, [])
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         updateState();
 
         return () => {
