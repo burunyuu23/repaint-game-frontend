@@ -1,5 +1,5 @@
 "use client";
-import React, {useCallback, useEffect} from 'react';
+import React, {useCallback, useEffect, useRef} from 'react';
 import {NonRatingNoAuthService} from "@/l4_entities/repaint-game/nonrating-noauth-service/service";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import {GameStartResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStartResponseDTO";
@@ -33,6 +33,8 @@ const doStart = async (dispatch: AppDispatch, paletteId: number, fieldSize: numb
     dispatch(RepaintGameStateSlice.actions.UpdateGameSettings(startResponseDTO));
     dispatch(RepaintGameStateSlice.actions.UpdatePrevMap(startResponseDTO.map));
     dispatch(RepaintGameStateSlice.actions.UpdatePrevCapturedCount(startResponseDTO.capturedCount));
+
+    console.log(startResponseDTO)
 }
 
 const doStep = async (dispatch: AppDispatch, data: GameStepResponseDTO, id: number) => {
@@ -63,6 +65,8 @@ const Content = React.memo(() => {
     const fieldSize = useAppSelector(state => state.repaint_game__settings.fieldSize);
     const maxRound = useAppSelector(state => state.repaint_game__settings.maxRound)
 
+    const isInit = useRef<boolean>(false);
+
     const dispatch = useAppDispatch();
     const {
         fetching: fetchStartGame,
@@ -70,6 +74,14 @@ const Content = React.memo(() => {
         error: startGameError
     } = useFetch(useCallback(async (dispatch: AppDispatch) =>
         await doStart(dispatch, paletteId, fieldSize, maxRound), [paletteId, fieldSize, maxRound]));
+
+    useEffect(() => {
+        console.log(`useEffect 2 ${isInit.current}`)
+        if (isInit.current)
+            fetchStartGame(dispatch);
+        console.log(`useEffect 3 ${isInit.current}`)
+        console.log(`useEffect 4 ${[paletteId, fieldSize, maxRound]}`)
+    }, [paletteId, fieldSize, maxRound]);
 
     useEffect(() => {
         const getInitialItemFromLocalStorage = <T extends number>(itemName: string, type: string, minValue: T, maxValue: T, defaultValue: T): T => {
@@ -92,14 +104,12 @@ const Content = React.memo(() => {
             settingsOpen: false,
         }
 
-        console.log(repaintGameSettingsSliceInitialState)
-
         dispatch(RepaintGameSettingsSlice.actions.SetState(repaintGameSettingsSliceInitialState));
-    }, []);
 
-    useEffect(() => {
-        fetchStartGame(dispatch);
-    }, [fieldSize, maxRound]);
+        console.log(`useEffect 1 ${isInit.current}`)
+        isInit.current = true
+        console.log(`useEffect 1 ${isInit.current}`)
+    }, []);
 
     const {
         fetching: fetchStepGame,
