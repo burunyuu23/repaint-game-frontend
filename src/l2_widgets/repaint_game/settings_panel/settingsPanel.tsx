@@ -25,7 +25,7 @@ const SettingsPanel = React.memo(({handleClose}: Props) => {
     `
     const dispatch = useAppDispatch();
 
-    const colors: Color[] = useAppSelector(state => state.repaint_game__state.gameSettings.colors);
+    const colors: Color[] = useAppSelector(state => state.repaint_game__state.gameSettings!.colors);
     const colorsHexCodes = colors.map(color => color.hexCode)
 
     const ButtonStyled = RainbowColorStyled(colorsHexCodes, "button", "color")

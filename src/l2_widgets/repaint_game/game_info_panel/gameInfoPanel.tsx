@@ -1,6 +1,5 @@
 import React from 'react';
 import Timer from "@/l5_shared/lib/timer/timer";
-import {GameStepResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStepResponseDTO";
 import RoundCounter from "@/l5_shared/lib/round_counter/roundCounter";
 import styles from './gameInfoPanel.module.scss';
 import TimerIcon from '@mui/icons-material/Timer';
@@ -11,8 +10,6 @@ import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import SecondsPanel from "@/l5_shared/lib/timer/secondsPanel";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
-import UserSettingsSlice from "@/l3_features/redux/user_settings/reducer";
-import RepaintGameStateSlice from "@/l3_features/redux/repaint_game/state_reducer";
 
 type Props = {
     settingsOpen: () => void,
@@ -20,7 +17,7 @@ type Props = {
 }
 
 const GameInfoPanel = React.memo(({restart, settingsOpen}: Props) => {
-    const data = useAppSelector(state => state.repaint_game__state.gameSettings);
+    const data = useAppSelector(state => state.repaint_game__state.gameSettings)!;
     const dispatch = useAppDispatch();
 
     return (

@@ -16,7 +16,7 @@ type Props = {
 
 const SliderStyled = ({title, value, onChange, min, max}: Props) => {
 
-    const colors: Color[] = useAppSelector(state => state.repaint_game__state.gameSettings.colors);
+    const colors: Color[] = useAppSelector(state => state.repaint_game__state.gameSettings!.colors);
     const colorsHexCodes = colors.map(color => color.hexCode)
 
     const [SliderStyled, setSliderStyled]

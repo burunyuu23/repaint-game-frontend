@@ -23,9 +23,9 @@ const ModalPanel = ({children, zIndex, bg, className}: Props) => {
                 className={styles.modal}
                 style={{zIndex: baseZIndex, background: baseBg}}
                 open={true}>
-                <Box className={[styles.main, baseClassname].join(' ')}>
+                <div className={[styles.main, baseClassname].join(' ')}>
                     {children}
-                </Box>
+                </div>
             </Modal>
         </div>
     );

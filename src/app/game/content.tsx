@@ -117,7 +117,7 @@ const Content = React.memo(() => {
         error: stepGameError,
         clearError: clearError
     } = useFetch(async (dispatch: AppDispatch, id: number) =>
-        await doStep(dispatch, data, id)
+        await doStep(dispatch, data!, id)
     )
 
     const settingsAction = (payload: boolean) =>
@@ -130,14 +130,19 @@ const Content = React.memo(() => {
                 (<FixedErrorAlert errorMessage={stepGameError}
                                   onclose={() => clearError !== undefined ? clearError() : {}}
                                   closable/>)}
-            {data === null &&
+            {data === null && startGameError !== undefined &&
                 <div>Loading...</div>
+            }
+            {data === null && !isStartGameLoading && startGameError === undefined &&
+                    <div style={{color: "red"}}>
+                        Loading error
+                    </div>
             }
             {data !== null && data.end &&
                 (<EndGamePanel
                     restart={() => fetchStartGame(dispatch)}
                     settingsOpen={() => settingsAction(true)}/>)}
-            {settingsOpen &&
+            {data !== null && settingsOpen &&
                 <SettingsPanel
                     handleClose={() => settingsAction(false)}/>}
             {data !== null &&
