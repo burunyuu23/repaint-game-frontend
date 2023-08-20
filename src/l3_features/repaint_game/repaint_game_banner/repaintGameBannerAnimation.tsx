@@ -1,4 +1,4 @@
-import React, {useRef, useEffect, MutableRefObject, useState} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import { useFrame } from '@react-three/fiber';
 import {Clone, useGLTF } from '@react-three/drei';
 import {AnimationAction, AnimationMixer, Euler, Group} from "three";

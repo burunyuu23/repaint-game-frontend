@@ -8,6 +8,10 @@ import {banner_sizes} from "@/l5_shared/consts/css/banner_size";
 import {getRandomArbitrary, getRandomInt} from "@/l5_shared/util/random";
 import {Button} from "@mui/material";
 import {useRouter} from 'next/navigation';
+import styles from "./repaintGameBanner.module.scss"
+import {PerspectiveCamera} from "@react-three/drei";
+import {Canvas} from "@react-three/fiber";
+import RepaintGameBannerAnimation from "@/l3_features/repaint_game/repaint_game_banner/repaintGameBannerAnimation";
 
 const RepaintGameBanner = React.memo(() => {
     const [colorfulRect, setColorfulRect] = useState<Rect>(emptyRect)
@@ -72,8 +76,8 @@ const RepaintGameBanner = React.memo(() => {
         top += vertSpeed
 
         right += horSpeed +
-            (rect.right - rect.left > getRandomInt(450, 900)* (bannerModifier < 1 ? bannerModifier : 1) ? -1 :
-                rect.right - rect.left < getRandomInt(0, 600)* (bannerModifier < 1 ? bannerModifier : 1) ? 1 : getRandomInt(-1, 1));
+            (rect.right - rect.left > getRandomInt(450, 900) * (bannerModifier < 1 ? bannerModifier : 1) ? -1 :
+                rect.right - rect.left < getRandomInt(0, 600) * (bannerModifier < 1 ? bannerModifier : 1) ? 1 : getRandomInt(-1, 1));
 
         bottom += vertSpeed +
             (rect.bottom - rect.top > getRandomInt(150, 200) ? -1 :
@@ -141,30 +145,49 @@ const RepaintGameBanner = React.memo(() => {
         <Button onClick={handleClick}
                 style={{width: "100%"}}>
             <CarouselPaper>
-                <RepaintGameBannerElement>
-                    <RepaintGameBannerFront src="/repaint_game_banner/base.png" alt="base front"/>
-                </RepaintGameBannerElement>
+                <div className={styles.mainWrapper}>
+                    <div>
+                        <RepaintGameBannerElement>
+                            <RepaintGameBannerFront src="/repaint_game_banner/base.png" alt="base front"/>
+                        </RepaintGameBannerElement>
 
-                <RepaintGameBannerElement
-                    style={{
-                        clip: `rect(${colorfulRect.top}px, ${colorfulRect.right}px, ${colorfulRect.bottom}px, ${colorfulRect.left}px)`,
-                    }}>
-                    <RepaintGameBannerBack src="/repaint_game_banner/colorful_back.png"
-                                           alt="colorful back"/>
-                    <RepaintGameBannerFront src="/repaint_game_banner/colorful_front.png"
-                                            alt="colorful front"
-                                            style={{mixBlendMode: "darken"}}/>
-                </RepaintGameBannerElement>
+                        <RepaintGameBannerElement
+                            style={{
+                                clip: `rect(${colorfulRect.top}px, ${colorfulRect.right}px, ${colorfulRect.bottom}px, ${colorfulRect.left}px)`,
+                            }}>
+                            <RepaintGameBannerBack src="/repaint_game_banner/colorful_back.png"
+                                                   alt="colorful back"/>
+                            <RepaintGameBannerFront src="/repaint_game_banner/colorful_front.png"
+                                                    alt="colorful front"
+                                                    style={{mixBlendMode: "darken"}}/>
+                        </RepaintGameBannerElement>
 
-                <RepaintGameBannerElement
-                    style={{
-                        clip: `rect(${blackRect.top}px, ${blackRect.right}px, ${blackRect.bottom}px, ${blackRect.left}px)`,
-                    }}>
-                    <RepaintGameBannerBack src="/repaint_game_banner/black_back.png"
-                                           alt="black back"/>
-                    <RepaintGameBannerFront src="/repaint_game_banner/black_front.png"
-                                            alt="black front"/>
-                </RepaintGameBannerElement>
+                        <RepaintGameBannerElement
+                            style={{
+                                clip: `rect(${blackRect.top}px, ${blackRect.right}px, ${blackRect.bottom}px, ${blackRect.left}px)`,
+                            }}>
+                            <RepaintGameBannerBack src="/repaint_game_banner/black_back.png"
+                                                   alt="black back"/>
+                            <RepaintGameBannerFront src="/repaint_game_banner/black_front.png"
+                                                    alt="black front"/>
+                        </RepaintGameBannerElement>
+                    </div>
+
+                    <div className={styles.videoWrapper}>
+                        <Canvas shadows>
+                            <PerspectiveCamera
+                                makeDefault
+                                position={[0, 1, 2]}
+                                fov={100}
+                                zoom={2}
+                            />
+                            <ambientLight intensity={0.5}/>
+                            <pointLight position={[10, 10, 10]}/>
+                            <RepaintGameBannerAnimation/>
+                        </Canvas>
+                    </div>
+
+                </div>
             </CarouselPaper>
         </Button>
     );
