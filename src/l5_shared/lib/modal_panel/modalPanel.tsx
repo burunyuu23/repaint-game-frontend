@@ -1,6 +1,5 @@
 import styles from "./modalPanel.module.scss";
 import {Modal} from "@mui/base";
-import {Box} from "@mui/material";
 import React from "react";
 
 type Props = {
