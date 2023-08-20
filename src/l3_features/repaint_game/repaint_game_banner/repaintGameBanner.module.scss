@@ -1,0 +1,16 @@
+
+@import "src/l5_shared/consts/css/banner_size";
+
+.mainWrapper {
+  display: grid;
+  width: 100%;
+  grid-template-columns: $banner-sizes--width+px 1fr;
+  grid-template-rows: 100%;
+}
+
+.videoWrapper {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+ }
