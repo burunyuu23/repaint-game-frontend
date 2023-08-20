@@ -6,12 +6,11 @@ import styled from "@emotion/styled";
 import {emptyRect, Rect, startFromXYRect} from '@/l5_shared/types/rect';
 import {banner_sizes} from "@/l5_shared/consts/css/banner_size";
 import {getRandomArbitrary, getRandomInt} from "@/l5_shared/util/random";
-import {Button} from "@mui/material";
-import {useRouter} from 'next/navigation';
 import styles from "./repaintGameBanner.module.scss"
 import {PerspectiveCamera} from "@react-three/drei";
 import {Canvas} from "@react-three/fiber";
 import RepaintGameBannerAnimation from "@/l3_features/repaint_game/repaint_game_banner/repaintGameBannerAnimation";
+import Link from "next/link";
 
 const RepaintGameBanner = React.memo(() => {
     const [colorfulRect, setColorfulRect] = useState<Rect>(emptyRect)
@@ -131,19 +130,8 @@ const RepaintGameBanner = React.memo(() => {
         };
     }, [horSpeedColorfulRect, vertSpeedColorfulRect, horSpeedBlackRect, vertSpeedBlackRect]);
 
-    const router = useRouter();
-
-    const handleClick = () => {
-        router.push("/game")
-
-        if (animationFrameIdRef.current) {
-            cancelAnimationFrame(animationFrameIdRef.current);
-        }
-    }
-
     return (
-        <Button onClick={handleClick}
-                style={{width: "100%"}}>
+        <Link href={"/game"}>
             <CarouselPaper>
                 <div className={styles.mainWrapper}>
                     <div>
@@ -189,7 +177,7 @@ const RepaintGameBanner = React.memo(() => {
 
                 </div>
             </CarouselPaper>
-        </Button>
+        </Link>
     );
 });
 
