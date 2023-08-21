@@ -1,16 +1,11 @@
+"use client";
+
 import React, {useEffect, useRef, useState} from 'react';
 import {useFrame} from '@react-three/fiber';
 import {Clone, useGLTF} from '@react-three/drei';
 import {AnimationAction, AnimationMixer, Euler, Group} from "three";
 
-type Props = {
-    path: string,
-    startFrame?: number,
-    rotation?: Euler,
-    repeatTime: number
-}
-
-const BannerAnimation = React.memo(({path, startFrame, rotation, repeatTime}: Props) => {
+const BannerAnimation = ({path, startFrame, rotation, repeatTime, onBannerLoad}: Props) => {
     const groupRef = useRef<Group>(null);
 
     // Загружаем .gltf модель
@@ -46,6 +41,9 @@ const BannerAnimation = React.memo(({path, startFrame, rotation, repeatTime}: Pr
 
                 return action;
             });
+
+            if (onBannerLoad)
+                onBannerLoad()
         }
     }, [animations, _startFrame, animationFinished]);
 
@@ -73,6 +71,14 @@ const BannerAnimation = React.memo(({path, startFrame, rotation, repeatTime}: Pr
             <Clone object={scene}/>
         </group>
     );
-});
+};
+
+type Props = {
+    path: string,
+    startFrame?: number,
+    rotation?: Euler,
+    repeatTime: number,
+    onBannerLoad?: () => void
+}
 
 export default BannerAnimation;
