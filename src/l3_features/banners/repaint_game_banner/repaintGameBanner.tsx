@@ -16,8 +16,8 @@ import RepaintGameBannerLogo from "@/l3_features/banners/repaint_game_banner/rep
 
 const RepaintGameBanner = React.memo(() => {
     return (
-        <Link href={"/game"}>
             <CarouselPaper>
+                <Link href={"/game"} className={styles.link}/>
                 <div className={styles.mainWrapper}>
                     <RepaintGameBannerLogo />
 
@@ -37,7 +37,6 @@ const RepaintGameBanner = React.memo(() => {
                     </div>
                 </div>
             </CarouselPaper>
-        </Link>
     );
 });
 

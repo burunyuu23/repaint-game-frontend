@@ -6,6 +6,15 @@
   width: 100%;
   grid-template-columns: $banner-sizes--width 1fr;
   grid-template-rows: 100%;
+
+  z-index: 0;
+}
+
+.link {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
 }
 
 .videoWrapper {
