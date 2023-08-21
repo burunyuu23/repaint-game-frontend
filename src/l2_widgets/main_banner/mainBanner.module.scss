@@ -1,3 +1,10 @@
+@import "src/l5_shared/consts/css/banner_size";
+
+.carousel {
+  width: 100%;
+  height: $banner-sizes--height;
+}
+
 .carousel div button svg circle {
   color: black;
   filter: drop-shadow(0 0 3px white);

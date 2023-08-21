@@ -1,11 +1,13 @@
 "use client";
+
 import React from 'react';
 import Carousel from 'react-material-ui-carousel';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import styles from "./mainBanner.module.scss"
-import RepaintGameBanner from "@/l3_features/repaint_game/repaint_game_banner/repaintGameBanner";
+import RepaintGameBanner from "@/l3_features/banners/repaint_game_banner/repaintGameBanner";
 import styled from "@emotion/styled";
+import DnlkkHubBanner from "@/l3_features/banners/dnlkkhub_banner/dnlkkHubBanner";
 
 const MainBanner = () => {
     const MainBannerWrapper = styled.div`
@@ -18,6 +20,8 @@ const MainBanner = () => {
             <Carousel
                 NextIcon={<NavigateNextIcon/>}
                 PrevIcon={<NavigateBeforeIcon/>}
+
+                onChange={() => console.log('change')}
 
                 className={styles.carousel}
 
@@ -36,6 +40,7 @@ const MainBanner = () => {
 
                 interval={20000}
             >
+                <DnlkkHubBanner />
                 <RepaintGameBanner/>
             </Carousel>
         </MainBannerWrapper>
