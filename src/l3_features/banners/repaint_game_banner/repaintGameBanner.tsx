@@ -9,8 +9,9 @@ import {getRandomArbitrary, getRandomInt} from "@/l5_shared/util/random";
 import styles from "./repaintGameBanner.module.scss"
 import {PerspectiveCamera} from "@react-three/drei";
 import {Canvas} from "@react-three/fiber";
-import RepaintGameBannerAnimation from "@/l3_features/repaint_game/repaint_game_banner/repaintGameBannerAnimation";
 import Link from "next/link";
+import BannerAnimation from "@/l5_shared/lib/banner_animation/bannerAnimation";
+import {Euler} from "three";
 
 const RepaintGameBanner = React.memo(() => {
     const [colorfulRect, setColorfulRect] = useState<Rect>(emptyRect)
@@ -118,10 +119,14 @@ const RepaintGameBanner = React.memo(() => {
 
     useEffect(() => {
         setBlackRect(startFromXYRect(banner_sizes.width * (bannerModifier < 1 ? bannerModifier : 1), 0))
+
+        return (
+            console.log("hi!")
+        )
     }, [])
 
     useEffect(() => {
-        updateState();
+        // updateState();
 
         return () => {
             if (animationFrameIdRef.current) {
@@ -162,19 +167,19 @@ const RepaintGameBanner = React.memo(() => {
                     </div>
 
                     <div className={styles.videoWrapper}>
-                        <Canvas shadows>
+                        <Canvas shadows style={{minHeight: "100%"}}>
                             <PerspectiveCamera
                                 makeDefault
                                 position={[0, 1, 2]}
                                 fov={100}
                                 zoom={2}
                             />
-                            <ambientLight intensity={0.5}/>
-                            <pointLight position={[10, 10, 10]}/>
-                            <RepaintGameBannerAnimation/>
+                            <ambientLight intensity={0.6}/>
+                            <BannerAnimation path={"/repaint_game_banner/repaint.gltf"}
+                                             repeatTime={85}
+                                             rotation={new Euler(0, 5 * Math.PI / 3, 11 * Math.PI / 6, 'XYZ')}/>
                         </Canvas>
                     </div>
-
                 </div>
             </CarouselPaper>
         </Link>
