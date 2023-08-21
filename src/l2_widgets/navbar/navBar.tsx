@@ -3,12 +3,12 @@
 import React, {useEffect, useRef, useState} from 'react';
 import styles from "./navBar.module.scss"
 import {PaletteService} from "@/l4_entities/repaint-game/palette-service/service";
-import {GetPaletteResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/getPaletteResponseDTO";
 import {RainbowLinearGradientBackgroundStyled} from "@/l5_shared/lib/rainbow_color_styled/rainbowColorStyled";
 import Link from "next/link";
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import {Transition} from "react-transition-group";
 import {Button} from "@mui/material";
+import {defaultColors} from "@/l5_shared/consts/repaint_game_settings";
 
 const NavBar = () => {
     const [baseColors, setBaseColors] = useState<string[]>([])
@@ -21,9 +21,10 @@ const NavBar = () => {
 
     const Logo = RainbowLinearGradientBackgroundStyled(baseColors, 90);
 
-    const fetchColors = async () => {
-        const getPaletteResponseDTO: GetPaletteResponseDTO = await PaletteService.getBasePalette();
-        setBaseColors(getPaletteResponseDTO.palette.map(color => color.hexCode));
+    const fetchColors = () => {
+        PaletteService.getBasePalette()
+            .then(resp => setBaseColors(resp.palette.map(color => color.hexCode)))
+            .catch(e => setBaseColors(defaultColors.map(color => color.hexCode)))
     };
 
 
