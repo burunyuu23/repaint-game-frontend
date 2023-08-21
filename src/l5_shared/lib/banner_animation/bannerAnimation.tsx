@@ -15,8 +15,6 @@ const BannerAnimation = React.memo(({path, startFrame, rotation, repeatTime}: Pr
 
     // Загружаем .gltf модель
     const {scene, animations} = useGLTF(path);
-    console.log(scene)
-    console.log(animations)
 
     // Переменная для управления временем анимации
     const mixerRef = useRef<AnimationMixer>();
@@ -36,7 +34,6 @@ const BannerAnimation = React.memo(({path, startFrame, rotation, repeatTime}: Pr
     useEffect(() => {
         if (groupRef.current !== null) {
             mixerRef.current = new AnimationMixer(groupRef.current);
-            console.log(mixerRef.current)
 
             actionsRef.current = animations.map((animation) => {
                 const action = mixerRef.current!.clipAction(animation);
@@ -46,8 +43,6 @@ const BannerAnimation = React.memo(({path, startFrame, rotation, repeatTime}: Pr
 
                 action.play();
                 action.enabled = true;
-
-                console.log(action)
 
                 return action;
             });
