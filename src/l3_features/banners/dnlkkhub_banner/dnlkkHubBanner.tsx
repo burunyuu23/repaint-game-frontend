@@ -7,12 +7,28 @@ import CarouselPaper from "@/l5_shared/lib/carousel_paper/carouselPaper";
 import BannerAnimation from "@/l5_shared/lib/banner_animation/bannerAnimation";
 import {Euler} from "three";
 import styles from "./dnlkkHubBanner.module.scss";
+import { Button } from '@mui/material';
+import styled from 'styled-components';
+import {devices} from "@/l5_shared/consts/css/display_size";
 
 type Props = {
     setter: () => void
 }
 
 const DnlkkHubBanner = ({setter}: Props) => {
+
+    const Logo = styled.div`
+      font-size: 16px;
+        
+      @media ${devices.mobileM} {
+        font-size: 24px;
+      }
+      
+      @media ${devices.tablet} {
+        font-size: 36px;
+      }
+    `
+
     return (
         <CarouselPaper>
             <Canvas shadows style={{minHeight: "100%"}}>
@@ -30,9 +46,19 @@ const DnlkkHubBanner = ({setter}: Props) => {
                                  onBannerLoad={setter}
                 />
             </Canvas>
-            <div className={styles.logoWrapper}>
-                Welcome to the DnlkkHub!
+
+            <div className={styles.infoPanel}>
+                <div className={styles.logoWrapper}>
+                    <Logo>
+                        Welcome to the DnlkkHub!
+                    </Logo>
+                    <div className={styles.loginPanel}>
+                        <Button>Login</Button>
+                        <Button>Register</Button>
+                    </div>
+                </div>
             </div>
+
         </CarouselPaper>
     );
 };
