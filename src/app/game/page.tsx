@@ -5,6 +5,9 @@ import Content from './content';
 export const metadata: Metadata = {
     title: 'TheRepaintingGame',
     description: 'Repaint map and fun!',
+    icons: {
+        icon: '/icons/repaintGame.jpg',
+    },
 }
 
 const Page = () => {
