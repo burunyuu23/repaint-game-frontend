@@ -10,6 +10,7 @@ import BannerAnimation from "@/l5_shared/lib/banner_animation/bannerAnimation";
 import {Euler} from "three";
 import RepaintGameBannerLogo from "@/l3_features/banners/repaint_game_banner/repaintGameBannerLogo";
 import TimedTriggerBannerAbsolute from "@/l5_shared/lib/timed_trigger_banner_absolute/triggerBannerAbsolute";
+import RepaintGameBannerPaintBrushTail from "@/l5_shared/lib/repaint_game_banner_paint_brush_tail/repaintGameBannerPaintBrushTail";
 
 const RepaintGameBanner = () => {
     const bannerIsLoad= useRef<boolean>(false)
@@ -22,10 +23,7 @@ const RepaintGameBanner = () => {
                 <RepaintGameBannerLogo/>
 
                 <TimedTriggerBannerAbsolute isLoad={bannerIsLoad}>
-                    <img className={styles.tail}
-                         style={{color: "red"}}
-                         src="/repaint_game_banner/tail.png"
-                         alt="tail"/>
+                    <RepaintGameBannerPaintBrushTail />
                 </TimedTriggerBannerAbsolute>
 
                 <div className={styles.videoWrapper}>

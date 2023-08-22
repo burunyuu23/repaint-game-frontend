@@ -1,0 +1,45 @@
+$blurSize: 5px;
+
+.tail {
+  z-index: 1;
+  position: absolute;
+  filter: blur($blurSize) hue-rotate(0deg);
+  opacity: 0.3;
+
+  animation: test 8.333333333333333s linear, hueRotate 10s linear infinite;
+}
+
+@keyframes hueRotate {
+  from {
+    filter: blur($blurSize) hue-rotate(0deg);
+  }
+  to {
+    filter: blur($blurSize) hue-rotate(360deg);
+  }
+}
+
+@keyframes test {
+  from {
+    opacity: 0;
+  }
+  80% {
+    filter: blur(0);
+    clip-path: polygon(86.83% 25.53%,100.00% 50.74%,100.00% 62.30%,88.10% 67.89%,83.82% 58.58%,74.93% 41.09%);
+    opacity: 0;
+  }
+  80.2% {
+    clip-path: polygon(100.00% 13.76%,100.00% 100%,50.63% 100%,56.02% 84.44%,55.95% 63.96%,57.98% 45.87%);
+  }
+  80.7% {
+    clip-path: polygon(100.00% 13.76%,100.00% 100%,50.63% 100%,24.09% 83.05%,26.26% 61.57%,38.24% 49.46%);
+  }
+  81% {
+    clip-path: polygon(0.75% 1.22%,100.00% 0.00%,100.00% 99.57%,0.00% 100%);
+    filter: blur(0);
+    opacity: 0.3;
+  }
+  to {
+    filter: blur(1px);
+    opacity: 0.3;
+  }
+}
