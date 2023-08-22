@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import Carousel from 'react-material-ui-carousel';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
@@ -18,6 +18,16 @@ const MainBanner = () => {
     `
 
     const bannerIsLoad = useRef<boolean>(false)
+    const [triggerRerender, setTriggerRerender] = useState(false);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTriggerRerender(() => bannerIsLoad.current);
+
+            if (bannerIsLoad.current)
+                clearInterval(interval);
+        }, 1)
+    }, []);
 
     return (
         <MainBannerWrapper>
@@ -28,24 +38,23 @@ const MainBanner = () => {
                 NextIcon={<NavigateNextIcon/>}
                 PrevIcon={<NavigateBeforeIcon/>}
 
-                onChange={() => console.log('change')}
-
                 className={styles.carousel}
 
                 activeIndicatorIconButtonProps={{
                     style: {
                         backgroundColor: 'yellow',
-                        color: 'black'
+                        color: 'black',
                     }
                 }}
                 indicatorContainerProps={{
                     style: {
                         textAlign: 'center',
+                        display: `${triggerRerender ? "block" : "none"}`,
                         position: "fixed",
                     }
                 }}
 
-                interval={20000}
+                interval={200000}
             >
                 <DnlkkHubBanner setter={() => bannerIsLoad.current = true} />
                 <RepaintGameBanner/>

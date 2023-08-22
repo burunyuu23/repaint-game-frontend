@@ -56,6 +56,10 @@ const DnlkkHubBanner = ({setter}: Props) => {
                         <Button>Login</Button>
                         <Button>Register</Button>
                     </div>
+                    {/*<div className={styles.loginPanel}>*/}
+                    {/*    <Button>Profile</Button>*/}
+                    {/*    <Button>Logout</Button>*/}
+                    {/*</div>*/}
                 </div>
             </div>
 

@@ -23,6 +23,7 @@ const RepaintGameBanner = () => {
 
                 <TimedTriggerBannerAbsolute isLoad={bannerIsLoad}>
                     <img className={styles.tail}
+                         style={{color: "red"}}
                          src="/repaint_game_banner/tail.png"
                          alt="tail"/>
                 </TimedTriggerBannerAbsolute>
