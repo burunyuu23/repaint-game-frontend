@@ -9,6 +9,25 @@
   display: grid;
   justify-items: center;
 
+  .additionalSettingsPanel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    padding: 6px 10px;
+
+    .settingsButton {
+      color: black;
+      padding: 0;
+      min-width: min-content;
+
+      .settingsIconButton {
+        color: black;
+        padding: 0;
+      }
+    }
+  }
+
   .settingsPanel {
     position: absolute;
     top: 0;

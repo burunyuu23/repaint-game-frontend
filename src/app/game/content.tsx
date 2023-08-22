@@ -16,6 +16,7 @@ import RepaintGameStateSlice from '@/l3_features/redux/repaint_game/state_reduce
 import {AppDispatch} from "@/l3_features/redux/store";
 import RepaintGameSettingsSlice, {RepaintGameSettings} from "@/l3_features/redux/repaint_game/settings_reducer";
 import {fieldSizeDefault, fieldSizeMax, fieldSizeMin, maxRoundsDefault, maxRoundsMax, maxRoundsMin} from "@/l5_shared/consts/repaint_game_settings";
+import InfoPanel from "@/l2_widgets/repaint_game/info_panel/infoPanel";
 
 const doStart = async (dispatch: AppDispatch, paletteId: number, fieldSize: number, maxRounds: number) => {
     dispatch(RepaintGameStateSlice.actions.StartNewGame());
@@ -58,6 +59,7 @@ const doStep = async (dispatch: AppDispatch, data: GameStepResponseDTO, id: numb
 
 const Content = React.memo(() => {
     const settingsOpen = useAppSelector(state => state.repaint_game__settings.settingsOpen);
+    const infoOpen = useAppSelector(state => state.repaint_game__settings.infoOpen);
 
     const data = useAppSelector(state => state.repaint_game__state.gameSettings)
 
@@ -102,6 +104,7 @@ const Content = React.memo(() => {
             fieldSize: getInitialItemFromLocalStorage("fieldSize", "number", fieldSizeMin, fieldSizeMax, fieldSizeDefault),
             maxRound: getInitialItemFromLocalStorage("maxRounds", "number", maxRoundsMin, maxRoundsMax, maxRoundsDefault),
             settingsOpen: false,
+            infoOpen: false
         }
 
         dispatch(RepaintGameSettingsSlice.actions.SetState(repaintGameSettingsSliceInitialState));
@@ -113,12 +116,14 @@ const Content = React.memo(() => {
 
     const {
         fetching: fetchStepGame,
-        isLoading: isStepGameLoading,
         error: stepGameError,
         clearError: clearError
     } = useFetch(async (dispatch: AppDispatch, id: number) =>
         await doStep(dispatch, data!, id)
     )
+
+    const infoAction = (payload: boolean) =>
+        dispatch(RepaintGameSettingsSlice.actions.UpdateInfoOpen(payload));
 
     const settingsAction = (payload: boolean) =>
         dispatch(RepaintGameSettingsSlice.actions.UpdateSettingsOpen(payload));
@@ -145,8 +150,12 @@ const Content = React.memo(() => {
             {data !== null && settingsOpen &&
                 <SettingsPanel
                     handleClose={() => settingsAction(false)}/>}
+            {infoOpen &&
+                <InfoPanel
+                    handleClose={() => infoAction(false)}/>}
             {data !== null &&
                 <GameInfoPanel
+                    info={() => infoAction(true)}
                     restart={() => fetchStartGame(dispatch)}
                     settingsOpen={() => settingsAction(true)}
                 />

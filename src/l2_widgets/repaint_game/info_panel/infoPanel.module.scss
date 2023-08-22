@@ -1,0 +1,36 @@
+.settingPanel {
+  color: black !important;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.settingPanel div {
+  color: black;
+}
+
+.header {
+  font-weight: 900;
+}
+
+.cancelIcon {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+
+  cursor: pointer;
+}
+
+#cancelIconPath path {
+  color: black;
+}
+
+.text {
+  color: black;
+}
+
+.buttonsPanel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}

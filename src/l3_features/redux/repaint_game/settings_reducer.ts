@@ -5,7 +5,9 @@ export type RepaintGameSettings = {
     paletteId: number,
     fieldSize: number,
     maxRound: number,
+
     settingsOpen: boolean,
+    infoOpen: boolean
 }
 
 export const initialState: RepaintGameSettings = {
@@ -13,6 +15,7 @@ export const initialState: RepaintGameSettings = {
     fieldSize: fieldSizeDefault,
     maxRound: maxRoundsDefault,
     settingsOpen: false,
+    infoOpen: false
 }
 
 export const RepaintGameSettingsSlice = createSlice({
@@ -35,6 +38,9 @@ export const RepaintGameSettingsSlice = createSlice({
         },
         UpdateSettingsOpen(state, action: PayloadAction<boolean>) {
             state.settingsOpen = action.payload
+        },
+        UpdateInfoOpen(state, action: PayloadAction<boolean>) {
+            state.infoOpen = action.payload
         }
     }
 })

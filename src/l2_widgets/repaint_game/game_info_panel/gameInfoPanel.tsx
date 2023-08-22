@@ -4,21 +4,21 @@ import RoundCounter from "@/l5_shared/lib/round_counter/roundCounter";
 import styles from './gameInfoPanel.module.scss';
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from "@mui/icons-material/Settings";
+import InfoIcon from '@mui/icons-material/Info';
 import {Button} from "@mui/material";
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import MoreTimeIcon from '@mui/icons-material/MoreTime';
 import SecondsPanel from "@/l5_shared/lib/timer/secondsPanel";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
-import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
 
 type Props = {
+    info: () => void,
     settingsOpen: () => void,
     restart: () => void,
 }
 
-const GameInfoPanel = React.memo(({restart, settingsOpen}: Props) => {
+const GameInfoPanel = React.memo(({info, restart, settingsOpen}: Props) => {
     const data = useAppSelector(state => state.repaint_game__state.gameSettings)!;
-    const dispatch = useAppDispatch();
 
     return (
         <div className={styles.infoPanel}>
@@ -47,6 +47,14 @@ const GameInfoPanel = React.memo(({restart, settingsOpen}: Props) => {
                         <MoreTimeIcon/>
                         <SecondsPanel time={new Date(data.stepTime).getTime() - new Date(data.startTime).getTime()}/>
                     </div>}
+            </div>
+
+            <div className={styles.additionalSettingsPanel}>
+                <Button
+                    className={styles.settingsButton}
+                    onClick={info}>
+                    <InfoIcon className={styles.iconButton}/>
+                </Button>
             </div>
 
             <div className={styles.settingsPanel}>
