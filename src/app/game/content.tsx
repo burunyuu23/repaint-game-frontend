@@ -1,5 +1,5 @@
 "use client";
-import React, {useCallback, useEffect, useRef} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {NonRatingNoAuthService} from "@/l4_entities/repaint-game/nonrating-noauth-service/service";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import {GameStartResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStartResponseDTO";
@@ -58,6 +58,7 @@ const doStep = async (dispatch: AppDispatch, data: GameStepResponseDTO, id: numb
 }
 
 const Content = React.memo(() => {
+
     const settingsOpen = useAppSelector(state => state.repaint_game__settings.settingsOpen);
     const infoOpen = useAppSelector(state => state.repaint_game__settings.infoOpen);
 
@@ -67,7 +68,7 @@ const Content = React.memo(() => {
     const fieldSize = useAppSelector(state => state.repaint_game__settings.fieldSize);
     const maxRound = useAppSelector(state => state.repaint_game__settings.maxRound)
 
-    const isInit = useRef<boolean>(false);
+    const [isInit, setIsInit] = useState<boolean>(false);
 
     const dispatch = useAppDispatch();
     const {
@@ -78,12 +79,9 @@ const Content = React.memo(() => {
         await doStart(dispatch, paletteId, fieldSize, maxRound), [paletteId, fieldSize, maxRound]));
 
     useEffect(() => {
-        console.log(`useEffect 2 ${isInit.current}`)
-        if (isInit.current)
+        if (isInit)
             fetchStartGame(dispatch);
-        console.log(`useEffect 3 ${isInit.current}`)
-        console.log(`useEffect 4 ${[paletteId, fieldSize, maxRound]}`)
-    }, [paletteId, fieldSize, maxRound]);
+    }, [paletteId, fieldSize, maxRound, isInit]);
 
     useEffect(() => {
         const getInitialItemFromLocalStorage = <T extends number>(itemName: string, type: string, minValue: T, maxValue: T, defaultValue: T): T => {
@@ -109,9 +107,7 @@ const Content = React.memo(() => {
 
         dispatch(RepaintGameSettingsSlice.actions.SetState(repaintGameSettingsSliceInitialState));
 
-        console.log(`useEffect 1 ${isInit.current}`)
-        isInit.current = true
-        console.log(`useEffect 1 ${isInit.current}`)
+        setIsInit(true)
     }, []);
 
     const {
@@ -130,7 +126,6 @@ const Content = React.memo(() => {
 
     return (
         <div className={styles.main}>
-
             {stepGameError !== '' &&
                 (<FixedErrorAlert errorMessage={stepGameError}
                                   onclose={() => clearError !== undefined ? clearError() : {}}
