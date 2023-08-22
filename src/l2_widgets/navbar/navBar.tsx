@@ -24,25 +24,31 @@ const NavBar = () => {
     const fetchColors = () => {
         PaletteService.getBasePalette()
             .then(resp => setBaseColors(resp.palette.map(color => color.hexCode)))
-            .catch(e => setBaseColors(defaultColors.map(color => color.hexCode)))
+            .catch(() => setBaseColors(defaultColors.map(color => color.hexCode)))
     };
 
+    const right = "-20px"
 
     const defaultStyle = {
         transition: `width 200ms ease-in`,
         width: "300px",
+        right: right
     }
 
     const transitionStyles = (state: string) => {
         switch (state) {
             case "entering":
-                return { width: "300px" }
+                return { width: "300px",
+                    right: right }
             case "entered":
-                return {width: "300px"}
+                return {width: "300px",
+                    right: 0}
             case "exiting":
-                return {width: "0px"}
+                return {width: "0px",
+                    right: 0}
             case "exited":
-                return {width: "0px"}
+                return {width: "0px",
+                    right: right}
         }
     };
 
