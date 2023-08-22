@@ -12,6 +12,7 @@ import RepaintGameSettingsSlice from "@/l3_features/redux/repaint_game/settings_
 import {fieldSizeDefault, fieldSizeMax, fieldSizeMin, maxRoundsDefault, maxRoundsMax, maxRoundsMin} from "@/l5_shared/consts/repaint_game_settings";
 import SliderStyled from "@/l3_features/repaint_game/slider_styled/sliderStyled";
 import WhiteModalPanel from "@/l3_features/white_modal_panel/whiteModalPanel";
+import {devices} from "@/l5_shared/consts/css/display_size";
 
 type Props = {
     handleClose: () => void,
@@ -28,6 +29,17 @@ const SettingsPanel = React.memo(({handleClose}: Props) => {
     const colorsHexCodes = colors.map(color => color.hexCode)
 
     const ButtonStyled = RainbowColorStyled(colorsHexCodes, "button", "color")
+
+    const ButtonStyledGrid = styled.div`
+      display: grid;
+      grid-template-rows: repeat(3, 1fr);
+      grid-template-columns: repeat(1, 1fr);
+
+      @media ${devices.tablet} {
+        grid-template-rows: repeat(1, 1fr);
+        grid-template-columns: repeat(3, 1fr);
+      }
+    `
 
     const [paletteId, setPaletteId] = useState(useAppSelector(state => state.repaint_game__settings.paletteId))
     const [fieldSize, setFieldSize] = useState(useAppSelector(state => state.repaint_game__settings.fieldSize))
@@ -54,14 +66,14 @@ const SettingsPanel = React.memo(({handleClose}: Props) => {
     return (
         <WhiteModalPanel handleClose={handleClose} title={"Settings"}>
             <SliderStyled
-            title={`Field size: ${fieldSize}x${fieldSize}`}
-            value={fieldSize}
-            onChange={handleFieldSizeChange}
-            min={fieldSizeMin}
-            max={fieldSizeMax}/>
+                title={`Field size: ${fieldSize}x${fieldSize}`}
+                value={fieldSize}
+                onChange={handleFieldSizeChange}
+                min={fieldSizeMin}
+                max={fieldSizeMax}/>
 
             <SliderStyled
-                title={`Max rounds: ${maxRounds}${maxRounds !== Math.round(fieldSize*maxRoundsDefault/fieldSizeDefault) ? " (Recommended: " + Math.round(fieldSize*maxRoundsDefault/fieldSizeDefault) + ")" : ""}`}
+                title={`Max rounds: ${maxRounds}${maxRounds !== Math.round(fieldSize * maxRoundsDefault / fieldSizeDefault) ? " (Recommended: " + Math.round(fieldSize * maxRoundsDefault / fieldSizeDefault) + ")" : ""}`}
                 value={maxRounds}
                 onChange={handleMaxRoundsChange}
                 min={maxRoundsMin}
@@ -75,13 +87,18 @@ const SettingsPanel = React.memo(({handleClose}: Props) => {
                 )}
             </PalettesPanel>
 
-            <ButtonStyled className={styles.buttonsPanel}>
-                <Button className="button" onClick={() => setMaxRounds(Math.round(fieldSize*maxRoundsDefault/fieldSizeDefault))}>Recommended</Button>
-                <Button className="button" onClick={save}>Save</Button>
-                <Button className="button" onClick={() => {
-                    setFieldSize(fieldSizeDefault)
-                    setMaxRounds(maxRoundsDefault)
-                }}>Default</Button>
+            <ButtonStyled>
+                <ButtonStyledGrid>
+                    <Button className="button"
+                            onClick={() => setMaxRounds(Math.round(fieldSize * maxRoundsDefault / fieldSizeDefault))}>Recommended</Button>
+                    <Button className="button" onClick={save}>Save</Button>
+                    <Button className="button" onClick={() => {
+                        setFieldSize(fieldSizeDefault)
+                        setMaxRounds(maxRoundsDefault)
+                    }}>
+                        Default
+                    </Button>
+                </ButtonStyledGrid>
             </ButtonStyled>
         </WhiteModalPanel>
     );
