@@ -126,18 +126,19 @@ const Content = React.memo(() => {
 
     return (
         <div className={styles.main}>
-            {stepGameError !== '' &&
-                (<FixedErrorAlert errorMessage={stepGameError}
-                                  onclose={() => clearError !== undefined ? clearError() : {}}
-                                  closable/>)}
             {data === null && startGameError !== undefined &&
                 <div>Loading...</div>
             }
             {data === null && !isStartGameLoading && startGameError === undefined &&
-                    <div style={{color: "red"}}>
-                        Loading error
-                    </div>
+                <div style={{color: "red"}}>
+                    Loading error
+                </div>
             }
+
+            {stepGameError !== '' &&
+                (<FixedErrorAlert errorMessage={stepGameError}
+                                  onclose={() => clearError !== undefined ? clearError() : {}}
+                                  closable/>)}
             {data !== null && data.end &&
                 (<EndGamePanel
                     restart={() => fetchStartGame(dispatch)}

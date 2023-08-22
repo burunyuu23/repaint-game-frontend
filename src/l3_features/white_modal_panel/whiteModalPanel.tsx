@@ -10,21 +10,20 @@ type Props = {
 }
 
 const WhiteModalPanel = React.memo(({handleClose, children, title}: Props) => {
-
     return (
         <ModalPanel zIndex={10}
                     bg={"#eeeeff"}
                     className={styles.whiteModalPanel}>
-                <header className={[styles.header, styles.text].join(' ')}>{title}</header>
+            <header className={[styles.header, styles.text].join(' ')}>{title}</header>
 
-                <div>
-                    {children}
-                </div>
+            <div>
+                {children}
+            </div>
 
-                <CancelIcon
-                    id={styles.cancelIconPath}
-                    onClick={handleClose}
-                    className={styles.cancelIcon}/>
+            <CancelIcon
+                id={styles.cancelIconPath}
+                onClick={handleClose}
+                className={styles.cancelIcon}/>
         </ModalPanel>
     );
 });
