@@ -1,7 +1,5 @@
 "use client";
 import React, {useState} from 'react';
-import ModalPanel from "@/l5_shared/lib/modal_panel/modalPanel";
-import CancelIcon from '@mui/icons-material/Cancel';
 import styles from './settingPanel.module.scss'
 import {Button} from "@mui/material";
 import Palette from "@/l5_shared/lib/palette/palette";
@@ -13,6 +11,7 @@ import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import RepaintGameSettingsSlice from "@/l3_features/redux/repaint_game/settings_reducer";
 import {fieldSizeDefault, fieldSizeMax, fieldSizeMin, maxRoundsDefault, maxRoundsMax, maxRoundsMin} from "@/l5_shared/consts/repaint_game_settings";
 import SliderStyled from "@/l3_features/repaint_game/slider_styled/sliderStyled";
+import WhiteModalPanel from "@/l3_features/white_modal_panel/whiteModalPanel";
 
 type Props = {
     handleClose: () => void,
@@ -53,9 +52,7 @@ const SettingsPanel = React.memo(({handleClose}: Props) => {
     }
 
     return (
-        <ModalPanel zIndex={10} bg={"#eeeeff"} className={styles.settingPanel}>
-            <header className={[styles.header, styles.text].join(' ')}>Settings</header>
-
+        <WhiteModalPanel handleClose={handleClose} title={"Settings"}>
             <SliderStyled
             title={`Field size: ${fieldSize}x${fieldSize}`}
             value={fieldSize}
@@ -78,11 +75,6 @@ const SettingsPanel = React.memo(({handleClose}: Props) => {
                 )}
             </PalettesPanel>
 
-            <CancelIcon
-                id={styles.cancelIconPath}
-                onClick={handleClose}
-                className={styles.cancelIcon}/>
-
             <ButtonStyled className={styles.buttonsPanel}>
                 <Button className="button" onClick={() => setMaxRounds(Math.round(fieldSize*maxRoundsDefault/fieldSizeDefault))}>Recommended</Button>
                 <Button className="button" onClick={save}>Save</Button>
@@ -91,7 +83,7 @@ const SettingsPanel = React.memo(({handleClose}: Props) => {
                     setMaxRounds(maxRoundsDefault)
                 }}>Default</Button>
             </ButtonStyled>
-        </ModalPanel>
+        </WhiteModalPanel>
     );
 });
 
