@@ -10,6 +10,8 @@ import styles from "./dnlkkHubBanner.module.scss";
 import { Button } from '@mui/material';
 import styled from 'styled-components';
 import {devices} from "@/l5_shared/consts/css/display_size";
+import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
+import UserSettingsSlice from "@/l3_features/redux/user_settings/reducer";
 
 type Props = {
     setter: () => void
@@ -28,6 +30,8 @@ const DnlkkHubBanner = ({setter}: Props) => {
         font-size: 36px;
       }
     `
+
+    const dispatch = useAppDispatch();
 
     return (
         <CarouselPaper>
@@ -53,8 +57,8 @@ const DnlkkHubBanner = ({setter}: Props) => {
                         Welcome to the DnlkkHub!
                     </Logo>
                     <div className={styles.loginPanel}>
-                        <Button>Login</Button>
-                        <Button>Register</Button>
+                        <Button onClick={() => dispatch(UserSettingsSlice.actions.UpdateIsLoginOpen(true))}>Login</Button>
+                        <Button onClick={() => dispatch(UserSettingsSlice.actions.UpdateIsRegisterOpen(true))}>Register</Button>
                     </div>
                     {/*<div className={styles.loginPanel}>*/}
                     {/*    <Button>Profile</Button>*/}
