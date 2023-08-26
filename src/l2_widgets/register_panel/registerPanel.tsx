@@ -18,7 +18,6 @@ import styles from "./registerPanel.module.scss"
 
 const RegisterPanel = () => {
 
-    // const UserRegistryErrors = {...UserRegisterEmpty, emailRegex: ""}
     const userRegistryErrors = {
         usernameEmpty: "Username must be not empty",
         usernameTooLarge: "Username length must be less than 30",
@@ -26,8 +25,6 @@ const RegisterPanel = () => {
         emailRegex: "Email have strange format",
         passwordEmpty: "Password must be not empty",
         passwordTooSmall: "Password length must be greater than 8",
-        passwordHasNoVariety: "Password must contains numbers and different registers",
-        passwordHasNoSpecialChars: "Password must have special chars like @ (bark!) and other",
         first_nameEmpty: "First name must be not empty",
         first_nameTooLarge: "First name length must be less than 30",
         last_nameEmpty: "Last name must be not empty",
@@ -37,6 +34,15 @@ const RegisterPanel = () => {
     }
     type UserRegistryErrorsWithErrorCodeKeys = AddErrorCodeToKeys<typeof userRegistryErrors, number>;
     const registerErrorCodes = generateErrorCodes(userRegistryErrors) as UserRegistryErrorsWithErrorCodeKeys;
+
+    const passwordDifficultRegistryErrors = {
+        passwordEmpty: "Good password must be not empty",
+        passwordTooSmall: "Great password length must be greater than 8",
+        passwordHasNoVariety: "Excellent password must contains [0-9] and [a-zA-Z]",
+        passwordHasNoSpecialChars: "Awesome password must have special chars like @ (bark!)",
+    }
+    type PasswordDifficultRegistryErrorsWithErrorCodeKeys = AddErrorCodeToKeys<typeof passwordDifficultRegistryErrors, number>;
+    const passwordDifficultErrorCodes = generateErrorCodes(passwordDifficultRegistryErrors) as PasswordDifficultRegistryErrorsWithErrorCodeKeys;
 
     const isOpen = useAppSelector(state => state.user__settings.isRegisterOpen);
 
@@ -78,33 +84,50 @@ const RegisterPanel = () => {
         ],
     });
 
-    const [passwordIsInit, setPasswordIsInit] = useState<boolean>(false);
     const [passwordErrorMsg, validatePassword] = useValidation({
         rules: [
             {
-                rule: () => {
-                    setPasswordIsInit(true)
-                    return user.current.password.length <= 0
-                },
+                rule: () => user.current.password.length <= 0,
                 errorField: userRegistryErrors.passwordEmpty
             },
             {
                 rule: () => user.current.password.length <= 8,
                 errorField: userRegistryErrors.passwordTooSmall
             },
+        ],
+    });
+
+    const usePasswordValidation = createUseValidation({
+        registerErrorCodes: passwordDifficultErrorCodes,
+        userRegistryErrors: passwordDifficultRegistryErrors
+    })
+    const [passwordIsInit, setPasswordIsInit] = useState<boolean>(false);
+    const [passwordDifficultErrorMsg, validatePasswordDifficult] = usePasswordValidation({
+        rules: [
+            {
+                rule: () => {
+                    setPasswordIsInit(true)
+                    return user.current.password.length <= 0
+                },
+                errorField: passwordDifficultRegistryErrors.passwordEmpty
+            },
+            {
+                rule: () => user.current.password.length <= 8,
+                errorField: passwordDifficultRegistryErrors.passwordTooSmall
+            },
             {
                 rule: () => {
                     const regex = /^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/
                     return !regex.test(user.current.password)
                 },
-                errorField: userRegistryErrors.passwordHasNoVariety
+                errorField: passwordDifficultRegistryErrors.passwordHasNoVariety
             },
             {
                 rule: () => {
                     const regex = /^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[+_)(*&^%$#@!}{\\><{\]\|\/:;,.`~'"]).*$/
                     return !regex.test(user.current.password)
                 },
-                errorField: userRegistryErrors.passwordHasNoSpecialChars
+                errorField: passwordDifficultRegistryErrors.passwordHasNoSpecialChars
             }
         ],
     });
@@ -177,23 +200,23 @@ const RegisterPanel = () => {
                         </Stack>
                         <Stack direction="row" className={styles.passwordWrapper}>
                             {
-                                (passwordErrorMsg === userRegistryErrors.passwordEmpty || (passwordErrorMsg === "" && !passwordIsInit)) &&
+                                (passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordEmpty || (passwordDifficultErrorMsg === "" && !passwordIsInit)) &&
                                 <NoEncryptionIcon className={styles.noPassword}/>
                             }
                             {
-                                passwordErrorMsg === userRegistryErrors.passwordTooSmall &&
+                                passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordTooSmall &&
                                 <NoEncryptionGmailerrorredIcon className={styles.worstPassword}/>
                             }
                             {
-                                passwordErrorMsg === userRegistryErrors.passwordHasNoVariety &&
+                                passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordHasNoVariety &&
                                 <HttpsIcon className={styles.badPassword}/>
                             }
                             {
-                                passwordErrorMsg === userRegistryErrors.passwordHasNoSpecialChars &&
+                                passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordHasNoSpecialChars &&
                                 <HttpsIcon className={styles.mediumPassword}/>
                             }
                             {
-                                passwordErrorMsg === "" && passwordIsInit &&
+                                passwordDifficultErrorMsg === "" && passwordIsInit &&
                                 <EnhancedEncryptionIcon className={styles.normalPassword}/>
                             }
                             <TextField
@@ -201,15 +224,17 @@ const RegisterPanel = () => {
                                 label="Password"
                                 type="password"
 
-                                color={`${passwordErrorMsg === userRegistryErrors.passwordEmpty ? "error" :
-                                    passwordErrorMsg === userRegistryErrors.passwordTooSmall ? "info" : "success"}`}
+                                color={`${passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordEmpty ? "error" :
+                                    passwordDifficultErrorMsg !== "" ? "warning" :
+                                        !passwordIsInit ? "info" : "success"}`}
 
                                 error={passwordErrorMsg !== ""}
-                                helperText={passwordErrorMsg}
+                                helperText={passwordErrorMsg !== "" ? passwordErrorMsg : passwordDifficultErrorMsg}
 
                                 onChange={(e) => {
                                     user.current.password = e.target.value
                                     validatePassword()
+                                    validatePasswordDifficult()
                                 }}
                                 autoComplete="current-password"
                             />
@@ -271,6 +296,7 @@ const RegisterPanel = () => {
                             validateUsername()
                             validateEmail()
                             validatePassword()
+                            validatePasswordDifficult()
                             validateFirst_name()
                             validateLast_name()
                             validateBirthdate()
