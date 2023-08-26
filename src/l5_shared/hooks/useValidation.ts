@@ -10,14 +10,14 @@ type UseValidationProps = {
     rules: Rule[],
     registerErrorCodes: { [key: string]: number },
     userRegistryErrors: { [key: string]: string },
-    errorCode: React.MutableRefObject<number>
+    errorCode?: React.MutableRefObject<number>
 }
-const validateError = (error: boolean, fieldErrorCode: number, errorCode: MutableRefObject<number>) =>{
+const validateError = (error: boolean, fieldErrorCode: number, errorCode: MutableRefObject<number> | undefined) =>{
     if (error) {
-        if (errorCode.current % fieldErrorCode !== 0)
+        if (errorCode && errorCode.current % fieldErrorCode !== 0)
             errorCode.current *= fieldErrorCode
         return true
-    } else if (!error && errorCode.current % fieldErrorCode === 0)
+    } else if (!error && errorCode && errorCode.current % fieldErrorCode === 0)
         errorCode.current /= fieldErrorCode
     return false
 }
