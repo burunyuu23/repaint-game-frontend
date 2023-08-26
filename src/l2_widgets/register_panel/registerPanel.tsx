@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
 import UserSettingsSlice from "@/l3_features/redux/user_settings/reducer";
@@ -10,6 +10,11 @@ import {UserRegister, UserRegisterEmpty} from "@/l4_entities/user/models/user";
 import {formatDate} from "@/l5_shared/util/date";
 import {AddErrorCodeToKeys, generateErrorCodes} from "@/l5_shared/util/error_code";
 import {createUseValidation} from "@/l5_shared/hooks/useValidation";
+import NoEncryptionIcon from '@mui/icons-material/NoEncryption';
+import NoEncryptionGmailerrorredIcon from '@mui/icons-material/NoEncryptionGmailerrorred';
+import HttpsIcon from '@mui/icons-material/Https';
+import EnhancedEncryptionIcon from '@mui/icons-material/EnhancedEncryption';
+import styles from "./registerPanel.module.scss"
 
 const RegisterPanel = () => {
 
@@ -19,13 +24,16 @@ const RegisterPanel = () => {
         usernameTooLarge: "Username length must be less than 30",
         emailEmpty: "Email must be not empty",
         emailRegex: "Email have strange format",
-        passwordTooSmall: "Password length be greater than 8",
-        passwordTooLarge: "Password length be less than 30",
+        passwordEmpty: "Password must be not empty",
+        passwordTooSmall: "Password length must be greater than 8",
+        passwordHasNoVariety: "Password must contains numbers and different registers",
+        passwordHasNoSpecialChars: "Password must have special chars like @ (bark!) and other",
         first_nameEmpty: "First name must be not empty",
         first_nameTooLarge: "First name length must be less than 30",
         last_nameEmpty: "Last name must be not empty",
         last_nameTooLarge: "Last name length must be less than 30",
-        birthdateWrongRange: "You must be less than 150 years old and over -1"
+        birthdateWrongRange: "You must be less than 150 years old and over -1",
+        birthdateEmpty: "Date must be not empty"
     }
     type UserRegistryErrorsWithErrorCodeKeys = AddErrorCodeToKeys<typeof userRegistryErrors, number>;
     const registerErrorCodes = generateErrorCodes(userRegistryErrors) as UserRegistryErrorsWithErrorCodeKeys;
@@ -59,9 +67,65 @@ const RegisterPanel = () => {
             {
                 rule: () => user.current.email.length <= 0,
                 errorField: userRegistryErrors.emailEmpty
+            },
+            {
+                rule: () => {
+                    const regex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+                    return !regex.test(user.current.email)
+                },
+                errorField: userRegistryErrors.emailRegex
             }
         ],
     });
+
+    const [passwordIsInit, setPasswordIsInit] = useState<boolean>(false);
+    const [passwordErrorMsg, validatePassword] = useValidation({
+        rules: [
+            {
+                rule: () => {
+                    setPasswordIsInit(true)
+                    return user.current.password.length <= 0
+                },
+                errorField: userRegistryErrors.passwordEmpty
+            },
+            {
+                rule: () => user.current.password.length <= 8,
+                errorField: userRegistryErrors.passwordTooSmall
+            },
+            {
+                rule: () => {
+                    const regex = /^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/
+                    return !regex.test(user.current.password)
+                },
+                errorField: userRegistryErrors.passwordHasNoVariety
+            },
+            {
+                rule: () => {
+                    const regex = /^.*(?=.{8,})(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[+_)(*&^%$#@!}{\\><{\]\|\/:;,.`~'"]).*$/
+                    return !regex.test(user.current.password)
+                },
+                errorField: userRegistryErrors.passwordHasNoSpecialChars
+            }
+        ],
+    });
+
+    const [first_nameErrorMsg, validateFirst_name] = useValidation({
+        rules: [
+            {
+                rule: () => user.current.first_name.length <= 0,
+                errorField: userRegistryErrors.first_nameEmpty
+            },
+            ]
+    })
+
+    const [last_nameErrorMsg, validateLast_name] = useValidation({
+        rules: [
+            {
+                rule: () => user.current.last_name.length <= 0,
+                errorField: userRegistryErrors.last_nameEmpty
+            },
+        ]
+    })
 
     const [birthdateErrorMsg, validateBirthdate] = useValidation({
         rules: [
@@ -72,6 +136,10 @@ const RegisterPanel = () => {
                         user.current.birthdate.getTime() > (new Date()).getTime()
                 },
                 errorField: userRegistryErrors.birthdateWrongRange
+            },
+            {
+                rule: () => isNaN(user.current.birthdate.getTime()),
+                errorField: userRegistryErrors.birthdateEmpty
             }
         ],
     });
@@ -107,23 +175,69 @@ const RegisterPanel = () => {
                                 }}
                             />
                         </Stack>
-                        <TextField
-                            id="outlined-password-input"
-                            label="Password"
-                            type="password"
-                            onChange={(e) => user.current.password = e.target.value}
-                            autoComplete="current-password"
-                        />
+                        <Stack direction="row" className={styles.passwordWrapper}>
+                            {
+                                (passwordErrorMsg === userRegistryErrors.passwordEmpty || (passwordErrorMsg === "" && !passwordIsInit)) &&
+                                <NoEncryptionIcon className={styles.noPassword}/>
+                            }
+                            {
+                                passwordErrorMsg === userRegistryErrors.passwordTooSmall &&
+                                <NoEncryptionGmailerrorredIcon className={styles.worstPassword}/>
+                            }
+                            {
+                                passwordErrorMsg === userRegistryErrors.passwordHasNoVariety &&
+                                <HttpsIcon className={styles.badPassword}/>
+                            }
+                            {
+                                passwordErrorMsg === userRegistryErrors.passwordHasNoSpecialChars &&
+                                <HttpsIcon className={styles.mediumPassword}/>
+                            }
+                            {
+                                passwordErrorMsg === "" && passwordIsInit &&
+                                <EnhancedEncryptionIcon className={styles.normalPassword}/>
+                            }
+                            <TextField
+                                id="outlined-password-input"
+                                label="Password"
+                                type="password"
+
+                                color={`${passwordErrorMsg === userRegistryErrors.passwordEmpty ? "error" :
+                                    passwordErrorMsg === userRegistryErrors.passwordTooSmall ? "info" : "success"}`}
+
+                                error={passwordErrorMsg !== ""}
+                                helperText={passwordErrorMsg}
+
+                                onChange={(e) => {
+                                    user.current.password = e.target.value
+                                    validatePassword()
+                                }}
+                                autoComplete="current-password"
+                            />
+                        </Stack>
                         <Stack direction="row" spacing={2}>
                             <TextField
                                 id="first_name-input"
                                 label="First name"
-                                onChange={(e) => user.current.first_name = e.target.value}
+
+                                error={first_nameErrorMsg !== ""}
+                                helperText={first_nameErrorMsg}
+
+                                onChange={(e) => {
+                                    user.current.first_name = e.target.value
+                                    validateFirst_name()
+                                }}
                             />
                             <TextField
                                 id="last_name-input"
                                 label="Last name"
-                                onChange={(e) => user.current.last_name = e.target.value}
+
+                                error={last_nameErrorMsg !== ""}
+                                helperText={last_nameErrorMsg}
+
+                                onChange={(e) => {
+                                    user.current.last_name = e.target.value
+                                    validateLast_name()
+                                }}
                             />
                         </Stack>
                         <TextField
@@ -154,14 +268,17 @@ const RegisterPanel = () => {
                             }}
                         />
                         <Button onClick={() => {
-                            console.log(errorCode.current)
-                            console.log(user)
                             validateUsername()
                             validateEmail()
+                            validatePassword()
+                            validateFirst_name()
+                            validateLast_name()
                             validateBirthdate()
 
                             console.log(errorCode.current)
-                            console.log(user)
+
+                            if (errorCode.current === 1)
+                                console.log("can register")
                         }}>
                             Register
                         </Button>

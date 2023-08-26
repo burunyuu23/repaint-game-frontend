@@ -1,0 +1,32 @@
+.passwordWrapper {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 20px;
+  padding-left: 20px;
+}
+
+.passwordWrapper div {
+  display: flex;
+  flex: 1 1;
+}
+
+.noPassword path {
+  color: gray;
+}
+
+.worstPassword path {
+  color: darkred;
+}
+
+.badPassword path {
+  color: orangered;
+}
+
+.mediumPassword path {
+  color: orange;
+}
+
+.normalPassword path {
+  color: green;
+}
