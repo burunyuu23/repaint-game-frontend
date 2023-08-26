@@ -1,0 +1,65 @@
+@import "../navBar.module";
+
+.asideNavBarTopping {
+  top: $headerHeight;
+}
+.asideNavBarBack {
+  position: absolute;
+
+  height: 100%;
+  width: 100%;
+
+  background: linear-gradient(-90deg, #000000bb -10%, #FFFFFFbb 666%);
+  border-radius: 0 0 50% 50%;
+  filter: blur(50px);
+}
+.asideNavBar {
+  display: grid;
+
+  align-items: center;
+  justify-items: center;
+  position: absolute;
+  width: max-content;
+  right: 0;
+  padding: 20px 0;
+}
+
+.logoMain {
+  width: 100%;
+  height: max-content;
+  padding: 0 25px;
+
+  display: flex;
+  justify-content: center;
+}
+
+.logo  {
+  @extend .logoMain;
+  transition: transform 100ms linear;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  @keyframes gradient {
+    100% {
+      background-position: 116.666667% 0;
+    }
+  }
+}
+.logoBack {
+  position: absolute;
+  filter: blur(15px);
+  transform: scaleY(0.7) scaleX(-1);
+  border-radius: 50%;
+  background-repeat: repeat-x;
+  background-position: 0 0;
+  background-size: 700% auto;
+  animation: gradient 10s ease-in-out infinite;
+}
+.logoTextNonActive {
+  filter: drop-shadow(0 0 2px white) blur(0);
+
+  color: white;
+  text-decoration: none;
+}

@@ -28,8 +28,8 @@ export default function RootLayout({
             <div className="particle particle-2"/>
             <div className="particle particle-3"/>
             <div className="particle particle-4"/>
-            <NavBar/>
             <ReduxProvider>
+                <NavBar/>
                 <main>
                     {children}
                 </main>
