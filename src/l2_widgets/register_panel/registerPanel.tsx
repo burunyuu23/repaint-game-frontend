@@ -53,7 +53,11 @@ const RegisterPanel = () => {
         dispatch(UserSettingsSlice.actions.UpdateIsRegisterOpen(false))
 
     const errorCode = useRef<number>(1)
-    const useValidation = createUseValidation({registerErrorCodes, userRegistryErrors, errorCode})
+    const useValidation = createUseValidation({
+        errorCodes: registerErrorCodes,
+        errorsMessages: userRegistryErrors,
+        errorCode
+    })
 
     const [usernameErrorMsg, validateUsername] = useValidation({
         rules: [
@@ -98,8 +102,8 @@ const RegisterPanel = () => {
     });
 
     const usePasswordValidation = createUseValidation({
-        registerErrorCodes: passwordDifficultErrorCodes,
-        userRegistryErrors: passwordDifficultRegistryErrors
+        errorCodes: passwordDifficultErrorCodes,
+        errorsMessages: passwordDifficultRegistryErrors
     })
     const [passwordIsInit, setPasswordIsInit] = useState<boolean>(false);
     const [passwordDifficultErrorMsg, validatePasswordDifficult] = usePasswordValidation({

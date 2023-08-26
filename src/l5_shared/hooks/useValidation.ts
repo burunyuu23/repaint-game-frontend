@@ -8,8 +8,8 @@ type Rule = {
 
 type UseValidationProps = {
     rules: Rule[],
-    registerErrorCodes: { [key: string]: number },
-    userRegistryErrors: { [key: string]: string },
+    errorCodes: { [key: string]: number },
+    errorsMessages: { [key: string]: string },
     errorCode?: React.MutableRefObject<number>
 }
 const validateError = (error: boolean, fieldErrorCode: number, errorCode: MutableRefObject<number> | undefined) =>{
@@ -22,15 +22,15 @@ const validateError = (error: boolean, fieldErrorCode: number, errorCode: Mutabl
     return false
 }
 
-export const useValidation = ({rules, registerErrorCodes, userRegistryErrors, errorCode}: UseValidationProps): Return => {
+export const useValidation = ({rules, errorCodes, errorsMessages, errorCode}: UseValidationProps): Return => {
     const [errorMsg, setErrorMsg] = useState<string>("")
 
     const validate = () => {
         for (let i = 0; i < rules.length; i++) {
             const rule = rules[i]
-            const field = getFieldName(userRegistryErrors, rule.errorField);
-            if (field !== undefined && validateError(rule.rule(), registerErrorCodes[`${field}ErrorCode`], errorCode))
-                return setErrorMsg(userRegistryErrors[`${field}`])
+            const field = getFieldName(errorsMessages, rule.errorField);
+            if (field !== undefined && validateError(rule.rule(), errorCodes[`${field}ErrorCode`], errorCode))
+                return setErrorMsg(errorsMessages[`${field}`])
         }
         return setErrorMsg("")
     }
@@ -47,8 +47,8 @@ type CreateUseValidationProps = Omit<UseValidationProps, "rules">
 type UseValidationClosureProps = Pick<UseValidationProps, "rules">
 export const createUseValidation = (
     {
-        registerErrorCodes,
-        userRegistryErrors,
+        errorCodes,
+        errorsMessages,
         errorCode
     } : CreateUseValidationProps
-) => ({rules}: UseValidationClosureProps): Return => useValidation({rules, registerErrorCodes, userRegistryErrors, errorCode});
+) => ({rules}: UseValidationClosureProps): Return => useValidation({rules, errorCodes, errorsMessages, errorCode});
