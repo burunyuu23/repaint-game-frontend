@@ -15,11 +15,7 @@ export class AuthService {
     }
 
     static refreshToken = async (refreshTokenRequestDTO: RefreshTokenRequestDTO): Promise<RefreshTokenResponseDTO> => {
-        const response: CreateUserResponseDTO = await api.post(`${refreshUrl}`, refreshTokenRequestDTO, {
-            headers: {
-                'Authorization': 'Bearer ' + cookie_get_refresh_token()
-            }
-        })
+        const response: RefreshTokenResponseDTO = await api.post(`${refreshUrl}`, refreshTokenRequestDTO)
             .then(resp => resp.data)
         return response;
     }
