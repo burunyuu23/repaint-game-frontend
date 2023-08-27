@@ -9,8 +9,21 @@ export const cookie_set_token = (token: BearerToken) => {
     Cookie.set('refresh_token', JSON.stringify(token.refresh_token), {expires: new Date(time + token.refresh_expires_in*1000)})
 }
 export const cookie_get_access_token = () => {
-    return Cookie.get('access_token')
+    const access_token = Cookie.get('access_token');
+    if (access_token)
+        return JSON.parse(access_token)
+    else
+        return access_token
 }
 export const cookie_get_refresh_token = () => {
-    return Cookie.get('refresh_token')
+    const refresh_token = Cookie.get('refresh_token');
+    if (refresh_token)
+        return JSON.parse(refresh_token)
+    else
+        return refresh_token
+}
+
+export const cookie_token_clear = () => {
+    Cookie.remove("access_token")
+    Cookie.remove("refresh_token")
 }
