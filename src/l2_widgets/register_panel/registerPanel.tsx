@@ -1,7 +1,6 @@
 "use client";
 
 import React, {useRef, useState} from 'react';
-import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
 import UserSettingsSlice from "@/l3_features/redux/user_settings/reducer";
 import WhiteModalPanel from "@/l3_features/white_modal_panel/whiteModalPanel";
@@ -48,13 +47,12 @@ const RegisterPanel = () => {
     type PasswordDifficultRegistryErrorsWithErrorCodeKeys = AddErrorCodeToKeys<typeof passwordDifficultRegistryErrors, number>;
     const passwordDifficultErrorCodes = generateErrorCodes(passwordDifficultRegistryErrors) as PasswordDifficultRegistryErrorsWithErrorCodeKeys;
 
-    const isOpen = useAppSelector(state => state.user__settings.isRegisterOpen);
-
-    const user = useRef<UserRegister>(UserRegisterEmpty)
+    const user = useRef<UserRegister>({...UserRegisterEmpty})
 
     const dispatch = useAppDispatch();
     const handleClose = () =>
         dispatch(UserSettingsSlice.actions.UpdateIsRegisterOpen(false))
+
 
     const errorCode = useRef<number>(1)
     const useValidation = createUseValidation({
@@ -186,170 +184,163 @@ const RegisterPanel = () => {
     });
 
     return (
-        <div>
-            {isOpen &&
-                <WhiteModalPanel handleClose={handleClose} title={"Register"}>
-                    <Stack className={styles.stack}>
-                        <Stack direction="row" spacing={2} className={styles.stack}>
-                            <TextField
-                                id="username-input"
-                                label="Username"
+        <WhiteModalPanel handleClose={handleClose} title={"Register"}>
+            <Stack className={styles.stack}>
+                <Stack direction="row" spacing={2} className={styles.stack}>
+                    <TextField
+                        id="username-input"
+                        label="Username"
 
-                                error={usernameErrorMsg !== " "}
-                                helperText={usernameErrorMsg}
+                        error={usernameErrorMsg !== " "}
+                        helperText={usernameErrorMsg}
 
-                                onChange={(e) => {
-                                    user.current.username = e.target.value;
-                                    validateUsername()
-                                }}
-                            />
-                            <TextField
-                                id="email-input"
-                                label="Email"
-
-                                error={emailErrorMsg !== " "}
-                                helperText={emailErrorMsg}
-
-                                onChange={(e) => {
-                                    user.current.email = e.target.value
-                                    validateEmail()
-                                }}
-                            />
-                        </Stack>
-                        <Stack direction="row"
-                               className={[styles.passwordWrapper, styles.stack].join(" ")}
-                        style={{marginBottom: `${passwordErrorMsg !== " " || passwordDifficultErrorMsg !== " " ? "0" : "34px"}`}}>
-                            {
-                                (passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordEmpty || (passwordDifficultErrorMsg === " " && !passwordIsInit)) &&
-                                <NoEncryptionIcon className={styles.noPassword}/>
-                            }
-                            {
-                                passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordTooSmall &&
-                                <NoEncryptionGmailerrorredIcon className={styles.worstPassword}/>
-                            }
-                            {
-                                passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordHasNoVariety &&
-                                <HttpsIcon className={styles.badPassword}/>
-                            }
-                            {
-                                passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordHasNoSpecialChars &&
-                                <HttpsIcon className={styles.mediumPassword}/>
-                            }
-                            {
-                                passwordDifficultErrorMsg === " " && passwordIsInit &&
-                                <EnhancedEncryptionIcon className={styles.normalPassword}/>
-                            }
-                            <TextField
-                                id="outlined-password-input"
-                                label="Password"
-                                type="password"
-
-                                color={`${passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordEmpty ? "error" :
-                                    passwordDifficultErrorMsg !== " " ? "warning" :
-                                        !passwordIsInit ? "info" : "success"}`}
-
-                                error={passwordErrorMsg !== " "}
-                                helperText={passwordErrorMsg !== " " ? passwordErrorMsg : passwordDifficultErrorMsg.trim()}
-
-                                onChange={(e) => {
-                                    user.current.password = e.target.value
-                                    validatePassword()
-                                    validatePasswordDifficult()
-                                }}
-                                autoComplete="current-password"
-                            />
-                        </Stack>
-                        <Stack direction="row" spacing={2} className={styles.stack}>
-                            <TextField
-                                id="first_name-input"
-                                label="First name"
-
-                                error={first_nameErrorMsg !== " "}
-                                helperText={first_nameErrorMsg}
-
-                                onChange={(e) => {
-                                    user.current.first_name = e.target.value
-                                    validateFirst_name()
-                                }}
-                            />
-                            <TextField
-                                id="last_name-input"
-                                label="Last name"
-
-                                error={last_nameErrorMsg !== " "}
-                                helperText={last_nameErrorMsg}
-
-                                onChange={(e) => {
-                                    user.current.last_name = e.target.value
-                                    validateLast_name()
-                                }}
-                            />
-                        </Stack>
-                        <TextField
-                            id="birthdate-input"
-                            label="Birthdate"
-                            type={"date"}
-
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                            InputProps={{
-                                inputProps: {
-                                    min: (() => {
-                                        const currentDate = new Date();
-                                        return formatDate(new Date(currentDate.getFullYear() - 150, currentDate.getMonth(), currentDate.getDate()));
-                                    })(),
-                                    max: formatDate(new Date()),
-                                },
-                            }}
-                            defaultValue={formatDate(user.current.birthdate)}
-
-                            error={birthdateErrorMsg !== " "}
-                            helperText={birthdateErrorMsg}
-
-                            onChange={(e) => {
-                                user.current.birthdate = new Date(e.target.value)
-                                validateBirthdate()
-                            }}
-                        />
-                        <Button onClick={() => {
+                        onChange={(e) => {
+                            user.current.username = e.target.value;
                             validateUsername()
+                        }}
+                    />
+                    <TextField
+                        id="email-input"
+                        label="Email"
+
+                        error={emailErrorMsg !== " "}
+                        helperText={emailErrorMsg}
+
+                        onChange={(e) => {
+                            user.current.email = e.target.value
                             validateEmail()
+                        }}
+                    />
+                </Stack>
+                <Stack direction="row"
+                       className={[styles.passwordWrapper, styles.stack].join(" ")}
+                       style={{marginBottom: `${passwordErrorMsg !== " " || passwordDifficultErrorMsg !== " " ? "0" : "34px"}`}}>
+                    {
+                        (passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordEmpty || (passwordDifficultErrorMsg === " " && !passwordIsInit)) &&
+                        <NoEncryptionIcon className={styles.noPassword}/>
+                    }
+                    {
+                        passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordTooSmall &&
+                        <NoEncryptionGmailerrorredIcon className={styles.worstPassword}/>
+                    }
+                    {
+                        passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordHasNoVariety &&
+                        <HttpsIcon className={styles.badPassword}/>
+                    }
+                    {
+                        passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordHasNoSpecialChars &&
+                        <HttpsIcon className={styles.mediumPassword}/>
+                    }
+                    {
+                        passwordDifficultErrorMsg === " " && passwordIsInit &&
+                        <EnhancedEncryptionIcon className={styles.normalPassword}/>
+                    }
+                    <TextField
+                        id="outlined-password-input"
+                        label="Password"
+                        type="password"
+
+                        color={`${passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordEmpty ? "error" :
+                            passwordDifficultErrorMsg !== " " ? "warning" :
+                                !passwordIsInit ? "info" : "success"}`}
+
+                        error={passwordErrorMsg !== " "}
+                        helperText={passwordErrorMsg !== " " ? passwordErrorMsg : passwordDifficultErrorMsg.trim()}
+
+                        onChange={(e) => {
+                            user.current.password = e.target.value
                             validatePassword()
                             validatePasswordDifficult()
+                        }}
+                        autoComplete="current-password"
+                    />
+                </Stack>
+                <Stack direction="row" spacing={2} className={styles.stack}>
+                    <TextField
+                        id="first_name-input"
+                        label="First name"
+
+                        error={first_nameErrorMsg !== " "}
+                        helperText={first_nameErrorMsg}
+
+                        onChange={(e) => {
+                            user.current.first_name = e.target.value
                             validateFirst_name()
+                        }}
+                    />
+                    <TextField
+                        id="last_name-input"
+                        label="Last name"
+
+                        error={last_nameErrorMsg !== " "}
+                        helperText={last_nameErrorMsg}
+
+                        onChange={(e) => {
+                            user.current.last_name = e.target.value
                             validateLast_name()
-                            validateBirthdate()
+                        }}
+                    />
+                </Stack>
+                <TextField
+                    id="birthdate-input"
+                    label="Birthdate"
+                    type={"date"}
 
-                            console.log(errorCode.current)
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    InputProps={{
+                        inputProps: {
+                            min: (() => {
+                                const currentDate = new Date();
+                                return formatDate(new Date(currentDate.getFullYear() - 150, currentDate.getMonth(), currentDate.getDate()));
+                            })(),
+                            max: formatDate(new Date()),
+                        },
+                    }}
+                    defaultValue={formatDate(user.current.birthdate)}
 
-                            if (errorCode.current === 1) {
-                                KeycloakService.createUser(user.current)
-                                    .then(resp => {
-                                        console.log(resp)
+                    error={birthdateErrorMsg !== " "}
+                    helperText={birthdateErrorMsg}
 
-                                        cookie_set_token(resp)
+                    onChange={(e) => {
+                        user.current.birthdate = new Date(e.target.value)
+                        validateBirthdate()
+                    }}
+                />
+                <Button onClick={() => {
+                    validateUsername()
+                    validateEmail()
+                    validatePassword()
+                    validatePasswordDifficult()
+                    validateFirst_name()
+                    validateLast_name()
+                    validateBirthdate()
 
-                                        handleClose();
-                                    })
-                                    .catch(e => {
-                                        if (e.response.data.message === userRegistryErrors.usernameExist) {
-                                            usernameExists.current.push(user.current.username)
-                                            validateUsername()
-                                        }
-                                        if (e.response.data.message === userRegistryErrors.emailExist) {
-                                            emailExists.current.push(user.current.email)
-                                            validateEmail()
-                                        }
-                                    })
-                            }
-                        }}>
-                            Register
-                        </Button>
-                    </Stack>
-                </WhiteModalPanel>
-            }
-        </div>
+                    if (errorCode.current === 1) {
+                        KeycloakService.createUser(user.current)
+                            .then(resp => {
+                                cookie_set_token(resp)
+                                dispatch(UserSettingsSlice.actions.UpdateIsAuth(true))
+
+                                handleClose();
+                            })
+                            .catch(e => {
+                                if (e.response.data.message === userRegistryErrors.usernameExist) {
+                                    usernameExists.current.push(user.current.username)
+                                    validateUsername()
+                                }
+                                if (e.response.data.message === userRegistryErrors.emailExist) {
+                                    emailExists.current.push(user.current.email)
+                                    validateEmail()
+                                }
+                            })
+                    }
+                }}>
+                    Register
+                </Button>
+            </Stack>
+        </WhiteModalPanel>
     );
 };
 
