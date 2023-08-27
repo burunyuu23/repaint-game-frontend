@@ -23,7 +23,7 @@ const validateError = (error: boolean, fieldErrorCode: number, errorCode: Mutabl
 }
 
 export const useValidation = ({rules, errorCodes, errorsMessages, errorCode}: UseValidationProps): Return => {
-    const [errorMsg, setErrorMsg] = useState<string>("")
+    const [errorMsg, setErrorMsg] = useState<string>(" ")
 
     const validate = () => {
         for (let i = 0; i < rules.length; i++) {
@@ -32,7 +32,7 @@ export const useValidation = ({rules, errorCodes, errorsMessages, errorCode}: Us
             if (field !== undefined && validateError(rule.rule(), errorCodes[`${field}ErrorCode`], errorCode))
                 return setErrorMsg(errorsMessages[`${field}`])
         }
-        return setErrorMsg("")
+        return setErrorMsg(" ")
     }
 
     return [errorMsg, validate]
