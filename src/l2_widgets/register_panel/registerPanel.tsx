@@ -15,14 +15,18 @@ import NoEncryptionGmailerrorredIcon from '@mui/icons-material/NoEncryptionGmail
 import HttpsIcon from '@mui/icons-material/Https';
 import EnhancedEncryptionIcon from '@mui/icons-material/EnhancedEncryption';
 import styles from "./registerPanel.module.scss"
+import {KeycloakService} from "@/l4_entities/user/keycloak-service/service";
+import {cookie_set_token} from "@/l5_shared/util/cookie_worker";
 
 const RegisterPanel = () => {
 
     const userRegistryErrors = {
         usernameEmpty: "Username must be not empty",
         usernameTooLarge: "Username length must be less than 30",
+        usernameExist: "User with this username exist already!",
         emailEmpty: "Email must be not empty",
         emailRegex: "Email have strange format",
+        emailExist: "User with this email exist already!",
         passwordEmpty: "Password must be not empty",
         passwordTooSmall: "Password length must be greater than 8",
         first_nameEmpty: "First name must be not empty",
@@ -59,6 +63,7 @@ const RegisterPanel = () => {
         errorCode
     })
 
+    const usernameExists = useRef<string[]>([]);
     const [usernameErrorMsg, validateUsername] = useValidation({
         rules: [
             {
@@ -68,10 +73,15 @@ const RegisterPanel = () => {
             {
                 rule: () => user.current.username.length > 30,
                 errorField: userRegistryErrors.usernameTooLarge
+            },
+            {
+                rule: () => usernameExists.current.some(username => username === user.current.username),
+                errorField: userRegistryErrors.usernameExist
             }
         ]
     });
 
+    const emailExists = useRef<string[]>([]);
     const [emailErrorMsg, validateEmail] = useValidation({
         rules: [
             {
@@ -84,6 +94,10 @@ const RegisterPanel = () => {
                     return !regex.test(user.current.email)
                 },
                 errorField: userRegistryErrors.emailRegex
+            },
+            {
+                rule: () => emailExists.current.some(email => email === user.current.email),
+                errorField: userRegistryErrors.emailExist
             }
         ],
     });
@@ -142,7 +156,7 @@ const RegisterPanel = () => {
                 rule: () => user.current.first_name.length <= 0,
                 errorField: userRegistryErrors.first_nameEmpty
             },
-            ]
+        ]
     })
 
     const [last_nameErrorMsg, validateLast_name] = useValidation({
@@ -175,13 +189,13 @@ const RegisterPanel = () => {
         <div>
             {isOpen &&
                 <WhiteModalPanel handleClose={handleClose} title={"Register"}>
-                    <Stack spacing={2}>
-                        <Stack direction="row" spacing={2}>
+                    <Stack className={styles.stack}>
+                        <Stack direction="row" spacing={2} className={styles.stack}>
                             <TextField
                                 id="username-input"
                                 label="Username"
 
-                                error={usernameErrorMsg !== ""}
+                                error={usernameErrorMsg !== " "}
                                 helperText={usernameErrorMsg}
 
                                 onChange={(e) => {
@@ -193,7 +207,7 @@ const RegisterPanel = () => {
                                 id="email-input"
                                 label="Email"
 
-                                error={emailErrorMsg !== ""}
+                                error={emailErrorMsg !== " "}
                                 helperText={emailErrorMsg}
 
                                 onChange={(e) => {
@@ -202,9 +216,11 @@ const RegisterPanel = () => {
                                 }}
                             />
                         </Stack>
-                        <Stack direction="row" className={styles.passwordWrapper}>
+                        <Stack direction="row"
+                               className={[styles.passwordWrapper, styles.stack].join(" ")}
+                        style={{marginBottom: `${passwordErrorMsg !== " " || passwordDifficultErrorMsg !== " " ? "0" : "34px"}`}}>
                             {
-                                (passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordEmpty || (passwordDifficultErrorMsg === "" && !passwordIsInit)) &&
+                                (passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordEmpty || (passwordDifficultErrorMsg === " " && !passwordIsInit)) &&
                                 <NoEncryptionIcon className={styles.noPassword}/>
                             }
                             {
@@ -220,7 +236,7 @@ const RegisterPanel = () => {
                                 <HttpsIcon className={styles.mediumPassword}/>
                             }
                             {
-                                passwordDifficultErrorMsg === "" && passwordIsInit &&
+                                passwordDifficultErrorMsg === " " && passwordIsInit &&
                                 <EnhancedEncryptionIcon className={styles.normalPassword}/>
                             }
                             <TextField
@@ -229,11 +245,11 @@ const RegisterPanel = () => {
                                 type="password"
 
                                 color={`${passwordDifficultErrorMsg === passwordDifficultRegistryErrors.passwordEmpty ? "error" :
-                                    passwordDifficultErrorMsg !== "" ? "warning" :
+                                    passwordDifficultErrorMsg !== " " ? "warning" :
                                         !passwordIsInit ? "info" : "success"}`}
 
-                                error={passwordErrorMsg !== ""}
-                                helperText={passwordErrorMsg !== "" ? passwordErrorMsg : passwordDifficultErrorMsg}
+                                error={passwordErrorMsg !== " "}
+                                helperText={passwordErrorMsg !== " " ? passwordErrorMsg : passwordDifficultErrorMsg.trim()}
 
                                 onChange={(e) => {
                                     user.current.password = e.target.value
@@ -243,12 +259,12 @@ const RegisterPanel = () => {
                                 autoComplete="current-password"
                             />
                         </Stack>
-                        <Stack direction="row" spacing={2}>
+                        <Stack direction="row" spacing={2} className={styles.stack}>
                             <TextField
                                 id="first_name-input"
                                 label="First name"
 
-                                error={first_nameErrorMsg !== ""}
+                                error={first_nameErrorMsg !== " "}
                                 helperText={first_nameErrorMsg}
 
                                 onChange={(e) => {
@@ -260,7 +276,7 @@ const RegisterPanel = () => {
                                 id="last_name-input"
                                 label="Last name"
 
-                                error={last_nameErrorMsg !== ""}
+                                error={last_nameErrorMsg !== " "}
                                 helperText={last_nameErrorMsg}
 
                                 onChange={(e) => {
@@ -288,7 +304,7 @@ const RegisterPanel = () => {
                             }}
                             defaultValue={formatDate(user.current.birthdate)}
 
-                            error={birthdateErrorMsg !== ""}
+                            error={birthdateErrorMsg !== " "}
                             helperText={birthdateErrorMsg}
 
                             onChange={(e) => {
@@ -307,8 +323,26 @@ const RegisterPanel = () => {
 
                             console.log(errorCode.current)
 
-                            if (errorCode.current === 1)
-                                console.log("can register")
+                            if (errorCode.current === 1) {
+                                KeycloakService.createUser(user.current)
+                                    .then(resp => {
+                                        console.log(resp)
+
+                                        cookie_set_token(resp)
+
+                                        handleClose();
+                                    })
+                                    .catch(e => {
+                                        if (e.response.data.message === userRegistryErrors.usernameExist) {
+                                            usernameExists.current.push(user.current.username)
+                                            validateUsername()
+                                        }
+                                        if (e.response.data.message === userRegistryErrors.emailExist) {
+                                            emailExists.current.push(user.current.email)
+                                            validateEmail()
+                                        }
+                                    })
+                            }
                         }}>
                             Register
                         </Button>
