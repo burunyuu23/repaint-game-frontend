@@ -20,21 +20,20 @@ import {cookie_set_token} from "@/l5_shared/util/cookie_worker";
 const RegisterPanel = () => {
 
     const userRegistryErrors = {
-        usernameEmpty: "Must be not empty",
-        usernameTooLarge: "Length must be less than 30",
-        usernameExist: "This username exist already!",
-        usernameRegex: "Incorrect characters",
-        emailEmpty: "Must be not empty",
-        emailRegex: "Strange format",
-        emailExist: "This email exist already!",
-        passwordEmpty: "Must be not empty",
-        passwordTooSmall: "Length must be greater than 8",
-        first_nameEmpty: "Must be not empty",
-        first_nameTooLarge: "Length must be less than 30",
-        last_nameEmpty: "Must be not empty",
-        last_nameTooLarge: "Length must be less than 30",
+        usernameEmpty: "Username must be not empty",
+        usernameTooLarge: "Username length must be less than 30",
+        usernameExist: "User with this username exist already!",
+        emailEmpty: "Email must be not empty",
+        emailRegex: "Email have strange format",
+        emailExist: "User with this email exist already!",
+        passwordEmpty: "Password must be not empty",
+        passwordTooSmall: "Password length must be greater than 8",
+        first_nameEmpty: "First name must be not empty",
+        first_nameTooLarge: "First name length must be less than 30",
+        last_nameEmpty: "Last name must be not empty",
+        last_nameTooLarge: "Last name length must be less than 30",
         birthdateWrongRange: "You must be less than 150 years old and over -1",
-        birthdateEmpty: "Must be not empty"
+        birthdateEmpty: "Date must be not empty"
     }
     type UserRegistryErrorsWithErrorCodeKeys = AddErrorCodeToKeys<typeof userRegistryErrors, number>;
     const registerErrorCodes = generateErrorCodes(userRegistryErrors) as UserRegistryErrorsWithErrorCodeKeys;
@@ -76,14 +75,7 @@ const RegisterPanel = () => {
             {
                 rule: () => usernameExists.current.some(username => username === user.current.username),
                 errorField: userRegistryErrors.usernameExist
-            },
-            {
-                rule: () => {
-                    const regex = /^[a-zA-Z0-9]+(?:(?![\\\/|&#?]).)*$/
-                    return !regex.test(user.current.username)
-                },
-                errorField: userRegistryErrors.usernameRegex
-            },
+            }
         ]
     });
 
