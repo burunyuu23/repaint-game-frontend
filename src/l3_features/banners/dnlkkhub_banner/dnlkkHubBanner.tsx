@@ -14,6 +14,7 @@ import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
 import UserSettingsSlice from "@/l3_features/redux/user_settings/reducer";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import { cookie_token_clear } from '@/l5_shared/util/cookie_worker';
+import Link from "next/link";
 
 type Props = {
     setter: () => void
@@ -70,7 +71,9 @@ const DnlkkHubBanner = ({setter}: Props) => {
                         </div>}
                     {isAuth &&
                         <div className={styles.welcomePanel}>
-                            <Button>Profile</Button>
+                            <Button>
+                                <Link href={"/profile"}>Profile</Link>
+                            </Button>
                             <Button onClick={() => {
                                 cookie_token_clear()
                                 dispatch(UserSettingsSlice.actions.UpdateIsAuth(false))
