@@ -31,9 +31,8 @@ export const cookie_token_clear = () => {
     Cookie.remove("refresh_token")
 }
 
-export const get_is_token_active = (dispatch: AppDispatch) => {
+export const get_is_token_active = () => {
     if (cookie_get_access_token()) {
-        dispatch(UserSettingsSlice.actions.UpdateIsAuth(true))
         return true
     }
     else {
@@ -43,13 +42,10 @@ export const get_is_token_active = (dispatch: AppDispatch) => {
                 .then(resp => cookie_set_token(resp))
                 .catch(e => {
                     cookie_token_clear()
-                    dispatch(UserSettingsSlice.actions.UpdateIsAuth(false))
                     return false
                 })
-            dispatch(UserSettingsSlice.actions.UpdateIsAuth(true))
             return true
         }
     }
-    dispatch(UserSettingsSlice.actions.UpdateIsAuth(false))
     return false
 }
