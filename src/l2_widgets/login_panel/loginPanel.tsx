@@ -14,11 +14,11 @@ import {AuthService} from "@/l4_entities/user/auth-service/service";
 const LoginPanel = () => {
 
     const userLoginErrors = {
-        usernameEmpty: "Username must be not empty",
-        usernameTooLarge: "Username length must be less than 30",
+        usernameEmpty: "Must be not empty",
+        usernameTooLarge: "Length must be less than 30",
         usernameWrong: "Incorrect username or email",
-        passwordEmpty: "Password must be not empty",
-        passwordTooSmall: "Password length must be greater than 8",
+        passwordEmpty: "Must be not empty",
+        passwordTooSmall: "Length must be greater than 8",
         passwordWrong: "Incorrect password",
     }
     type UserLoginErrorsWithErrorCodeKeys = AddErrorCodeToKeys<typeof userLoginErrors, number>;
