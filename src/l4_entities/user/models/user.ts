@@ -1,4 +1,5 @@
 type UserFullInfo = {
+    id: string,
     username: string,
     email: string,
     email_verified: boolean,
