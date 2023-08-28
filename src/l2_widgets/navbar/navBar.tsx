@@ -10,6 +10,7 @@ import {defaultColors} from "@/l5_shared/consts/repaint_game_settings";
 import AsideNavBar from "./aside_nav_bar/asideNavBar";
 import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
 import {get_is_token_active} from "@/l5_shared/util/cookie_worker";
+import UserSettingsSlice from "@/l3_features/redux/user_settings/reducer";
 
 const NavBar = () => {
     const [baseColors, setBaseColors] = useState<string[]>([])
@@ -19,7 +20,7 @@ const NavBar = () => {
     useEffect(() => {
         fetchColors();
 
-        get_is_token_active(dispatch)
+        dispatch(UserSettingsSlice.actions.UpdateIsAuth(get_is_token_active()));
     }, [])
 
     const fetchColors = () => {
