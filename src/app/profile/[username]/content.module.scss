@@ -23,10 +23,22 @@
   background-size: contain;
   z-index: -1;
 
+  animation: slider 60s linear infinite;
+
   i {
     font-size: 16px;
     position: absolute;
     top: -12%;
+  }
+
+  @keyframes slider {
+    from {
+      background-position: 0 0;
+    }
+    to {
+
+      background-position: 200px 0;
+    }
   }
 }
 
