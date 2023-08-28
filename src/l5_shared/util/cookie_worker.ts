@@ -1,5 +1,8 @@
 import {BearerToken} from "@/l4_entities/user/models/bearerToken";
 import Cookie from "js-cookie";
+import UserSettingsSlice from "@/l3_features/redux/user_settings/reducer";
+import {AuthService} from "@/l4_entities/user/auth-service/service";
+import {AppDispatch} from "@/l3_features/redux/store";
 
 export const cookie_set_token = (token: BearerToken) => {
     const now = new Date()
@@ -26,4 +29,27 @@ export const cookie_get_refresh_token = () => {
 export const cookie_token_clear = () => {
     Cookie.remove("access_token")
     Cookie.remove("refresh_token")
+}
+
+export const get_is_token_active = (dispatch: AppDispatch) => {
+    if (cookie_get_access_token()) {
+        dispatch(UserSettingsSlice.actions.UpdateIsAuth(true))
+        return true
+    }
+    else {
+        const refresh_token = cookie_get_refresh_token()
+        if (refresh_token) {
+            AuthService.refreshToken({refresh_token})
+                .then(resp => cookie_set_token(resp))
+                .catch(e => {
+                    cookie_token_clear()
+                    dispatch(UserSettingsSlice.actions.UpdateIsAuth(false))
+                    return false
+                })
+            dispatch(UserSettingsSlice.actions.UpdateIsAuth(true))
+            return true
+        }
+    }
+    dispatch(UserSettingsSlice.actions.UpdateIsAuth(false))
+    return false
 }
