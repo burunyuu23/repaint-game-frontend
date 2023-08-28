@@ -6,8 +6,8 @@ type UserFullInfo = {
     password: string,
     first_name: string,
     last_name: string,
-    created_timestamp: Date,
     birthdate: Date,
+    createdTimestamp: number,
 
     image_url: string,
 
@@ -44,4 +44,4 @@ export const UserRegisterEmpty: UserRegister = {
     birthdate: new Date()
 }
 
-export type UserProfile = Omit<UserFullInfo, 'password'>
+export type UserProfile = Omit<UserFullInfo, 'password' | "birthdate"> & {birthdate: string}
