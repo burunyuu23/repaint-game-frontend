@@ -28,9 +28,9 @@ const Page = () => {
         fetchData();
     }, []);
     return (
-            <div style={{display: "flex", width:"100dvw", justifyContent: "center", alignItems: "center"}}>
-                Loading...
-            </div>
+        <div style={{display: "flex", width:"100dvw", justifyContent: "center", alignItems: "center"}}>
+            Loading...
+        </div>
     );
 };
 
