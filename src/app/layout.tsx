@@ -6,6 +6,7 @@ import NavBar from "@/l2_widgets/navbar/navBar";
 import React from "react";
 import ReduxProvider from '@/l3_features/redux/reduxProvider';
 import StyledComponentsRegistry from "@/l5_shared/registry/styled/StyledComponentRegisty";
+import CookieTokenRegistry from "@/l5_shared/registry/cookie_token/CookieTokenRegistry";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -36,7 +37,9 @@ export default function RootLayout({
             <ReduxProvider>
                 <NavBar/>
                 <main>
+                    <CookieTokenRegistry>
                     {children}
+                    </CookieTokenRegistry>
                 </main>
             </ReduxProvider>
             </body>
