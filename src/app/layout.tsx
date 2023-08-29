@@ -1,7 +1,7 @@
 import './globals.scss'
 import type {Metadata} from 'next'
 import {Inter} from 'next/font/google'
-import ThemeRegistry from "@/l5_shared/theme/ThemeRegistry";
+import ThemeRegistry from "@/l5_shared/registry/theme/ThemeRegistry";
 import NavBar from "@/l2_widgets/navbar/navBar";
 import React from "react";
 import ReduxProvider from '@/l3_features/redux/reduxProvider';

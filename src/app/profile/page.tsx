@@ -4,7 +4,7 @@ import React, {useEffect} from 'react';
 import {get_is_token_active} from "@/l5_shared/util/cookie_worker";
 import {UsersPostsService} from "@/l4_entities/user/users-posts-service/service";
 import { useRouter } from 'next/navigation';
-import Loading from "@/app/loading"
+import Loading from "./loading"
 
 async function getUserProfile() {
     if (!get_is_token_active())

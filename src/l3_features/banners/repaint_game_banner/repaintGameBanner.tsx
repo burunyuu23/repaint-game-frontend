@@ -1,6 +1,6 @@
 "use client";
 
-import React, {useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import CarouselPaper from "@/l5_shared/lib/carousel_paper/carouselPaper";
 import styles from "./repaintGameBanner.module.scss"
 import {PerspectiveCamera} from "@react-three/drei";

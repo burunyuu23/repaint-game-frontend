@@ -4,18 +4,18 @@ import React from "react";
 import Panels from "./panels";
 
 export default function Home() {
-  return (
-    <div className={styles.main}>
+    return (
+        <div className={styles.main}>
 
-      <Panels />
+            <Panels/>
 
-        <MainBanner />
+            <MainBanner/>
 
-      <p>Hi!</p>
-      <ul>
-        <li>First</li>
-        <li>Second</li>
-      </ul>
-    </div>
-  )
+            <p>Hi!</p>
+            <ul>
+                <li>First</li>
+                <li>Second</li>
+            </ul>
+        </div>
+    )
 }

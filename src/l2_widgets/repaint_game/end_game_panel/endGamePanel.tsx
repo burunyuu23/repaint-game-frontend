@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from "./endGamePanel.module.scss"
-import Timer from "@/l5_shared/lib/timer/timer";
 import SettingsIcon from '@mui/icons-material/Settings';
 import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import ModalPanel from "@/l5_shared/lib/modal_panel/modalPanel";

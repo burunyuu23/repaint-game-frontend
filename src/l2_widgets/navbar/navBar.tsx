@@ -29,7 +29,6 @@ const NavBar = () => {
             .catch(() => setBaseColors(defaultColors.map(color => color.hexCode)))
     };
 
-
     return (
         <header className={styles.header}>
             <div className={styles.headerBackground}/>

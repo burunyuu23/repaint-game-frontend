@@ -10,33 +10,22 @@ type Props = {
     profile: UserProfile
 }
 
+const ProfileBanner = styled.div`
+  border-bottom: 2px solid #ffdf3c;
+  border-top: 2px solid #ffdf3c;
+`
+
 const Content = ({profile}: Props) => {
     const from = (new Date(profile.createdTimestamp)).toDateString();
-
-    const Banner = styled.div`
-      background-image: url(${profile.banner_image_url});
-      border-bottom: 2px solid #ffdf3c;
-      border-top: 2px solid #ffdf3c;
-
-      animation: slider 60s linear infinite;
-
-      @keyframes slider {
-        from {
-          background-position: 0 0;
-        }
-        to {
-          background-position: 100vw 0;
-        }
-      }
-    `
 
     return (
         <div className={styles.main}>
             <header className={styles.header}>
                 <div className={styles.mainInfo}>
-                    <Banner className={styles.banner}>
+                    <ProfileBanner className={styles.profileBanner}
+                                   style={{backgroundImage: `url(${profile.banner_image_url})`}}>
                         <i>from {from}</i>
-                    </Banner>
+                    </ProfileBanner>
 
                     <b>{profile.username}</b>
                     <div style={{backgroundImage: `url(${profile.profile_image_url})`}}

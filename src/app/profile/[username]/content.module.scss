@@ -13,24 +13,6 @@
   background: #000000aa;
 }
 
-.banner {
-  position: absolute;
-  display: flex;
-
-  // 1880x200
-  width: 100dvw;
-  height: 200px;
-  background-size: cover;
-  z-index: -1;
-
-  i {
-    font-size: 16px;
-    position: absolute;
-    top: -12%;
-    left: 20px;
-  }
-}
-
 .profileImage {
   width: 180px;
   height: 180px;
@@ -73,6 +55,35 @@
 
 }
 
+.profileBanner {
+
+  position: absolute;
+  display: flex;
+
+  // 1880x200
+  width: 100dvw;
+  height: 200px;
+  background-size: cover;
+  z-index: -1;
+
+  i {
+    font-size: 16px;
+    position: absolute;
+    top: -12%;
+    left: 20px;
+  }
+
+  animation: slider 60s linear infinite;
+
+  @keyframes slider {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 100vw 0;
+    }
+  }
+}
 
 .mainInfo {
   position: relative;
