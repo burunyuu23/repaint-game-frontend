@@ -24,8 +24,13 @@ export const useFetch = (callback: Function): Return => {
             await callback(...args)
         } catch (_e) {
             const e = _e as AxiosError
-            // @ts-ignore
-            setError(e.response?.data?.message);
+            if (e.response?.status === 401)
+                setError('You must be authorized before do it!');
+            else {
+                // @ts-ignore
+                setError(e.response?.data?.message);
+            }
+
         } finally {
             setIsLoading(false)
         }
