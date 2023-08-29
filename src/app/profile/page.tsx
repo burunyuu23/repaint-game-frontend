@@ -4,6 +4,7 @@ import React, {useEffect} from 'react';
 import {get_is_token_active} from "@/l5_shared/util/cookie_worker";
 import {UsersPostsService} from "@/l4_entities/user/users-posts-service/service";
 import { useRouter } from 'next/navigation';
+import Loading from "@/app/loading"
 
 async function getUserProfile() {
     if (!get_is_token_active())
@@ -28,9 +29,7 @@ const Page = () => {
         fetchData();
     }, []);
     return (
-        <div style={{display: "flex", width:"100dvw", justifyContent: "center", alignItems: "center"}}>
-            Loading...
-        </div>
+        <Loading />
     );
 };
 

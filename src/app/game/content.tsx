@@ -17,6 +17,7 @@ import {AppDispatch} from "@/l3_features/redux/store";
 import RepaintGameSettingsSlice, {RepaintGameSettings} from "@/l3_features/redux/repaint_game/settings_reducer";
 import {fieldSizeDefault, fieldSizeMax, fieldSizeMin, maxRoundsDefault, maxRoundsMax, maxRoundsMin} from "@/l5_shared/consts/repaint_game_settings";
 import InfoPanel from "@/l2_widgets/repaint_game/info_panel/infoPanel";
+import Loading from "@/app/loading"
 
 const doStart = async (dispatch: AppDispatch, paletteId: number, fieldSize: number, maxRounds: number) => {
     dispatch(RepaintGameStateSlice.actions.StartNewGame());
@@ -127,7 +128,7 @@ const Content = React.memo(() => {
     return (
         <div className={styles.main}>
             {data === null && startGameError !== undefined &&
-                <div>Loading...</div>
+                <Loading />
             }
             {data === null && !isStartGameLoading && startGameError === undefined &&
                 <div style={{color: "red"}}>
