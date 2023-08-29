@@ -13,7 +13,7 @@ import {devices} from "@/l5_shared/consts/css/display_size";
 import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
 import UserSettingsSlice from "@/l3_features/redux/user_settings/reducer";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
-import { cookie_token_clear } from '@/l5_shared/util/cookie_worker';
+import {cookie_token_clear, get_is_token_active} from '@/l5_shared/util/cookie_worker';
 import Link from "next/link";
 
 type Props = {
@@ -72,7 +72,10 @@ const DnlkkHubBanner = ({setter}: Props) => {
                     {isAuth &&
                         <div className={styles.welcomePanel}>
                             <Button>
-                                <Link href={"/profile"}>Profile</Link>
+                                <Link href={"/profile"}
+                                      onClick={() => dispatch(UserSettingsSlice.actions.UpdateIsAuth(get_is_token_active()))}>
+                                    Profile
+                                </Link>
                             </Button>
                             <Button onClick={() => {
                                 cookie_token_clear()

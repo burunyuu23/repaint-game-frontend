@@ -8,6 +8,8 @@ import {Transition} from "react-transition-group";
 import {RainbowLinearGradientBackgroundStyled} from "@/l5_shared/lib/rainbow_color_styled/rainbowColorStyled";
 import styled from "styled-components";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
+import {cookie_token_clear, get_is_token_active} from "@/l5_shared/util/cookie_worker";
+import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
 
 type Props = {
     entered: boolean,
@@ -17,6 +19,7 @@ type Props = {
 
 const AsideNavBar = ({entered, onClose, baseColors}: Props) => {
     const isAuth = useAppSelector(state => state.user__settings.isAuth)
+    const dispatch = useAppDispatch()
 
     const nodeRef = useRef(null);
 
@@ -92,14 +95,22 @@ const AsideNavBar = ({entered, onClose, baseColors}: Props) => {
                         <div>
                             <div>
                                 <div className={styles.logo}>
-                                    <Link href={"/search"} onClick={onClose} className={styles.logoTextActive}>
+                                    <Link href={"/search"}
+                                          onClick={onClose}
+                                          className={styles.logoTextActive}>
                                         Search users
                                     </Link>
                                 </div>
                             </div>
                             <div>
                                 <div className={styles.logo}>
-                                    <Link href={"/"} onClick={onClose} className={styles.logoTextActive}>
+                                    <Link href={"/"}
+                                          onClick={() => {
+                                              cookie_token_clear()
+                                              dispatch(UserSettingsSlice.actions.UpdateIsAuth(get_is_token_active()));
+                                              onClose();
+                                          }}
+                                          className={styles.logoTextActive}>
                                         Logout
                                     </Link>
                                 </div>

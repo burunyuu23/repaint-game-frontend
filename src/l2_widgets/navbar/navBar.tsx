@@ -34,11 +34,15 @@ const NavBar = () => {
             <div className={styles.headerBackground}/>
             <nav className={styles.nav}>
 
-                <Link href={"/"} className={styles.logoTextActive}>
+                <Link href={"/"}
+                      onClick={() => dispatch(UserSettingsSlice.actions.UpdateIsAuth(get_is_token_active()))}
+                      className={styles.logoTextActive}>
                     DnlkkHub
                 </Link>
-                <Button onClick={() =>
-                    setEntered((prevState) => !prevState)}>
+                <Button onClick={() => {
+                    dispatch(UserSettingsSlice.actions.UpdateIsAuth(get_is_token_active()));
+                    setEntered((prevState) => !prevState)
+                }}>
                     <WidgetsIcon
                         id={styles.asideNavBarIcon}
                         className={styles.logoTextActive}/>
@@ -46,7 +50,10 @@ const NavBar = () => {
 
                 <AsideNavBar entered={entered}
                              baseColors={baseColors}
-                             onClose={() => setEntered(false)}/>
+                             onClose={() => {
+                                 dispatch(UserSettingsSlice.actions.UpdateIsAuth(get_is_token_active()));
+                                 setEntered(false)
+                             }}/>
 
             </nav>
         </header>
