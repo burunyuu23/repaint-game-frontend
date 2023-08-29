@@ -20,7 +20,12 @@ const MainBanner = () => {
     const bannerIsLoad = useRef<boolean>(false)
     const [triggerRerender, setTriggerRerender] = useState(false);
 
+    if (window.innerWidth < 555)
+        bannerIsLoad.current = true;
+
     useEffect(() => {
+        // if (window.innerWidth)
+
         const interval = setInterval(() => {
             setTriggerRerender(() => bannerIsLoad.current);
 
