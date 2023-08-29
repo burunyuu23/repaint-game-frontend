@@ -18,7 +18,7 @@
   display: flex;
 
   // 1880x200
-  width: 100%;
+  width: 100dvw;
   height: 200px;
   background-size: cover;
   z-index: -1;
@@ -27,6 +27,7 @@
     font-size: 16px;
     position: absolute;
     top: -12%;
+    left: 20px;
   }
 }
 

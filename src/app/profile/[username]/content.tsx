@@ -23,6 +23,8 @@ const Content = ({profile}: Props) => {
 
     const Banner = styled.div`
       background-image: url(${profile.banner_image_url});
+      border-bottom: 2px solid #ffdf3c;
+      border-top: 2px solid #ffdf3c;
 
       animation: slider 60s linear infinite;
 
