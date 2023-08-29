@@ -9,7 +9,8 @@ type UserFullInfo = {
     birthdate: Date,
     createdTimestamp: number,
 
-    image_url: string,
+    profile_image_url: string,
+    banner_image_url: string,
 
     posts_count: number,
     comments_count: number,
