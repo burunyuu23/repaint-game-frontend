@@ -77,6 +77,7 @@ const AsideNavBar = ({entered, onClose, baseColors}: Props) => {
                     <Header className={isAuth ? styles.logo : styles.logoMain}>
                         {isAuth &&
                             <Link href={"/profile"}
+                                  onClick={onClose}
                                   className={styles.logoTextActive}>
                                 Profile
                             </Link>
@@ -91,14 +92,14 @@ const AsideNavBar = ({entered, onClose, baseColors}: Props) => {
                         <div>
                             <div>
                                 <div className={styles.logo}>
-                                    <Link href={"/search"} className={styles.logoTextActive}>
+                                    <Link href={"/search"} onClick={onClose} className={styles.logoTextActive}>
                                         Search users
                                     </Link>
                                 </div>
                             </div>
                             <div>
                                 <div className={styles.logo}>
-                                    <Link href={"/"} className={styles.logoTextActive}>
+                                    <Link href={"/"} onClick={onClose} className={styles.logoTextActive}>
                                         Logout
                                     </Link>
                                 </div>
@@ -108,12 +109,12 @@ const AsideNavBar = ({entered, onClose, baseColors}: Props) => {
                     {!isAuth &&
                         <div>
                             <div className={styles.logo}>
-                                <Link href={"/login"} className={styles.logoTextActive}>
+                                <Link href={"/login"} onClick={onClose} className={styles.logoTextActive}>
                                     Login
                                 </Link>
                             </div>
                             <div className={styles.logo}>
-                                <Link href={"/register"} className={styles.logoTextActive}>
+                                <Link href={"/register"} onClick={onClose} className={styles.logoTextActive}>
                                     Register
                                 </Link>
                             </div>
@@ -122,7 +123,7 @@ const AsideNavBar = ({entered, onClose, baseColors}: Props) => {
 
 
                     <Header className={styles.logo}>
-                        <Link href={"/games"} className={styles.logoTextActive}>
+                        <Link href={"/games"} onClick={onClose} className={styles.logoTextActive}>
                             Games
                         </Link>
                     </Header>
@@ -142,7 +143,7 @@ const AsideNavBar = ({entered, onClose, baseColors}: Props) => {
                     </div>
                         <div className={styles.logo}>
                             <div className={styles.logoText}>
-                                <Link href={"/chess"} className={parentStyles.logoTextActive}>
+                                <Link href={"/chess"} onClick={onClose} className={parentStyles.logoTextActive}>
                                     chess
                                 </Link>
                             </div>
