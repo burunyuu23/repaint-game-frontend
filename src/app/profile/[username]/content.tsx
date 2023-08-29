@@ -1,11 +1,10 @@
 "use client";
 
-import React, {useState} from 'react';
+import React from 'react';
 import {UserProfile} from "@/l4_entities/user/models/user";
 import styles from "./content.module.scss"
 import {Button} from "@mui/material";
 import styled from "styled-components";
-import { getImage } from '@/l5_shared/util/image';
 
 type Props = {
     profile: UserProfile
@@ -13,13 +12,6 @@ type Props = {
 
 const Content = ({profile}: Props) => {
     const from = (new Date(profile.createdTimestamp)).toDateString();
-
-    const [bannerWidth, setBannerWidth] = useState<number>(0);
-
-    // TODO: -error ReferenceError: Image is not defined
-    getImage(profile.banner_image_url, (err: string | Event, img: HTMLImageElement) => {
-        setBannerWidth(img.naturalWidth);
-    });
 
     const Banner = styled.div`
       background-image: url(${profile.banner_image_url});
@@ -33,7 +25,7 @@ const Content = ({profile}: Props) => {
           background-position: 0 0;
         }
         to {
-          background-position: ${bannerWidth}px 0;
+          background-position: 100vw 0;
         }
       }
     `
