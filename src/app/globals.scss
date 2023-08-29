@@ -29,6 +29,10 @@ a {
   text-decoration: none;
 }
 
+p {
+  margin: 0;
+}
+
 @keyframes bg-scrolling {
   100% {
     background-position: 0 100px;
