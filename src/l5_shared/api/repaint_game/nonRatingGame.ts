@@ -1,5 +1,10 @@
-export const baseUrl = "/game"
+import {repaintGameUrl} from "@/l5_shared/api/repaint_game/repaintGame";
 
-export const startUrl = "/start"
-export const stepUrl = "/step"
-export const getGameUrl = (gameId: string) => `/${gameId}`
+const requestMapping = "/game"
+
+const startMapping = "/start"
+const stepMapping = "/step"
+const getGameUrl = (gameId: string) => `/${gameId}`
+
+export const startUrl = `${repaintGameUrl}${requestMapping}${startMapping}`
+export const stepUrl = `${repaintGameUrl}${requestMapping}${stepMapping}`

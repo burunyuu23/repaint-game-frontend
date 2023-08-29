@@ -18,11 +18,15 @@ import RepaintGameSettingsSlice, {RepaintGameSettings} from "@/l3_features/redux
 import {fieldSizeDefault, fieldSizeMax, fieldSizeMin, maxRoundsDefault, maxRoundsMax, maxRoundsMin} from "@/l5_shared/consts/repaint_game_settings";
 import InfoPanel from "@/l2_widgets/repaint_game/info_panel/infoPanel";
 import Loading from "./loading"
+import {NonRatingAuthService} from "@/l4_entities/repaint-game/nonrating-service/service";
+import {cookie_get_access_token} from "@/l5_shared/util/cookie_worker";
 
-const doStart = async (dispatch: AppDispatch, paletteId: number, fieldSize: number, maxRounds: number) => {
+const doStart = async (dispatch: AppDispatch, paletteId: number, fieldSize: number, maxRounds: number, isAuth: boolean) => {
     dispatch(RepaintGameStateSlice.actions.StartNewGame());
 
-    const startResponseDTO = await NonRatingNoAuthService.startGame(
+    const service = isAuth ? NonRatingAuthService : NonRatingNoAuthService;
+
+    const startResponseDTO = await service.startGame(
         {
             paletteId: paletteId,
             fieldSize: fieldSize,
@@ -35,15 +39,15 @@ const doStart = async (dispatch: AppDispatch, paletteId: number, fieldSize: numb
     dispatch(RepaintGameStateSlice.actions.UpdateGameSettings(startResponseDTO));
     dispatch(RepaintGameStateSlice.actions.UpdatePrevMap(startResponseDTO.map));
     dispatch(RepaintGameStateSlice.actions.UpdatePrevCapturedCount(startResponseDTO.capturedCount));
-
-    console.log(startResponseDTO)
 }
 
-const doStep = async (dispatch: AppDispatch, data: GameStepResponseDTO, id: number) => {
+const doStep = async (dispatch: AppDispatch, data: GameStepResponseDTO, id: number, isAuth: boolean) => {
     dispatch(RepaintGameStateSlice.actions.UpdatePrevMap(data.map));
     dispatch(RepaintGameStateSlice.actions.UpdatePrevCapturedCount(data.capturedCount));
 
-    const stepResponseDTO = await NonRatingNoAuthService.stepGame(
+    const service = isAuth ? NonRatingAuthService : NonRatingNoAuthService;
+
+    const stepResponseDTO = await service.stepGame(
         {
             gameId: data.gameId,
             colorId: id
@@ -54,7 +58,6 @@ const doStep = async (dispatch: AppDispatch, data: GameStepResponseDTO, id: numb
 
     if (stepResponseDTO.end) {
         dispatch(RepaintGameStateSlice.actions.UpdateWin(stepResponseDTO.capturedCount === stepResponseDTO.fieldSize * stepResponseDTO.fieldSize));
-        console.log(stepResponseDTO.capturedCount === stepResponseDTO.fieldSize * stepResponseDTO.fieldSize);
     }
 }
 
@@ -71,18 +74,20 @@ const Content = React.memo(() => {
 
     const [isInit, setIsInit] = useState<boolean>(false);
 
+    const isAuth = useAppSelector(state => state.user__settings.isAuth);
+
     const dispatch = useAppDispatch();
     const {
         fetching: fetchStartGame,
         isLoading: isStartGameLoading,
         error: startGameError
     } = useFetch(useCallback(async (dispatch: AppDispatch) =>
-        await doStart(dispatch, paletteId, fieldSize, maxRound), [paletteId, fieldSize, maxRound]));
+        await doStart(dispatch, paletteId, fieldSize, maxRound, isAuth), [paletteId, fieldSize, maxRound, isAuth]));
 
     useEffect(() => {
         if (isInit)
             fetchStartGame(dispatch);
-    }, [paletteId, fieldSize, maxRound, isInit]);
+    }, [paletteId, fieldSize, maxRound, isInit, isAuth]);
 
     useEffect(() => {
         const getInitialItemFromLocalStorage = <T extends number>(itemName: string, type: string, minValue: T, maxValue: T, defaultValue: T): T => {
@@ -116,7 +121,7 @@ const Content = React.memo(() => {
         error: stepGameError,
         clearError: clearError
     } = useFetch(async (dispatch: AppDispatch, id: number) =>
-        await doStep(dispatch, data!, id)
+        await doStep(dispatch, data!, id, isAuth)
     )
 
     const infoAction = (payload: boolean) =>
