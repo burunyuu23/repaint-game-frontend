@@ -27,10 +27,10 @@ const Content = ({profile}: Props) => {
                         <i>from {from}</i>
                     </ProfileBanner>
 
-                    <b>{profile.username}</b>
+                    <b className={styles.username}>{profile.username}</b>
                     <div style={{backgroundImage: `url(${profile.profile_image_url})`}}
-                         className={styles.profileImage}>
-                        <Button className={styles.editButton}>
+                         className={[styles.profileImage, styles.dropShadow].join(' ')}>
+                        <Button className={[styles.editButton, styles.dropShadow].join(" ")}>
                             edit profile
                         </Button>
                     </div>
