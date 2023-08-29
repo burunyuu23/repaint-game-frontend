@@ -22,7 +22,7 @@
 
   background-size: cover;
 
-  .editButton {
+  .profileButton {
     position: absolute !important;
     color: yellow !important;
     padding: 0 !important;
@@ -42,7 +42,7 @@
   }
 
   &:hover {
-    & > .editButton {
+    & > .profileButton {
       bottom: -1px;
       background: #000000ff;
       opacity: 0.1;
