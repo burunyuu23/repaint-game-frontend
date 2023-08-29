@@ -48,6 +48,7 @@ const Content = ({profile}: Props) => {
     })
 
     const isAuth = useAppSelector(state => state.user__settings.isAuth)
+
     const [isMe, setIsMe] = useState<boolean>(false);
     getUserProfile()
         .then(resp => {
@@ -64,7 +65,7 @@ const Content = ({profile}: Props) => {
                 errorField: userProfileMessages.isAuth
             },
             {
-                rule: () => !isMe,
+                rule: () => isMe,
                 errorField: userProfileMessages.isMe
             },
             {
@@ -76,7 +77,7 @@ const Content = ({profile}: Props) => {
 
     useEffect(() => {
         validateProfileMsg();
-    }, []);
+    }, [isAuth, isMe]);
 
     const handleProfileButton = () => {
         validateProfileMsg();
