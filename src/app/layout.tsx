@@ -5,6 +5,7 @@ import ThemeRegistry from "@/l5_shared/registry/theme/ThemeRegistry";
 import NavBar from "@/l2_widgets/navbar/navBar";
 import React from "react";
 import ReduxProvider from '@/l3_features/redux/reduxProvider';
+import StyledComponentsRegistry from "@/l5_shared/registry/styled/StyledComponentRegisty";
 
 const inter = Inter({subsets: ['latin']})
 
@@ -22,6 +23,7 @@ export default function RootLayout({
     return (
         <html lang="en">
         <ThemeRegistry>
+            <StyledComponentsRegistry>
             <body className={inter.className}>
 
             <div className="particle particle-1"/>
@@ -35,6 +37,7 @@ export default function RootLayout({
                 </main>
             </ReduxProvider>
             </body>
+            </StyledComponentsRegistry>
         </ThemeRegistry>
         </html>
     )
