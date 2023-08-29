@@ -15,9 +15,8 @@ const RepaintGameBannerPaintBrushTail = () => {
                     () => getRandomInt(0, 5)
                 )
             );
-        console.log(newMap)
         setMap(newMap)
-    }, []);
+    }, [setMap]);
 
     const blockSize = 32;
 
@@ -47,10 +46,11 @@ const RepaintGameBannerPaintBrushTail = () => {
                 src="/repaint_game_banner/tail.png"
                 alt="tail"/>
             <Map>
-                {map.map(arr => (
-                    <div>
-                        {arr.map(value =>
-                            <Block style={{background: defaultColors[value].hexCode}}/>
+                {map.map((arr, array_index) => (
+                    <div key={array_index}>
+                        {arr.map((value, index) =>
+                            <Block key={index}
+                                   style={{background: defaultColors[value].hexCode}}/>
                         )}
                     </div>
                 ))}

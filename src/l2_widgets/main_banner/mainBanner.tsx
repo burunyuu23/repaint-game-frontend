@@ -32,7 +32,7 @@ const MainBanner = () => {
             if (bannerIsLoad.current)
                 clearInterval(interval);
         }, 1)
-    }, []);
+    }, [setTriggerRerender]);
 
     return (
         <MainBannerWrapper>
