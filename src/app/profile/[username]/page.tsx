@@ -7,6 +7,12 @@ type Props = {
         username: string
     }
 }
+export async function generateMetadata({ params }: Props) {
+    return {
+        title: `${params.username} / Profile`,
+        description: `${params.username} profile`,
+    }
+}
 
 const Page = async ({params}: Props) => {
     const profile = await UsersPostsService.userByUsername(params.username);
