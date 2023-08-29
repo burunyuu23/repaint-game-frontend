@@ -20,25 +20,13 @@
   // 1880x200
   width: 100%;
   height: 200px;
-  background-size: contain;
+  background-size: cover;
   z-index: -1;
-
-  animation: slider 60s linear infinite;
 
   i {
     font-size: 16px;
     position: absolute;
     top: -12%;
-  }
-
-  @keyframes slider {
-    from {
-      background-position: 0 0;
-    }
-    to {
-
-      background-position: 200px 0;
-    }
   }
 }
 
@@ -49,6 +37,8 @@
   position: relative;
   overflow: hidden;
 
+  background-size: cover;
+
   .editButton {
     position: absolute !important;
     color: yellow !important;
@@ -56,20 +46,31 @@
 
     margin: 5px 10px;
 
-    width: calc(100% - 10px*2);
+    width: calc(100% - 10px * 2);
 
-    transition: bottom 100ms linear;
+    transition: bottom 200ms linear, opacity 200ms linear;
+    opacity: 0;
+    background: #000000ff;
+
     border: 2px solid yellow;
 
     left: 0;
     bottom: -100px;
   }
 
-  &:hover > .editButton {
-    bottom: 0px;
-  }
-}
+  &:hover {
+    & > .editButton {
+      bottom: -1px;
+      background: #000000ff;
+      opacity: 0.1;
 
+      &:hover {
+        opacity: 1;
+      }
+    }
+  }
+
+}
 
 
 .mainInfo {
