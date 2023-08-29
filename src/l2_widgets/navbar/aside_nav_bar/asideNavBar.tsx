@@ -10,6 +10,7 @@ import styled from "styled-components";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import {cookie_token_clear, get_is_token_active} from "@/l5_shared/util/cookie_worker";
 import {useAppDispatch} from "@/l5_shared/hooks/useAppDispatch";
+import UserSettingsSlice from '@/l3_features/redux/user_settings/reducer';
 
 type Props = {
     entered: boolean,
