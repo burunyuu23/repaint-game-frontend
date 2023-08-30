@@ -2,7 +2,7 @@ import {Color} from "@/l4_entities/repaint-game/models/color";
 
 export const fieldSizeMin = 2;
 export const fieldSizeDefault = 12;
-export const fieldSizeMax = 30;
+export const fieldSizeMax = 40;
 
 export const maxRoundsMin = 1;
 export const maxRoundsDefault = 22;
