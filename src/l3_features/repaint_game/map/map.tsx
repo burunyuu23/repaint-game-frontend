@@ -4,15 +4,17 @@ import {Color} from "@/l4_entities/repaint-game/models/color";
 import styles from './map.module.scss';
 import styled from "@emotion/styled";
 import {Transition} from "react-transition-group";
+import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 
 type Props = {
-    map: Cell[][],
-    prevMap: Cell[][]
-    fieldSize: number,
     colors: Color[],
     mapSize: string,
 }
-const Map = React.memo(({map, prevMap, fieldSize, colors, mapSize}: Props) => {
+const Map = React.memo(({colors, mapSize}: Props) => {
+
+    const map = useAppSelector(state => state.repaint_game__state.gameSettings!.map)
+    const prevMap = useAppSelector(state => state.repaint_game__state.prevMap!)
+    const fieldSize = useAppSelector(state => state.repaint_game__settings.fieldSize)
 
     const Cells = styled.div`
       grid-template-columns: repeat(${fieldSize}, 1fr);
@@ -81,37 +83,37 @@ const Map = React.memo(({map, prevMap, fieldSize, colors, mapSize}: Props) => {
     }, [])
 
     return (
-        <Transition
-            nodeRef={nodeRef}
-            timeout={200}
-            in={entered}
-        >
-            {(state: string) => (
-                <div>
-                    <Cells className={`${styles.map} 
-                `}
-                           ref={nodeRef}>
-                        {map.map(
-                            (cellRow, rowIndex) =>
-                                cellRow.map(
-                                    (cell, columnIndex) =>
-                                        <Cell
-                                            key={rowIndex * fieldSize + columnIndex}
-                                            className={`${borderClassesAroundCheck(cell, rowIndex, columnIndex).join(' ')}
+                <Transition
+                    nodeRef={nodeRef}
+                    timeout={200}
+                    in={entered}
+                >
+                    {(state: string) => (
+                        <div>
+                            <Cells className={`${styles.map}`}
+                                   ref={nodeRef}>
+                                {map.map(
+                                    (cellRow, rowIndex) =>
+                                        cellRow.map(
+                                            (cell, columnIndex) =>
+                                                <Cell
+                                                    key={rowIndex * fieldSize + columnIndex}
+                                                    className={`${borderClassesAroundCheck(cell, rowIndex, columnIndex).join(' ')}
                                             `}
-                                            style={prevMap[rowIndex][columnIndex].value !== cell.value
-                                                ?
-                                                { ...defaultStyle, ...transitionStyles(state,
-                                                        colors[prevMap[rowIndex][columnIndex].value].hexCode,
-                                                        colors[cell.value].hexCode)}
-                                                :
-                                                {backgroundColor: colors[cell.value].hexCode}}/>
-                                ))}
-                    </Cells>
-                </div>
-            )}
-
-        </Transition>
+                                                    style={prevMap[rowIndex][columnIndex].value !== cell.value
+                                                        ?
+                                                        {
+                                                            ...defaultStyle, ...transitionStyles(state,
+                                                                colors[prevMap[rowIndex][columnIndex].value].hexCode,
+                                                                colors[cell.value].hexCode)
+                                                        }
+                                                        :
+                                                        {backgroundColor: colors[cell.value].hexCode}}/>
+                                        ))}
+                            </Cells>
+                        </div>
+                    )}
+                </Transition>
     );
 });
 
