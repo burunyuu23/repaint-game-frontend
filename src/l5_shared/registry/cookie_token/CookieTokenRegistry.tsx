@@ -30,8 +30,8 @@ export default function CookieTokenRegistry({
     }, [])
 
     return (
-        <div>
+        <>
             {children}
-        </div>
+        </>
     )
 }
