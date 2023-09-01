@@ -63,6 +63,7 @@ const Game: FC<RatingGameProps> = React.memo(({fetchStepGame}: RatingGameProps) 
                         position: "absolute",
                         mixBlendMode: "hard-light"
                     }}/>}
+
                 <Map colors={data!.colors}
                      mapSize={mapSizeDefaultStyle}
                 />

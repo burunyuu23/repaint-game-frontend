@@ -24,8 +24,6 @@ const MainBanner = () => {
         bannerIsLoad.current = true;
 
     useEffect(() => {
-
-
         const interval = setInterval(() => {
             setTriggerRerender(() => bannerIsLoad.current);
 

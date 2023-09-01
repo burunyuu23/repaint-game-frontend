@@ -83,37 +83,37 @@ const Map = React.memo(({colors, mapSize}: Props) => {
     }, [])
 
     return (
-                <Transition
-                    nodeRef={nodeRef}
-                    timeout={200}
-                    in={entered}
-                >
-                    {(state: string) => (
-                        <div>
-                            <Cells className={`${styles.map}`}
-                                   ref={nodeRef}>
-                                {map.map(
-                                    (cellRow, rowIndex) =>
-                                        cellRow.map(
-                                            (cell, columnIndex) =>
-                                                <Cell
-                                                    key={rowIndex * fieldSize + columnIndex}
-                                                    className={`${borderClassesAroundCheck(cell, rowIndex, columnIndex).join(' ')}
+        <Transition
+            nodeRef={nodeRef}
+            timeout={200}
+            in={entered}
+        >
+            {(state: string) => (
+                <div>
+                    <Cells className={`${styles.map}`}
+                           ref={nodeRef}>
+                        {map.map(
+                            (cellRow, rowIndex) =>
+                                cellRow.map(
+                                    (cell, columnIndex) =>
+                                        <Cell
+                                            key={rowIndex * fieldSize + columnIndex}
+                                            className={`${borderClassesAroundCheck(cell, rowIndex, columnIndex).join(' ')}
                                             `}
-                                                    style={prevMap[rowIndex][columnIndex].value !== cell.value
-                                                        ?
-                                                        {
-                                                            ...defaultStyle, ...transitionStyles(state,
-                                                                colors[prevMap[rowIndex][columnIndex].value].hexCode,
-                                                                colors[cell.value].hexCode)
-                                                        }
-                                                        :
-                                                        {backgroundColor: colors[cell.value].hexCode}}/>
-                                        ))}
-                            </Cells>
-                        </div>
-                    )}
-                </Transition>
+                                            style={prevMap[rowIndex][columnIndex].value !== cell.value
+                                                ?
+                                                {
+                                                    ...defaultStyle, ...transitionStyles(state,
+                                                        colors[prevMap[rowIndex][columnIndex].value].hexCode,
+                                                        colors[cell.value].hexCode)
+                                                }
+                                                :
+                                                {backgroundColor: colors[cell.value].hexCode}}/>
+                                ))}
+                    </Cells>
+                </div>
+            )}
+        </Transition>
     );
 });
 
