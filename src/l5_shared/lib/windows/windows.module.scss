@@ -1,0 +1,50 @@
+.main {
+  height: 100%;
+}
+
+.header {
+  display: flex;
+}
+
+.headerElement {
+  border: 2px dotted white;
+  border-radius: 10px;
+  padding: 0 20px;
+  cursor: pointer;
+}
+.disabled {
+  background: black;
+  color: white;
+
+  &:hover {
+    border: 2px dashed white;
+    color: yellow;
+  }
+
+  &:active {
+    background: white;
+  }
+}
+.enabled {
+  border: 2px dotted black;
+  background: white;
+  color: black;
+
+  &:hover {
+    border: 2px dashed black;
+    background: white;
+    color: black;
+  }
+
+  &:active {
+    background: white;
+    color: black;
+  }
+}
+
+.window {
+  border: 2px dashed white;
+  border-radius: 10px;
+  height: 100%;
+  padding: 20px;
+}
