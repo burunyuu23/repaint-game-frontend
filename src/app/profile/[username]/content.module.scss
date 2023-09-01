@@ -1,9 +1,13 @@
+@import "@/l5_shared/consts/css/navBar";
+
 .main {
   padding: 20px 0;
+  height: calc(100dvh - $nav-bar--total--height);
 
   display: grid;
+  grid-template-rows: min-content;
   justify-content: center;
-  align-items: center;
+  align-items: start;
 }
 
 .header {
@@ -81,10 +85,10 @@
 
   @keyframes slider {
     from {
-      background-position: 0 0;
+      background-position: 0 100%;
     }
     to {
-      background-position: 100vw 0;
+      background-position: 100vw 100%;
     }
   }
 }
@@ -100,4 +104,10 @@
   text-align: center;
 
   grid-template-areas: "";
+}
+
+
+.windows {
+  height: calc(100% - 20px);
+  padding: 20px;
 }

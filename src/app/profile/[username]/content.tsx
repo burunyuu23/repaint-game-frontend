@@ -10,6 +10,7 @@ import {UsersPostsService} from "@/l4_entities/user/users-posts-service/service"
 import {AddErrorCodeToKeys, generateErrorCodes} from "@/l5_shared/util/error_code";
 import {createUseValidation} from "@/l5_shared/hooks/useValidation";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
+import ProfileWindows from "@/l3_features/profile/profile_windows/profileWindows";
 
 type Props = {
     profile: UserProfile
@@ -83,30 +84,58 @@ const Content = ({profile}: Props) => {
         validateProfileMsg();
     }
 
+    const style = `    
+    // .content_profileBanner__rB5sN {
+    //     border-top: 2px solid green;
+    //     border-bottom: 2px solid green;
+    // }
+    //
+    // .content_profileImage__zx_Ht {
+    //
+    // &:hover{
+    //     filter: blur(20px);
+    //     }
+    // }
+    `
+
+    const Wrapper = styled.div`
+      ${style}
+    `
+
     return (
-        <div className={styles.main}>
-            <header className={styles.header}>
-                <div className={styles.mainInfo}>
-                    <ProfileBanner className={styles.profileBanner}
+        <Wrapper className={[styles.main, "profile"].join(" ")}>
+            <header className={[styles.header, "profile--header"].join(" ")}>
+                <div className={[styles.mainInfo, "profile--main-info"].join(" ")}>
+                    <ProfileBanner className={[styles.profileBanner, "profile--banner"].join(" ")}
                                    style={{backgroundImage: `url(${profile.banner_image_url})`}}>
-                        <i>from {from}</i>
+                        <i className="profile--banner--from-text">from {from}</i>
                     </ProfileBanner>
 
-                    <b className={styles.username}>{profile.username}</b>
+                    <b className={[styles.username, "profile--username"].join(" ")}>
+                        {profile.username}
+                    </b>
                     <div style={{backgroundImage: `url(${profile.profile_image_url})`}}
-                         className={[styles.profileImage, styles.dropShadow].join(' ')}>
+                         className={[styles.profileImage, styles.dropShadow, "profile--image"].join(' ')}>
                         {profileMsg !== userProfileMessages.isAuth &&
-                            <Button className={[styles.profileButton, styles.dropShadow].join(" ")}
+                            <Button className={[styles.profileButton, styles.dropShadow, "profile--action-button"].join(" ")}
                                     onClick={handleProfileButton}>
                                 {profileMsg}
                             </Button>
                         }
                     </div>
-                    <p>{profile.first_name} {profile.last_name}</p>
-                    <p>{profile.birthdate}</p>
+                    <p className={["profile--name"].join(' ')}>
+                                {profile.first_name} {profile.last_name}
+                    </p>
+                    <p className={["profile--birthdate"].join(' ')}>
+                        {profile.birthdate}
+                    </p>
                 </div>
             </header>
-        </div>
+
+            <div className={styles.windows}>
+                <ProfileWindows />
+            </div>
+        </Wrapper>
     );
 };
 
