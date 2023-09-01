@@ -1,9 +1,9 @@
-$headerHeight: 80px;
+@import "@/l5_shared/consts/css/navBar";
 
 .headerBackground {
   position: absolute;
   width: 100dvw;
-  height: $headerHeight;
+  height: $nav-bar--header--height;
   opacity: 0.5;
   background: linear-gradient(90deg, black -10%, white, black 110%);
   filter: blur(20px) grayscale(100%);
@@ -15,7 +15,7 @@ $headerHeight: 80px;
 
 .header {
   width: 100dvw;
-  height: $headerHeight;
+  height: $nav-bar--header--height;
 
   margin-bottom: 10px;
 

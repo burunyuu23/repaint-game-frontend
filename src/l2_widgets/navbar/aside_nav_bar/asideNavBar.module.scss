@@ -1,7 +1,7 @@
 @import "../navBar.module";
 
 .asideNavBarTopping {
-  top: $headerHeight;
+  top: $nav-bar--header--height;
 }
 .asideNavBarBack {
   position: absolute;
