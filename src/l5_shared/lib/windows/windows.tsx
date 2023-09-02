@@ -34,6 +34,8 @@ const Windows = ({children, headers, selected, setSelected, className, vertical}
         }
     }
 
+    const selectedInRange = (headerIndex: number) => selected < getMinMaxIndex(headerIndex).max && selected >= getMinMaxIndex(headerIndex).min
+
     return (
         <div className={[styles.main, className ? className : "", vertical ? styles.verticalHeader : ""].join(" ")}>
             <Scrollable>
@@ -42,7 +44,7 @@ const Windows = ({children, headers, selected, setSelected, className, vertical}
                         headers.map((header, headerIndex) =>
                             <div>
                                 <header className={[styles.headerElement,
-                                    selected < getMinMaxIndex(headerIndex).max && selected >= getMinMaxIndex(headerIndex).min ?
+                                    selectedInRange(headerIndex) ?
                                         styles.enabled : styles.disabled,
                                     styles.headerHeader].join(" ")}
                                         onClick={() => setSelected(getMinMaxIndex(headerIndex).min)}>
