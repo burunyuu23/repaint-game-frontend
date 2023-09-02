@@ -3,6 +3,8 @@
 }
 
 .header {
+  width: calc(100dvw - 40px);
+  padding: 0 20px;
   display: flex;
 }
 

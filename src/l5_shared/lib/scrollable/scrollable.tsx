@@ -7,7 +7,7 @@ type Props = {
 
 const Scrollable = ({children}: Props) => {
     return (
-        <div style={{overflow: "auto", height: '10dvh'}}>
+        <div style={{overflow: "auto"}}>
             {children}
         </div>
     );

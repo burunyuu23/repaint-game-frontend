@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from "./windows.module.scss"
+import Scrollable from '@/l5_shared/lib/scrollable/scrollable';
 
 type Props = {
     children: React.ReactNode,
@@ -11,13 +12,15 @@ const Windows = ({children, titles, selected, setSelected}: Props) => {
     return (
         <div className={styles.main}>
             <header className={styles.header}>
-                {
-                    titles.map((title, index) =>
-                        <span className={[styles.headerElement, selected === index ? styles.enabled : styles.disabled].join(" ")}
-                        onClick={() => setSelected(index)}>
+                <Scrollable>
+                    {
+                        titles.map((title, index) =>
+                            <span className={[styles.headerElement, selected === index ? styles.enabled : styles.disabled].join(" ")}
+                                  onClick={() => setSelected(index)}>
                             {title}
                         </span>)
-                }
+                    }
+                </Scrollable>
             </header>
             <div className={styles.window}>
                 {children}
