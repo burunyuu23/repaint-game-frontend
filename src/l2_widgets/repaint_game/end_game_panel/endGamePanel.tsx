@@ -5,6 +5,8 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 import ModalPanel from "@/l5_shared/lib/modal_panel/modalPanel";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
 import SecondsPanel from "@/l5_shared/lib/timer/secondsPanel";
+import HomeIcon from '@mui/icons-material/Home';
+import Link from "next/link";
 
 type Props = {
     restart: () => void,
@@ -42,6 +44,12 @@ const EndGamePanel = ({restart, settingsOpen}: Props) => {
                         onClick={restart}
                     >
                         <ChangeCircleIcon/>
+                    </button>
+                    <button
+                        className={styles.iconButton}>
+                        <Link href={"/"}>
+                            <HomeIcon/>
+                        </Link>
                     </button>
                     <button
                         className={styles.iconButton}
