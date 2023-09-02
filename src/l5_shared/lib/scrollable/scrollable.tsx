@@ -2,12 +2,14 @@
 import React from 'react';
 
 type Props = {
-    children: React.ReactNode
+    children: React.ReactNode,
+    className?: string
 }
 
-const Scrollable = ({children}: Props) => {
+const Scrollable = ({children, className}: Props) => {
     return (
-        <div style={{overflow: "auto"}}>
+        <div className={className ? className : ""}
+            style={{overflow: "auto"}}>
             {children}
         </div>
     );
