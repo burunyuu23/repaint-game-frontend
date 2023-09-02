@@ -1,0 +1,10 @@
+@import "@/l5_shared/consts/css/windows";
+
+.firstWindows {
+  height: 100%;
+  width: calc(100dvw - $windows--padding*2);
+}
+
+.secondWindows {
+  height: calc(100% - $windows--padding*2 - $header-title--padding);
+}

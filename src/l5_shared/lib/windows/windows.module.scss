@@ -1,18 +1,27 @@
-.main {
-  height: 100%;
+@import "@/l5_shared/consts/css/windows";
+
+.verticalHeader {
+  display: grid;
+  grid-template-columns: max-content 100%;
 }
 
 .header {
-  width: calc(100dvw - 40px);
-  padding: 0 20px;
+  padding: $header-title--padding $windows--padding 0;
   display: flex;
+  position: relative;
+}
+
+.vertical {
+  display: flex;
+  flex-direction: column;
 }
 
 .headerElement {
   border: 2px dotted white;
   border-radius: 10px;
-  padding: 0 20px;
+  padding: 0 $windows--padding;
   cursor: pointer;
+  white-space: nowrap;
 }
 .disabled {
   background: black;
@@ -44,9 +53,16 @@
   }
 }
 
+.headerHeader {
+  font-size: 10px;
+  position: absolute;
+  top: 0;
+}
+
 .window {
   border: 2px dashed white;
   border-radius: 10px;
   height: 100%;
-  padding: 20px;
+  padding: $windows--padding;
+  z-index: 99;
 }
