@@ -1,4 +1,5 @@
 @import "@/l5_shared/consts/css/navBar";
+@import "@/l5_shared/consts/css/windows";
 
 .main {
   padding: 20px 0;
@@ -13,7 +14,7 @@
 .header {
   width: 100dvw;
 
-  padding: 20px;
+  padding: 0 20px 0 20px;
   background: #000000aa;
 }
 
@@ -108,6 +109,6 @@
 
 
 .windows {
-  height: calc(100% - 20px);
-  padding: 20px;
+  height: calc(100% - $windows--padding*2);
+  padding: 0 20px;
 }
