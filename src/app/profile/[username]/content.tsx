@@ -133,7 +133,7 @@ const Content = ({profile}: Props) => {
             </header>
 
             <div className={styles.windows}>
-                <ProfileWindows />
+                <ProfileWindows userId={profile.id} />
             </div>
         </Wrapper>
     );
