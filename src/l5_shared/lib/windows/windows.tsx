@@ -9,11 +9,12 @@ type Props = {
     selected: number,
     setSelected: Function,
     className?: string,
-    vertical?: boolean
+    vertical?: boolean,
+    back?: () => void
 }
 
 // TODO: fix vertical width
-const Windows = ({children, headers, selected, setSelected, className, vertical}: Props) => {
+const Windows = ({children, headers, selected, setSelected, className, vertical, back}: Props) => {
 
     type MinMax = {
         min: number,
@@ -43,12 +44,19 @@ const Windows = ({children, headers, selected, setSelected, className, vertical}
                     {
                         headers.map((header, headerIndex) =>
                             <div>
-                                <header className={[styles.headerElement,
-                                    selectedInRange(headerIndex) ?
-                                        styles.enabled : styles.disabled,
-                                    styles.headerHeader].join(" ")}
-                                        onClick={() => setSelected(getMinMaxIndex(headerIndex).min)}>
-                                    {header.header}
+                                <header className={styles.headerHeader}>
+                                    {back && headerIndex === 0 &&
+                                        <header className={[styles.headerElement, styles.disabled].join(" ")}
+                                                onClick={back}>
+                                            back
+                                        </header>
+                                    }
+                                    <header className={[styles.headerElement,
+                                        selectedInRange(headerIndex) ?
+                                            styles.enabled : styles.disabled].join(" ")}
+                                            onClick={() => setSelected(getMinMaxIndex(headerIndex).min)}>
+                                        {header.header}
+                                    </header>
                                 </header>
                                 {header.titles.map((title, titleIndex) =>
                                     <span className={[styles.headerElement,
