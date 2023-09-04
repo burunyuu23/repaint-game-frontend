@@ -36,12 +36,12 @@ const Pageable = ({children, onClick, totalPages, currentPage}: Props) => {
         setLeftPage(Math.max(currentPage - Math.ceil((range - 1) / 2), 1))
 
         if (currentPage === 1)
-            setRightPage(Math.min(leftPage + range - 1), totalPages)
+            setRightPage(Math.min(leftPage + range - 1, totalPages))
         else
             setRightPage(Math.min(currentPage + Math.floor((range - 1) / 2), totalPages))
 
         if (currentPage === totalPages)
-            setLeftPage(Math.min(rightPage - range + 1), 1)
+            setLeftPage(Math.min(rightPage - range + 1, 1))
     }, [currentPage]);
 
     const Wrapper = styled.div`
