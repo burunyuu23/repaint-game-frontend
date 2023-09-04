@@ -33,16 +33,15 @@ const Pageable = ({children, onClick, totalPages, currentPage}: Props) => {
     }, [offset]);
 
     useEffect(() => {
-            setLeftPage(Math.max(currentPage - Math.floor(range/2), 1))
+        setLeftPage(Math.max(currentPage - Math.ceil((range - 1) / 2), 1))
 
-        if (leftPage === 1)
-            setRightPage(Math.min(leftPage + range - 1, totalPages))
+        if (currentPage === 1)
+            setRightPage(Math.min(leftPage + range - 1), totalPages)
         else
-            setRightPage(Math.min(currentPage + Math.floor(range/2), totalPages))
+            setRightPage(Math.min(currentPage + Math.floor((range - 1) / 2), totalPages))
 
-        if (rightPage === totalPages)
-            setLeftPage(Math.max(rightPage - range + 1, 1))
-            setOffset(0)
+        if (currentPage === totalPages)
+            setLeftPage(Math.min(rightPage - range + 1), 1)
     }, [currentPage]);
 
     const Wrapper = styled.div`
@@ -82,7 +81,7 @@ const Pageable = ({children, onClick, totalPages, currentPage}: Props) => {
                         <Button className={styles.button}
                                 style={{color: `${index + Math.max(leftPage, 1) === currentPage ? 'yellow' : 'white'}`}}
                                 onClick={() => onClick(index + Math.max(leftPage, 1) - 1)}>
-                            {index + Math.max(leftPage, 1)}
+                            {index + Math.max(leftPage, 1)} {leftPage} {rightPage} {Math.min(rightPage, totalPages) - Math.max(leftPage, 1) + 1}
                         </Button>
                     ))}
                     <div className={styles.navButtonPanel}>
