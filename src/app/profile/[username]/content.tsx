@@ -10,7 +10,7 @@ import {UsersPostsService} from "@/l4_entities/user/users-posts-service/service"
 import {AddErrorCodeToKeys, generateErrorCodes} from "@/l5_shared/util/error_code";
 import {createUseValidation} from "@/l5_shared/hooks/useValidation";
 import {useAppSelector} from "@/l5_shared/hooks/useAppSelector";
-import ProfileWindows from "@/l3_features/profile/profile_windows/profileWindows";
+import ProfileWindows from "@/l2_widgets/profile_windows/profileWindows";
 
 type Props = {
     profile: UserProfile

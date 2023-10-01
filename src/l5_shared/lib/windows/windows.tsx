@@ -43,7 +43,7 @@ const Windows = ({children, headers, selected, setSelected, className, vertical,
                 <header className={[styles.header, vertical ? styles.vertical : ""].join(" ")}>
                     {
                         headers.map((header, headerIndex) =>
-                            <div>
+                            <div key={header.header}>
                                 <header className={styles.headerHeader}>
                                     {back && headerIndex === 0 &&
                                         <header className={[styles.headerElement, styles.disabled].join(" ")}
@@ -59,7 +59,7 @@ const Windows = ({children, headers, selected, setSelected, className, vertical,
                                     </header>
                                 </header>
                                 {header.titles.map((title, titleIndex) =>
-                                    <span className={[styles.headerElement,
+                                    <span  key={title} className={[styles.headerElement,
                                         selected === getMinMaxIndex(headerIndex).min + titleIndex
                                             ? styles.enabled : styles.disabled
                                     ].join(" ")}

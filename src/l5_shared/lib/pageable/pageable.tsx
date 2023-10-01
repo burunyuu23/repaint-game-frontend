@@ -10,7 +10,7 @@ import {sizes} from "@/l5_shared/consts/css/display_size";
 
 type Props = {
     children: React.ReactNode,
-    onClick: (val: number) => void,
+    onClick: (offset: number, limit: number) => void,
     totalPages: number,
     currentPage: number
 }
@@ -18,6 +18,7 @@ type Props = {
 const Pageable = ({children, onClick, totalPages, currentPage}: Props) => {
 
     const range = useRef(Math.min(totalPages, 3))
+    const limit = useRef(7)
     const [offset, setOffset] = useState(0);
 
     const windowDimensions = useWindowDimensions();
@@ -26,20 +27,25 @@ const Pageable = ({children, onClick, totalPages, currentPage}: Props) => {
         if (windowDimensions && windowDimensions.width) {
             if (windowDimensions.width >= sizes.laptopL) {
                 range.current = (Math.min(totalPages, 9))
+                limit.current = 7
                 updateButtonPanel();
             }
             if (windowDimensions.width < sizes.laptopL) {
                 range.current = (Math.min(totalPages, 7))
+                limit.current = 5
                 updateButtonPanel();
             }
             if (windowDimensions.width <= (sizes.laptopL / 2)) {
                 range.current = (Math.min(totalPages, 3))
+                limit.current = 3
                 updateButtonPanel();
             }
             if (windowDimensions.width <= sizes.mobileM) {
                 range.current = (Math.min(totalPages, 2))
+                limit.current = 3
                 updateButtonPanel();
             }
+            onClick(0, limit.current)
         }
     }, [windowDimensions]);
 
@@ -58,14 +64,14 @@ const Pageable = ({children, onClick, totalPages, currentPage}: Props) => {
             setRightPage(Math.min(rightPage + offset, totalPages))
             setOffset(0)
         }
-    }, [offset]);
+    }, [offset, limit]);
 
     useEffect(() => {
-        if (currentPage <= range.current) {
+        if (currentPage <= range.current/2) {
             setLeftPage(1)
             setRightPage(Math.min(range.current, totalPages))
         }
-        else if (currentPage >= totalPages - range.current + 1) {
+        else if (currentPage >= totalPages - range.current/2 + 1) {
             setRightPage(totalPages)
             setLeftPage(Math.max(totalPages - range.current + 1, 1))
         }
@@ -73,12 +79,14 @@ const Pageable = ({children, onClick, totalPages, currentPage}: Props) => {
             setRightPage(Math.min(currentPage + Math.floor((range.current - 1) / 2), totalPages))
             setLeftPage(Math.max(currentPage - Math.ceil((range.current - 1) / 2), 1))
         }
-    }, [currentPage, range.current]);
+    }, [currentPage, range.current, limit]);
 
     const Wrapper = styled.div`
       height: 100%;
       display: grid;
+      grid-template-rows: 1fr 72px;
       align-content: space-between;
+      gap: 20px;
     `
 
     const [ButtonPanel, setButtonPanel] = useState(styled.div`
@@ -97,7 +105,7 @@ const Pageable = ({children, onClick, totalPages, currentPage}: Props) => {
 
     return (
         <Wrapper>
-            <Scrollable>
+            <Scrollable >
                 {children}
             </Scrollable>
             <Scrollable>
@@ -110,16 +118,16 @@ const Pageable = ({children, onClick, totalPages, currentPage}: Props) => {
                             watch
                         </Button>
                         <Button className={[styles.button, styles.navButton].join(" ")}
-                                onClick={() => onClick(currentPage - 1 - 1)}
+                                onClick={() => onClick(currentPage - 1 - 1, limit.current)}
                                 style={currentPage === 1 ? {color: "white"} : {color: "yellow"}}
                                 disabled={currentPage === 1}>
                             prev
                         </Button>
                     </div>
                     {Array(Math.min(rightPage, totalPages) - Math.max(leftPage, 1) + 1).fill(0).map((_, index) => (
-                        <Button className={styles.button}
+                        <Button key={index + Math.max(leftPage, 1)} className={styles.button}
                                 style={{color: `${index + Math.max(leftPage, 1) === currentPage ? 'yellow' : 'white'}`}}
-                                onClick={() => onClick(index + Math.max(leftPage, 1) - 1)}>
+                                onClick={() => onClick(index + Math.max(leftPage, 1) - 1, limit.current)}>
                             {index + Math.max(leftPage, 1)}
                         </Button>
                     ))}
@@ -131,7 +139,7 @@ const Pageable = ({children, onClick, totalPages, currentPage}: Props) => {
                             watch
                         </Button>
                         <Button className={[styles.button, styles.navButton].join(" ")}
-                                onClick={() => onClick(currentPage + 1 - 1)}
+                                onClick={() => onClick(currentPage + 1 - 1, limit.current)}
                                 style={currentPage === totalPages ? {color: "white"} : {color: "yellow"}}
                                 disabled={currentPage === totalPages}>
                             next

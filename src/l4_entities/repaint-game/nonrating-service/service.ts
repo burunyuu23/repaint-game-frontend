@@ -6,8 +6,8 @@ import {GameStepRequestDTO} from "@/l4_entities/repaint-game/dtos/requests/gameS
 import {GameStepResponseDTO} from "@/l4_entities/repaint-game/dtos/responses/gameStepResponseDTO";
 import {cookie_get_access_token} from "@/l5_shared/util/cookie_worker";
 import {Page, RequestParam} from "@/l5_shared/types/requestParam";
-import {NonRatingGame} from "@/l4_entities/repaint-game/models/game";
 import {request_params_create} from "@/l5_shared/util/request_params_creater";
+import { GamesHistoryResponseDTO } from "../dtos/responses/gamesHistoryResponseDTO";
 
 export class NonRatingAuthService {
 
@@ -34,8 +34,8 @@ export class NonRatingAuthService {
         return response;
     }
 
-    static userGames = async (requestParam: RequestParam, userId: string): Promise<Page<NonRatingGame>> => {
-        const response: Page<NonRatingGame> = await api.get(`${userGamesUrl(userId)}?${request_params_create(requestParam)}`)
+    static userGames = async (requestParam: RequestParam, userId: string): Promise<Page<GamesHistoryResponseDTO>> => {
+        let response: Page<GamesHistoryResponseDTO> = await api.get(`${userGamesUrl(userId)}?${request_params_create(requestParam)}`)
             .then(resp => resp.data)
         return response;
     }

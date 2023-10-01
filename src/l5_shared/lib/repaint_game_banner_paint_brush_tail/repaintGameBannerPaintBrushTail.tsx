@@ -4,6 +4,7 @@ import styled from "styled-components";
 import {banner_sizes} from "@/l5_shared/consts/css/banner_size";
 import {getRandomInt} from "@/l5_shared/util/random";
 import {defaultColors} from "@/l5_shared/consts/repaint_game_settings";
+import Image from "next/image";
 
 const RepaintGameBannerPaintBrushTail = () => {
 
@@ -42,7 +43,7 @@ const RepaintGameBannerPaintBrushTail = () => {
 
     return (
         <div className={styles.tail}>
-            <img
+            <Image
                 src="/repaint_game_banner/tail.png"
                 alt="tail"/>
             <Map>
