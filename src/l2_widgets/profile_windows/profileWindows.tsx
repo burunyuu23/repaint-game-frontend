@@ -6,9 +6,10 @@ import styles from "./profileWindows.module.scss"
 import ConstructionIcon from '@mui/icons-material/Construction';
 import {Title} from "@/l5_shared/types/title";
 import {NonRatingAuthService} from "@/l4_entities/repaint-game/nonrating-service/service";
-import {NonRatingGame} from "@/l4_entities/repaint-game/models/game";
 import {Page} from "@/l5_shared/types/requestParam";
 import Pageable from "@/l5_shared/lib/pageable/pageable";
+import GameRepresentation from '@/l3_features/profile/game_representation/gameRepresentation';
+import { GamesHistoryResponseDTO } from '@/l4_entities/repaint-game/dtos/responses/gamesHistoryResponseDTO';
 
 type Props = {
     userId: string
@@ -43,12 +44,12 @@ const ProfileWindows = ({userId}: Props) => {
             titles: ["Rating", "Palettes"]
         },];
 
-    const [nonRatingGames, setNonRatingGames] = useState<Page<NonRatingGame> | null>(null);
+    const [nonRatingGames, setNonRatingGames] = useState<Page<GamesHistoryResponseDTO> | null>(null);
 
-    const fetchUserGames = async (offset: number) => {
+    const fetchUserGames = async (offset: number, limit: number = 7) => {
         setNonRatingGames(await NonRatingAuthService.userGames(
             {
-                limit: 3,
+                limit: limit,
                 offset: offset
             }, userId));
     }
@@ -88,14 +89,12 @@ const ProfileWindows = ({userId}: Props) => {
                              className={styles.firstWindows}
                     back={() => setMainSelected(default_main_selected)}>
                         {repaintingGameSelected === 0 && nonRatingGames !== null &&
-                            <Pageable onClick={(offset: number) => fetchUserGames(offset)}
+                            <Pageable onClick={(offset: number, limit: number = 3) => fetchUserGames(offset, limit)}
                                       totalPages={nonRatingGames.totalPages}
                                       currentPage={nonRatingGames.pageable.pageNumber + 1}>
-                                <div style={{display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20, whiteSpace: "nowrap", }}>
-                                    {nonRatingGames.content.map(game =>
-                                        <div>
-                                            {game.gameId}
-                                        </div>)
+                                <div style={{display: "flex", gap: 20, whiteSpace: "nowrap", height: "100%"}}>
+                                    {nonRatingGames.content.map(gamesHistory =>
+                                        (<GameRepresentation key={gamesHistory.game.gameId} game={gamesHistory.game} finalRound={gamesHistory.finalRound} endTime={gamesHistory.endTime}/>))
                                     }
                                 </div>
                             </Pageable>
