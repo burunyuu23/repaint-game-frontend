@@ -1,0 +1,58 @@
+.main {
+    padding-top: 10px;
+    height: 100%;
+    aspect-ratio: 1/1;
+    display: grid;
+    grid-template-rows: 80% 10%;
+    justify-content: center;
+}
+
+.mainIcon {
+    position: relative;
+    background: black;
+    border-radius: 25%;
+    aspect-ratio: 1/1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.end {
+    position: absolute;
+    z-index: 999;
+    right: -10px;
+    top: -10px;
+    width: 40px;
+    height: 40px;
+    border: 2px dashed black;
+    border-radius: 100%;
+}
+.win {
+    border: 2px dashed whitesmoke;
+    background: green;
+}
+.lose {
+    border: 2px dashed black;
+    background: red;
+}
+.undefined {
+    border: 2px dashed darkslategray;
+    background: gray;
+}
+
+.startTime {
+    position: absolute;
+    bottom: 0;
+    font-size: 1.2rem;
+}
+
+.addInfo {
+    display: flex;
+    padding: 0 10px;
+    font-size: 1.2rem;
+    justify-content: space-between;
+}
